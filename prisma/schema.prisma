@@ -553,6 +553,47 @@ model InstitutionCredential {
   updatedAt     DateTime @updatedAt
 }
 
+/// W5 — a QA review of a counsellor call against the 20-point rubric.
+model QaReview {
+  id               String   @id @default(uuid())
+  counsellorUserId String
+  reviewerUserId   String
+  studentId        String?
+  communicationId  String?
+  scores           Json
+  totalScore       Int
+  notes            String?
+  createdAt        DateTime @default(now())
+
+  @@index([counsellorUserId])
+}
+
+/// W5 — multi-stage refund approval chain.
+model Refund {
+  id                String   @id @default(uuid())
+  studentId         String
+  requestedByUserId String
+  amountLocal       Int
+  currency          String   @default("BDT")
+  reason            String
+  stage             String   @default("requested")
+  cmApprovedBy      String?
+  financeApprovedBy String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+/// W5 — performance improvement plan with weekly checkpoints.
+model Pip {
+  id               String   @id @default(uuid())
+  counsellorUserId String
+  managerUserId    String
+  reason           String
+  checkpoints      Json?
+  status           String   @default("active")
+  startedAt        DateTime @default(now())
+}
+
 enum InvoiceStatus {
   issued
   paid

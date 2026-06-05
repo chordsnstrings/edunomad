@@ -43,7 +43,10 @@ export default async function TeamPage() {
   return (
     <div>
       <AutoRefresh />
-      <h1 className="mb-4 text-xl font-semibold text-navy">Team</h1>
+      <div className="mb-4 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-navy">Team</h1>
+        <Link href="/counsellor/tiers" className="text-sm text-navy underline">Performance tiers →</Link>
+      </div>
       {rows.length === 0 ? (
         <EmptyState title="No counsellors yet" body="Counsellors you manage will appear here with live pipeline metrics." />
       ) : (

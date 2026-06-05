@@ -1,0 +1,23 @@
+// 20-point call QA rubric (1 point each).
+export const QA_CALL_RUBRIC: string[] = [
+  "Professional, warm opening with name + company",
+  "Confirmed it was a good time to talk",
+  "Invited parents to listen in where appropriate",
+  "Confirmed intake target",
+  "Covered all 10 qualification questions",
+  "Captured academics accurately",
+  "Captured English proficiency / plan",
+  "Captured funding source + budget",
+  "Asked about prior visa history",
+  "No unauthorised promises (visa/PR/scholarship)",
+  "Used compliant language throughout",
+  "Set honest expectations",
+  "Explained next steps clearly",
+  "Confirmed preferred contact channel",
+  "Logged accurate notes",
+  "Tagged the correct outcome",
+  "Followed the SOP script structure",
+  "Handled objections with approved responses",
+  "Empathetic and respectful tone",
+  "Booked a clear follow-up / action",
+];

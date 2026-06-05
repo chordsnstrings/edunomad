@@ -40,6 +40,14 @@ export async function counsellorStats(userId: string, since: Date): Promise<Coun
   };
 }
 
+/** Automated performance tier from conversion + escalations (G128). */
+export function performanceTier(stats: { conversion: number; escalations: number }): { tier: string; tone: string } {
+  if (stats.conversion >= 40 && stats.escalations === 0) return { tier: "A — Top", tone: "text-green-700" };
+  if (stats.conversion >= 25) return { tier: "B — Solid", tone: "text-navy" };
+  if (stats.conversion >= 12) return { tier: "C — Developing", tone: "text-amber-700" };
+  return { tier: "D — Needs support", tone: "text-red-600" };
+}
+
 export async function managedCounsellors(managerUserId: string) {
   return prisma.counsellorProfile.findMany({ where: { managerId: managerUserId, active: true } });
 }
