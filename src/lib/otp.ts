@@ -52,8 +52,11 @@ export async function sendOtp(phone: string): Promise<OtpSendResult> {
   });
 
   await sendSms(phone, `Your EduNomad verification code is ${code}. It expires in 5 minutes.`);
-  // Expose the code only outside production (dev UX + tests). Never in prod.
-  return { ok: true, code: process.env.NODE_ENV === "production" ? undefined : code };
+  // Expose the code only outside production (dev UX + tests). Never in prod —
+  // except the explicit E2E hook on disposable staging DBs (E2E_OTP_BYPASS),
+  // which is never set in production environments.
+  const expose = process.env.NODE_ENV !== "production" || process.env.E2E_OTP_BYPASS === "1";
+  return { ok: true, code: expose ? code : undefined };
 }
 
 export type OtpVerifyResult = {
