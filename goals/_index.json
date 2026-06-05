@@ -127,11 +127,11 @@
         "G002"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G007-auditlog-entity-+-hash-chain.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:27:51.027Z",
+      "completed_at": "2026-06-05T13:27:51.027Z",
       "blocker_reason": null,
       "blocked_at": null
     },
