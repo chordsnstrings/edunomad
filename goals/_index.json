@@ -763,11 +763,11 @@
         "G018"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G046-student-status-timeline-9-stage.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:31:50.631Z",
+      "completed_at": "2026-06-05T15:31:50.631Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -779,11 +779,11 @@
         "G018"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G047-student-activity-feed.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:31:50.631Z",
+      "completed_at": "2026-06-05T15:31:50.631Z",
       "blocker_reason": null,
       "blocked_at": null
     },
