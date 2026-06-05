@@ -320,6 +320,35 @@ model Booking {
   @@index([counsellorUserId, startsAt])
 }
 
+enum DocStatus {
+  requested
+  uploaded
+  under_review
+  approved
+  rework_requested
+  rejected
+}
+
+/// W1 — an uploaded student document (versioned; status derived/QA'd).
+model Document {
+  id           String    @id @default(uuid())
+  studentId    String
+  documentType String
+  version      Int       @default(1)
+  storageKey   String
+  mimeType     String
+  sizeBytes    Int
+  status       DocStatus @default(uploaded)
+  qaResults    Json?
+  reworkReason String?
+  uploadedBy   String
+  reviewedBy   String?
+  reviewedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  @@index([studentId, documentType])
+}
+
 enum ShortlistStatus {
   draft
   locked

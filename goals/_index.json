@@ -650,11 +650,11 @@
         "G026"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G039-per-student-personalised-document-checklist-generator.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:42:38.895Z",
+      "completed_at": "2026-06-05T15:42:38.895Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -667,11 +667,11 @@
         "G014"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G040-student-document-vault---list-with-upload-status.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:42:38.895Z",
+      "completed_at": "2026-06-05T15:42:38.895Z",
       "blocker_reason": null,
       "blocked_at": null
     },
