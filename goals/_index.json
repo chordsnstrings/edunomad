@@ -503,11 +503,11 @@
         "G029"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G030-counsellor-assignment-screen-for-student.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:16:51.305Z",
+      "completed_at": "2026-06-05T15:16:51.305Z",
       "blocker_reason": null,
       "blocked_at": null
     },

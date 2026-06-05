@@ -286,6 +286,34 @@ model Programme {
   @@index([fieldCategory])
 }
 
+enum CommType {
+  call
+  message
+  whatsapp
+  email
+}
+
+enum CommDirection {
+  inbound
+  outbound
+}
+
+/// W1 — calls, messages, WhatsApp threads, emails with a student.
+model Communication {
+  id         String        @id @default(uuid())
+  studentId  String
+  userId     String?
+  type       CommType
+  direction  CommDirection
+  content    String
+  transcript String?
+  language   Language      @default(en)
+  metadata   Json?
+  createdAt  DateTime      @default(now())
+
+  @@index([studentId, createdAt])
+}
+
 /// W1 — counsellor metadata for routing + the assignment screen.
 model CounsellorProfile {
   id              String   @id @default(uuid())
