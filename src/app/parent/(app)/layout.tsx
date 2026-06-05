@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LogOut, Users } from "lucide-react";
 import { requireParent } from "@/lib/parent";
 import { parentLogoutAction } from "./actions";
+import { AppLock } from "@/components/app/AppLock";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,7 @@ export default async function ParentLayout({ children }: { children: React.React
   await requireParent();
   return (
     <div className="min-h-screen bg-white">
+      <AppLock />
       <header className="sticky top-0 z-40 border-b border-line bg-white">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
           <div className="flex items-center gap-2 font-semibold text-navy">

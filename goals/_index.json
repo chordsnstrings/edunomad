@@ -1716,11 +1716,11 @@
         "G013"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G105-parent-push-notifications-+-whatsapp-on-milestones.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1797,11 +1797,11 @@
         "G103"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G110-parent-talk-to-a-manager-escalation.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1813,11 +1813,11 @@
         "G103"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G111-parent-faq-surface---searchable-+-auto-suggest.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1829,11 +1829,11 @@
         "G102"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G112-parent-profile-+-locale-settings.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1845,11 +1845,11 @@
         "G103"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G113-parent-complaint-filing-flow.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1861,11 +1861,11 @@
         "G102"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G114-parent-app-lock-+-pin-re-enter.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:45:29.596Z",
+      "completed_at": "2026-06-05T19:45:29.596Z",
       "blocker_reason": null,
       "blocked_at": null
     },
