@@ -2954,11 +2954,11 @@
         "G180"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G183-tls-everywhere-+-hsts.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:37:18.158Z",
+      "completed_at": "2026-06-05T20:37:18.158Z",
       "blocker_reason": null,
       "blocked_at": null
     },
