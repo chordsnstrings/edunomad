@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { emit } from "@/lib/events";
+import { whatsappSend } from "@/lib/whatsapp";
 import { Prisma } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -46,5 +47,21 @@ export async function POST(req: NextRequest) {
     channels: { in_app: true, ...(decision === "rework" ? { whatsapp: true } : {}) },
     payload: { documentType: doc.documentType, reworkReason: reworkReason ?? null },
   });
+
+  // G054 — one-tap rework WhatsApp (template auto-filled with doc type + reason).
+  if (decision === "rework") {
+    const student = await prisma.student.findUnique({ where: { id: doc.studentId } });
+    if (student) {
+      const vars = [doc.documentType.replace(/_/g, " "), reworkReason ?? "needs a small fix"];
+      await prisma.communication.create({
+        data: { studentId: doc.studentId, userId: session.userId, type: "whatsapp", direction: "outbound", content: `Your ${vars[0]} needs rework: ${vars[1]}`, language: student.language, metadata: { kind: "doc_rework", documentType: doc.documentType } },
+      });
+      try {
+        await whatsappSend("doc_request", vars, student.phone, { optedIn: true });
+      } catch {
+        /* best-effort */
+      }
+    }
+  }
   return Response.json({ ok: true });
 }
