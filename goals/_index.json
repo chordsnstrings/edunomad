@@ -553,11 +553,11 @@
         "G032"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G033-whatsapp-greeting-template-insert-+-send.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:23:10.368Z",
+      "completed_at": "2026-06-05T15:23:10.368Z",
       "blocker_reason": null,
       "blocked_at": null
     },
