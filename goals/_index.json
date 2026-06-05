@@ -910,11 +910,11 @@
         "G052"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G055-sop-polish-screen-with-claude-api-integration.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:57:25.642Z",
+      "completed_at": "2026-06-05T15:57:25.642Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -926,11 +926,11 @@
         "G055"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G056-sop-plagiarism-gate.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:57:25.642Z",
+      "completed_at": "2026-06-05T15:57:25.642Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -942,11 +942,11 @@
         "G055"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G057-sop-lock-+-version-history.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:57:25.642Z",
+      "completed_at": "2026-06-05T15:57:25.642Z",
       "blocker_reason": null,
       "blocked_at": null
     },

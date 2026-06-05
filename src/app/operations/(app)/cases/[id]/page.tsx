@@ -34,6 +34,12 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
         {requiredMissing.length === 0 ? "All required documents present — ready to package." : `${requiredMissing.length} required document(s) missing.`}
       </div>
 
+      <div className="mt-3 flex gap-2">
+        <Link href={`/operations/cases/${id}/sop`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">
+          Polish SOP
+        </Link>
+      </div>
+
       <section className="mt-5">
         <h2 className="mb-2 text-sm font-semibold text-navy">Locked programmes ({progs.length})</h2>
         <ul className="space-y-2">

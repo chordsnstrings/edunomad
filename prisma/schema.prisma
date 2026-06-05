@@ -349,6 +349,36 @@ model Document {
   @@index([studentId, documentType])
 }
 
+enum SopStatus {
+  draft
+  polished
+  locked
+}
+
+/// W2 — a student's Statement of Purpose (polished via Claude, version-controlled).
+model Sop {
+  id              String     @id @default(uuid())
+  studentId       String     @unique
+  content         String     @default("")
+  version         Int        @default(1)
+  status          SopStatus  @default(draft)
+  plagiarismScore Float?
+  suggestions     Json?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+}
+
+model SopVersion {
+  id        String   @id @default(uuid())
+  sopId     String
+  version   Int
+  content   String
+  lockedBy  String?
+  createdAt DateTime @default(now())
+
+  @@index([sopId])
+}
+
 enum ShortlistStatus {
   draft
   locked
