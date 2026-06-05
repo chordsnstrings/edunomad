@@ -290,11 +290,11 @@
         "G010"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G017-event-template-rendering-with-i18n.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:40:45.493Z",
+      "completed_at": "2026-06-05T13:40:45.493Z",
       "blocker_reason": null,
       "blocked_at": null
     },
