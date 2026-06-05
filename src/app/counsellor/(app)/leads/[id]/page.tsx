@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { renderEventTemplate } from "@/lib/event-templates";
 import { leadScoreBreakdown } from "@/lib/leadscore";
 import { matchSnippets } from "@/lib/sop-snippets";
+import { surfaceSopBlocks } from "@/lib/sop-runtime";
 import { NotesEditor } from "@/components/counsellor/NotesEditor";
 import { reassignAction } from "./lead-actions";
 
@@ -26,6 +27,7 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
   const events = await prisma.event.findMany({ where: { studentId: id }, orderBy: { seq: "desc" }, take: 20 });
   const breakdown = leadScoreBreakdown(student as Parameters<typeof leadScoreBreakdown>[0]);
   const snippets = matchSnippets(student as Parameters<typeof matchSnippets>[0]);
+  const surfaced = await surfaceSopBlocks("counsellor_opens_lead_detail");
   const dests = (student.destinations as string[] | null) ?? [];
   const counsellors = session.role === "counsellor_manager" ? await prisma.counsellorProfile.findMany({ where: { active: true } }) : [];
 
@@ -128,6 +130,12 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
                 <p className="text-sm font-semibold text-navy">{s.title}</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted">{s.body}</p>
               </div>
+            ))}
+            {surfaced.map((s, i) => (
+              <Link key={`pub-${i}`} href={`/sop/${s.slug}`} className="block rounded-xl border border-gold-300 bg-gold-50 p-4">
+                <p className="text-xs font-semibold text-gold-700">Relevant SOP</p>
+                <p className="text-sm font-semibold text-navy">{s.article} →</p>
+              </Link>
             ))}
           </div>
         </aside>

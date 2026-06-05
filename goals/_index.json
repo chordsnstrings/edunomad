@@ -2412,11 +2412,11 @@
         "G144"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G149-sop-contextual-surfacing-engine---runtime.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2428,11 +2428,11 @@
         "G135"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G150-sop-cross-app-search.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2444,11 +2444,11 @@
         "G141"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G151-sop-checklist-quality-enforcement---runtime-hooks.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2460,11 +2460,11 @@
         "G142"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G152-sop-kpi-engine---live-values-to-dashboards.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2476,11 +2476,11 @@
         "G148"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G153-sop-audit-log-of-version-views.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2509,11 +2509,11 @@
         "G135"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G155-sop-corpus-seed-import-from-operating-manual-docx.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2525,11 +2525,11 @@
         "G135"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G156-sop-block-referencing---link-from-one-sop-to-another.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2541,11 +2541,11 @@
         "G148"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G157-sop-cms-publishing-pipeline---staging-vs-production.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:06:11.689Z",
+      "completed_at": "2026-06-05T20:06:11.689Z",
       "blocker_reason": null,
       "blocked_at": null
     },
