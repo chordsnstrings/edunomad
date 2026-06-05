@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Committed-secret scanner (G184 AC3). Fails (exit 1) if any tracked file looks
+# like it contains a real credential. Runs in CI (secret-scan job). For deeper
+# coverage, gitleaks can be layered on; this is a zero-dependency baseline.
+set -euo pipefail
+
+# Patterns for real secrets (NOT placeholders). Self + docs + lockfiles excluded.
+PATTERNS='AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|xox[baprs]-[0-9A-Za-z-]{10,}|sk_live_[0-9A-Za-z]{16,}|sk-ant-[0-9A-Za-z_-]{20,}|ghp_[0-9A-Za-z]{36}|AIza[0-9A-Za-z_-]{35}|postgres(ql)?://[^:@/]+:[^@/]+@'
+
+EXCLUDE_RE='^(docs/|\.env\.example$|package-lock\.json$|scripts/check-secrets\.sh$|.*\.md$)'
+
+fail=0
+while IFS= read -r f; do
+  [[ "$f" =~ $EXCLUDE_RE ]] && continue
+  [ -f "$f" ] || continue
+  if grep -nEI "$PATTERNS" "$f" >/dev/null 2>&1; then
+    echo "::error file=$f::possible committed secret"
+    grep -nEI "$PATTERNS" "$f" | sed 's/^/  /' | cut -c1-120
+    fail=1
+  fi
+done < <(git ls-files)
+
+if [ "$fail" -ne 0 ]; then
+  echo "Secret scan FAILED — remove secrets and use the secret manager (docs/cc/secrets.md)."
+  exit 1
+fi
+echo "Secret scan passed — no committed credentials found."

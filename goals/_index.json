@@ -2970,11 +2970,11 @@
         "G180"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G184-secret-management.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:37:18.330Z",
+      "completed_at": "2026-06-05T20:37:18.330Z",
       "blocker_reason": null,
       "blocked_at": null
     },
