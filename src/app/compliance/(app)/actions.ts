@@ -90,3 +90,27 @@ export async function refuseToSignAction(formData: FormData) {
   await logAudit({ actorUserId: s.userId, action: "visa_file.signoff_refused", targetType: "VisaFile", targetId: fileId, result: "success", reason });
   redirect("/compliance");
 }
+
+export async function createBulletinAction(formData: FormData) {
+  const s = await compliance();
+  await prisma.bulletin.create({ data: { authorUserId: s.userId, title: String(formData.get("title") ?? ""), body: String(formData.get("body") ?? ""), destination: String(formData.get("destination") ?? "") || null } });
+  await logAudit({ actorUserId: s.userId, action: "regulatory_bulletin.create", targetType: "Bulletin", result: "success" });
+  redirect("/compliance/bulletins");
+}
+
+export async function createRegUpdateAction(formData: FormData) {
+  const s = await compliance();
+  const eff = String(formData.get("effectiveDate") ?? "");
+  await prisma.regulatoryUpdate.create({ data: { authorUserId: s.userId, destination: String(formData.get("destination") ?? "CA"), summary: String(formData.get("summary") ?? ""), effectiveDate: eff ? new Date(eff) : null } });
+  redirect("/compliance/bulletins");
+}
+
+export async function notifyRegulatorAction(formData: FormData) {
+  const s = await compliance();
+  const fileId = String(formData.get("fileId") ?? "");
+  await prisma.regulatorNotification.create({ data: { authorUserId: s.userId, visaFileId: fileId || null, regulator: String(formData.get("regulator") ?? "RCIC"), subject: String(formData.get("subject") ?? ""), body: String(formData.get("body") ?? "") } });
+  await logAudit({ actorUserId: s.userId, action: "regulator_notification.create", targetType: "VisaFile", targetId: fileId || null, result: "success", reason: "regulator notified" });
+  const vf = fileId ? await prisma.visaFile.findUnique({ where: { id: fileId } }) : null;
+  if (vf) await emit({ type: "compliance.regulator_notified", stage: 8, studentId: vf.studentId, applicationId: vf.applicationId, actorType: "compliance", actorId: s.userId, visibility: { COMP: true, EM: true, ADMIN: true }, channels: { in_app: true }, payload: {} });
+  redirect(fileId ? `/compliance/files/${fileId}` : "/compliance");
+}

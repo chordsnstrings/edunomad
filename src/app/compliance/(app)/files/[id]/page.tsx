@@ -7,7 +7,7 @@ import { prisma } from "@/lib/db";
 import { getLatestDocuments } from "@/lib/documents";
 import { crossDocConsistency } from "@/lib/consistency";
 import { detectMisrepFlags } from "@/lib/misrep";
-import { sendReauthCodeAction, signOffAction, returnForChangesAction, refuseToSignAction } from "../../actions";
+import { sendReauthCodeAction, signOffAction, returnForChangesAction, refuseToSignAction, notifyRegulatorAction } from "../../actions";
 
 export const metadata: Metadata = { title: "Visa file", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -30,6 +30,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
       <Link href="/compliance" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-navy"><ArrowLeft className="h-4 w-4" /> Queue</Link>
       <h1 className="mt-3 text-xl font-semibold text-navy">Visa file — {vf.destinationCountry}</h1>
       <p className="text-sm text-muted">{student?.fullName ?? student?.phone} · {vf.completenessPct}% complete</p>
+      <Link href={`/compliance/files/${id}/audit`} className="mt-1 inline-block text-sm text-navy underline">View file audit log →</Link>
 
       {sp.signed && <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">Signed off and stamped.</p>}
       {sp.reauth === "failed" && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">Re-authentication failed. Request a new code and try again.</p>}
@@ -71,6 +72,16 @@ export default async function FileView({ params, searchParams }: { params: Promi
           <h2 className="flex items-center gap-2 text-sm font-semibold text-green-800"><Stamp className="h-4 w-4" /> Signed off</h2>
           <p className="mt-1 text-sm text-green-800">Registration {vf.registrationNumber} · hash {vf.versionHash}</p>
           <p className="text-xs text-green-700">{vf.signedOffAt?.toLocaleString()}</p>
+          <details className="mt-3">
+            <summary className="cursor-pointer text-sm font-semibold text-red-700">Notify regulator (misrepresentation discovered)</summary>
+            <form action={notifyRegulatorAction} className="mt-2 space-y-2">
+              <input type="hidden" name="fileId" value={id} />
+              <input name="regulator" defaultValue="RCIC" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <input name="subject" placeholder="Subject" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <textarea name="body" rows={3} placeholder="Details" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Send notification</button>
+            </form>
+          </details>
         </section>
       ) : (
         <div className="mt-6 space-y-4">

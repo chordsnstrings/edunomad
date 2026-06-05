@@ -400,6 +400,37 @@ model InboundEmail {
   @@index([classified])
 }
 
+/// W3 — Compliance-authored regulatory bulletins (G095).
+model Bulletin {
+  id           String   @id @default(uuid())
+  authorUserId String
+  title        String
+  body         String
+  destination  String?
+  publishedAt  DateTime @default(now())
+}
+
+/// W3 — regulator notification for misrepresentation post-sign-off (G096).
+model RegulatorNotification {
+  id           String   @id @default(uuid())
+  authorUserId String
+  visaFileId   String?
+  regulator    String
+  subject      String
+  body         String
+  createdAt    DateTime @default(now())
+}
+
+/// W3 — per-country checklist/form regulatory update record (G079).
+model RegulatoryUpdate {
+  id            String    @id @default(uuid())
+  authorUserId  String
+  destination   String
+  summary       String
+  effectiveDate DateTime?
+  createdAt     DateTime  @default(now())
+}
+
 enum VisaDecision {
   pending
   approved
