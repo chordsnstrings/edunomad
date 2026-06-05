@@ -143,11 +143,11 @@
         "G004"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G008-phone-otp-auth---send-+-verify.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T14:26:38.219Z",
+      "completed_at": "2026-06-05T14:26:38.219Z",
       "blocker_reason": null,
       "blocked_at": null
     },
