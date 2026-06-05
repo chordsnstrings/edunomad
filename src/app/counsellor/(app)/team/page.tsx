@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
