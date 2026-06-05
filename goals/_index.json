@@ -520,11 +520,11 @@
         "G006"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G031-counsellor-inbox---list-view-with-tabs.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:19:06.021Z",
+      "completed_at": "2026-06-05T15:19:06.021Z",
       "blocker_reason": null,
       "blocked_at": null
     },
