@@ -385,21 +385,66 @@ enum ShortlistStatus {
   withdrawn
 }
 
-/// W1/W2 — a student's application to a programme (starts as a shortlist entry).
+enum SubmissionStatus {
+  not_submitted
+  packaged
+  submitted
+  acknowledged
+  under_review
+  info_requested
+  offer_conditional
+  offer_unconditional
+  rejected
+  withdrawn
+}
+
+/// W1/W2 — a student's application to a programme (shortlist → submission → decision).
 model Application {
-  id                      String          @id @default(uuid())
+  id                      String           @id @default(uuid())
   studentId               String
   programmeId             String
   institutionId           String
-  shortlistStatus         ShortlistStatus @default(draft)
+  shortlistStatus         ShortlistStatus  @default(draft)
   rationale               String?
-  recommendedByCounsellor Boolean         @default(false)
+  recommendedByCounsellor Boolean          @default(false)
   bucket                  String?
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
+  submissionStatus        SubmissionStatus @default(not_submitted)
+  submissionMethod        String?
+  referenceId             String?
+  submittedAt             DateTime?
+  submissionProof         Json?
+  decisionStatus          String?
+  decisionAt              DateTime?
+  offerUrl                String?
+  conditions              Json?
+  createdAt               DateTime         @default(now())
+  updatedAt               DateTime         @updatedAt
+
+  appDocuments ApplicationDocument[]
 
   @@unique([studentId, programmeId])
   @@index([studentId])
+}
+
+/// W2 — which documents are packaged into which application.
+model ApplicationDocument {
+  applicationId String
+  documentId    String
+  roleInApp     String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@id([applicationId, documentId, roleInApp])
+}
+
+/// W2 — encrypted portal credentials for Tier-2 institutions.
+model InstitutionCredential {
+  id            String   @id @default(uuid())
+  institutionId String   @unique
+  portalUrl     String
+  username      String
+  passwordEnc   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 enum CommType {

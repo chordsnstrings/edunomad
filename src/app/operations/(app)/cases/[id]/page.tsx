@@ -43,13 +43,19 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
       <section className="mt-5">
         <h2 className="mb-2 text-sm font-semibold text-navy">Locked programmes ({progs.length})</h2>
         <ul className="space-y-2">
-          {progs.map((p) => (
-            <li key={p.id} className="rounded-xl border border-line bg-white p-3.5">
-              <p className="text-sm font-semibold text-navy">{p.institution.name}</p>
-              <p className="text-sm text-ink">{p.name}</p>
-              <p className="text-xs text-muted">{p.institution.country} · submission tier {p.institution.submissionTier}</p>
-            </li>
-          ))}
+          {progs.map((p) => {
+            const appId = apps.find((a) => a.programmeId === p.id)?.id;
+            const status = apps.find((a) => a.programmeId === p.id)?.submissionStatus;
+            return (
+              <li key={p.id}>
+                <Link href={`/operations/cases/${id}/applications/${appId}`} className="block rounded-xl border border-line bg-white p-3.5 hover:border-navy">
+                  <p className="text-sm font-semibold text-navy">{p.institution.name}</p>
+                  <p className="text-sm text-ink">{p.name}</p>
+                  <p className="text-xs text-muted">{p.institution.country} · tier {p.institution.submissionTier} · {status}</p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </section>
 

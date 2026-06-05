@@ -958,11 +958,11 @@
         "G052"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G058-per-uni-packaging-tool---drag-drop-assembler.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:00:57.249Z",
+      "completed_at": "2026-06-05T16:00:57.249Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -974,11 +974,11 @@
         "G058"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G059-tier-1-email-submission-gateway.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:00:57.249Z",
+      "completed_at": "2026-06-05T16:00:57.249Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -990,11 +990,11 @@
         "G014"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G060-tier-2-portal-credential-vault---encrypted-store-+-open-and.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:00:57.249Z",
+      "completed_at": "2026-06-05T16:00:57.249Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1006,11 +1006,11 @@
         "G058"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G061-tier-3-api-submission-stubbed.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:00:57.249Z",
+      "completed_at": "2026-06-05T16:00:57.249Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1024,11 +1024,11 @@
         "G061"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G062-submission-proof-gate.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:00:57.249Z",
+      "completed_at": "2026-06-05T16:00:57.249Z",
       "blocker_reason": null,
       "blocked_at": null
     },
