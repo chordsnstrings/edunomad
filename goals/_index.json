@@ -208,11 +208,11 @@
         "G005"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G012-web-push-notifications-with-quiet-hours.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T14:53:12.322Z",
+      "completed_at": "2026-06-05T14:53:12.322Z",
       "blocker_reason": null,
       "blocked_at": null
     },

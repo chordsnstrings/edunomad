@@ -41,3 +41,34 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+// G012 — Web Push: show the notification and focus the app on click.
+self.addEventListener("push", (event) => {
+  let data = { title: "EduNomad", body: "" };
+  try {
+    data = event.data ? event.data.json() : data;
+  } catch {
+    if (event.data) data.body = event.data.text();
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || "EduNomad", {
+      body: data.body || "",
+      icon: "/icon.svg",
+      badge: "/icon.svg",
+      data: { url: data.url || "/" },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || "/";
+  event.waitUntil(
+    self.clients.matchAll({ type: "window" }).then((clients) => {
+      for (const c of clients) {
+        if (c.url.includes(url) && "focus" in c) return c.focus();
+      }
+      return self.clients.openWindow(url);
+    }),
+  );
+});

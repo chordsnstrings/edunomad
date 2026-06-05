@@ -38,8 +38,9 @@ describe("G014 — object storage + signed URLs (local backend)", () => {
   it("verifies valid tokens and rejects tampered/expired ones", () => {
     const exp = Date.now() + 60_000;
     const sig = signStorageToken(KEY, "GET", exp);
+    const tampered = sig.slice(0, -1) + (sig.endsWith("0") ? "1" : "0");
     assert.equal(verifyStorageToken(KEY, "GET", exp, sig), true);
-    assert.equal(verifyStorageToken(KEY, "GET", exp, sig.replace(/.$/, "0")), false);
+    assert.equal(verifyStorageToken(KEY, "GET", exp, tampered), false);
     assert.equal(verifyStorageToken(KEY, "GET", Date.now() - 1000, sig), false); // expired
     assert.equal(verifyStorageToken(KEY, "PUT", exp, sig), false); // wrong method
   });
