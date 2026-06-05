@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Phone } from "lucide-react";
+import { LayoutDashboard, Building2, Phone, BookText } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
   { label: "Overview", href: "/admin", icon: LayoutDashboard },
   { label: "Company settings", href: "/admin/settings", icon: Building2 },
   { label: "Country numbers", href: "/admin/countries", icon: Phone },
+  { label: "SOP CMS", href: "/admin/sop", icon: BookText },
 ];
 
 export function AdminNav({ orientation = "vertical" }: { orientation?: "vertical" | "horizontal" }) {

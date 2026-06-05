@@ -355,6 +355,47 @@ enum SopStatus {
   locked
 }
 
+/// W6 — SOP CMS article (block-typed, versioned, reviewed, published).
+model SopArticle {
+  id                String   @id @default(uuid())
+  title             String
+  slug              String   @unique
+  category          String?
+  ownerUserId       String?
+  reviewerUserId    String?
+  status            String   @default("draft")
+  blocks            Json     @default("[]")
+  version           Int      @default(1)
+  publishedVersion  Int?
+  publishedBlocks   Json?
+  translationStatus Json?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+/// W6 — immutable SOP version snapshot for diff + history.
+model SopArticleVersion {
+  id        String   @id @default(uuid())
+  articleId String
+  version   Int
+  title     String
+  blocks    Json
+  createdAt DateTime @default(now())
+
+  @@index([articleId])
+}
+
+/// W6 — audit of who viewed which SOP version when (G153).
+model SopView {
+  id        String   @id @default(uuid())
+  articleId String
+  version   Int
+  userId    String
+  viewedAt  DateTime @default(now())
+
+  @@index([articleId])
+}
+
 /// W2 — a student's Statement of Purpose (polished via Claude, version-controlled).
 model Sop {
   id              String     @id @default(uuid())
