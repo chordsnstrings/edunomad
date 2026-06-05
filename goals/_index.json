@@ -731,11 +731,11 @@
         "G043"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G044-shortlist-counsellor-co-edit-view.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:36:41.629Z",
+      "completed_at": "2026-06-05T15:36:41.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },

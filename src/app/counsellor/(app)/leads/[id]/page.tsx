@@ -53,6 +53,9 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
               <Link href={`/counsellor/leads/${id}/book`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle">
                 Book call
               </Link>
+              <Link href={`/counsellor/leads/${id}/shortlist`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle">
+                Shortlist
+              </Link>
             </div>
           </section>
 
