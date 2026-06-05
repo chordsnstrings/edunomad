@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DATABASE_URL: postgresql://edunomad:edunomad@localhost:5432/edunomad
+  AUTH_SECRET: ci-insecure-secret-not-for-prod
+
+jobs:
+  build-test:
+    name: Lint · Type-check · Test · Build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: edunomad
+          POSTGRES_PASSWORD: edunomad
+          POSTGRES_DB: edunomad
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U edunomad"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Prepare database
+        run: |
+          npx prisma db push --skip-generate
+          node prisma/harden.mjs
+          npm run db:seed
+      - name: Lint
+        run: npm run lint
+      - name: Type-check
+        run: npx tsc --noEmit -p tsconfig.json
+      - name: Test
+        run: npm test
+      - name: Build
+        run: NODE_ENV=production npm run build
+
+  lighthouse:
+    name: Lighthouse PWA + budgets
+    runs-on: ubuntu-latest
+    needs: build-test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: edunomad
+          POSTGRES_PASSWORD: edunomad
+          POSTGRES_DB: edunomad
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U edunomad"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx prisma db push --skip-generate && node prisma/harden.mjs && npm run db:seed
+      - run: NODE_ENV=production npm run build
+      - name: Run Lighthouse CI (PWA ≥ 90, budgets)
+        run: npm run lighthouse
+
+  e2e:
+    name: End-to-end (Playwright)
+    runs-on: ubuntu-latest
+    needs: build-test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: edunomad
+          POSTGRES_PASSWORD: edunomad
+          POSTGRES_DB: edunomad
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U edunomad"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx prisma db push --skip-generate && node prisma/harden.mjs && npm run db:seed
+      - run: NODE_ENV=production npm run build
+      - name: Run E2E suite
+        run: npm run test:e2e
+
+  secret-scan:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Scan repo for committed secrets
+        run: bash scripts/check-secrets.sh

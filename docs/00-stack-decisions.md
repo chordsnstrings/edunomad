@@ -88,7 +88,43 @@ so it works in server components, route handlers and tests alike without
 routing changes. EN is generated from the microcopy doc; BN/HI/NE fall back.
 **Consequences:** `src/i18n/*`; locale via cookie/Accept-Language.
 
----
+## 2026-06-05 — Observability (logging, errors, uptime)
 
-Remaining picks (queue/jobs, push, payments, hosting, analytics provider) to be
-recorded as those goals are tackled.
+**Choice:** Dependency-light structured logger (`src/lib/log.ts`, JSON lines)
++ Sentry for error monitoring (via `src/lib/monitoring.ts` + Next
+`instrumentation.ts`), behind a provider-agnostic capture layer. Health at
+`GET /api/health`; an external uptime monitor pings it every minute.
+**Alternatives considered:** pino/winston (logging); Datadog/Rollbar (errors).
+**Rationale:** The bespoke logger guarantees PII redaction at INFO and "never
+log document binary" (CLAUDE.md §11) without a heavyweight dependency, and emits
+JSON that any aggregator ingests. Sentry gives managed grouping + alert routing;
+the abstraction keeps it swappable and makes it a no-op without `SENTRY_DSN`.
+**Consequences:** Errors flow with stack traces + non-PII context; severity
+drives on-call routing. `LOG_LEVEL` per env; DEBUG off in prod.
+
+## 2026-06-05 — Analytics
+
+**Choice:** Plausible by default (cookieless, no PII, no consent banner);
+PostHog/GA4 selectable via `ANALYTICS_PROVIDER`. Funnels are driven off the
+event catalog (`src/lib/analytics.ts`, hooked into `emit()`).
+**Alternatives considered:** GA4-only, Segment, Amplitude.
+**Rationale:** Privacy-respecting by default suits a cross-border student base;
+deriving funnels from the source-of-truth event stream keeps product analytics
+consistent with the audit log. No-op without a provider key.
+**Consequences:** Signup→visa funnel tied to catalog events; PII stripped before
+egress; consent only required if a cookie-based provider is selected.
+
+## 2026-06-05 — Hosting, CI/CD & E2E
+
+**Choice:** GitHub Actions for CI/CD; GitHub Environments for env-specific
+secrets and a protected production-promote gate; host-agnostic deploy hook
+(`scripts/deploy.sh`, `DEPLOY_CMD`). Playwright for E2E (mobile-first project) +
+`@axe-core/playwright` for accessibility; Lighthouse CI for PWA/perf budgets.
+**Alternatives considered:** CircleCI/GitLab CI; Cypress; vendor-locked deploy.
+**Rationale:** Actions is already adjacent to the repo and integrates Environments
+(approval + per-env secrets) cleanly. Playwright runs the mobile viewport, drives
+real OTP auth, and hosts the axe checks in one runner. Host-agnostic deploy keeps
+us portable across Vercel/Fly/containers.
+**Consequences:** `.github/workflows/{ci,deploy,backup}.yml`; migrations via
+`scripts/migrate.sh` with snapshot rollback; secrets validated by
+`scripts/check-secrets.sh`.

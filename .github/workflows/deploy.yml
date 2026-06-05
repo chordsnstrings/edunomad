@@ -1,0 +1,57 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        type: choice
+        options: [staging, production]
+        default: staging
+
+# Secrets come from GitHub Environments (env-specific): each environment holds
+# DATABASE_URL, AUTH_SECRET, S3 creds, SENTRY_DSN, WhatsApp/Twilio keys, etc.
+# Production is a PROTECTED environment requiring a manual approval (reviewer)
+# before this workflow's `deploy-production` job runs — that is the "manual
+# promote" gate (G180 AC3). See docs/cc/deployment.md.
+
+jobs:
+  deploy-staging:
+    name: Auto-deploy → staging
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - name: Run migrations (safe, with rollback on failure)
+        run: bash scripts/migrate.sh
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Build
+        run: NODE_ENV=production npm run build
+      - name: Deploy
+        run: bash scripts/deploy.sh staging
+
+  deploy-production:
+    name: Manual promote → production
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    environment: production # protected → requires reviewer approval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - name: Run migrations (safe, with rollback on failure)
+        run: bash scripts/migrate.sh
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Build
+        run: NODE_ENV=production npm run build
+      - name: Deploy
+        run: bash scripts/deploy.sh production
