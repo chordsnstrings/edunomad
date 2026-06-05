@@ -683,11 +683,11 @@
         "G040"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G041-document-upload---mobile-camera-+-auto-crop.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:44:52.166Z",
+      "completed_at": "2026-06-05T15:44:52.166Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -699,11 +699,11 @@
         "G041"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G042-automatic-doc-first-pass-check---legibility-+-name-ocr.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:44:52.166Z",
+      "completed_at": "2026-06-05T15:44:52.166Z",
       "blocker_reason": null,
       "blocked_at": null
     },
