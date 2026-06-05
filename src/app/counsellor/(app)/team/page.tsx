@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { AutoRefresh } from "@/components/counsellor/AutoRefresh";
 
 export const metadata: Metadata = { title: "Team", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -41,6 +42,7 @@ export default async function TeamPage() {
 
   return (
     <div>
+      <AutoRefresh />
       <h1 className="mb-4 text-xl font-semibold text-navy">Team</h1>
       {rows.length === 0 ? (
         <EmptyState title="No counsellors yet" body="Counsellors you manage will appear here with live pipeline metrics." />

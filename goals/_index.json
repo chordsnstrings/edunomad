@@ -1877,11 +1877,11 @@
         "G050"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G115-cm-dashboard---yesterdays-standup-screen.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:50:29.360Z",
+      "completed_at": "2026-06-05T19:50:29.360Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1941,11 +1941,11 @@
         "G110"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G119-cm-escalation-queue-with-sla-timers-per-type.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:50:29.360Z",
+      "completed_at": "2026-06-05T19:50:29.360Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2003,11 +2003,11 @@
         "G115"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G123-cm-team-heatmap---real-time-updates.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:50:29.360Z",
+      "completed_at": "2026-06-05T19:50:29.360Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2019,11 +2019,11 @@
         "G118"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G124-cm-per-counsellor-scorecard.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:50:29.360Z",
+      "completed_at": "2026-06-05T19:50:29.360Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -2125,11 +2125,11 @@
         "G124"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G131-counsellor-side-my-stats-screen.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:50:29.360Z",
+      "completed_at": "2026-06-05T19:50:29.360Z",
       "blocker_reason": null,
       "blocked_at": null
     },

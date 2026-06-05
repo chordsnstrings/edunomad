@@ -16,12 +16,19 @@ export default async function CounsellorLayout({ children }: { children: React.R
             <span className="rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-muted">
               {session.role === "counsellor_manager" ? "Manager" : "Counsellor"}
             </span>
-            {session.role === "counsellor_manager" && (
-              <nav className="ml-2 flex gap-1 text-sm font-medium">
-                <Link href="/counsellor" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Inbox</Link>
-                <Link href="/counsellor/team" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Team</Link>
-              </nav>
-            )}
+            <nav className="ml-2 flex flex-wrap gap-1 text-sm font-medium">
+              <Link href="/counsellor" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Inbox</Link>
+              <Link href="/counsellor/my-stats" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">My stats</Link>
+              {session.role === "counsellor_manager" && (
+                <>
+                  <Link href="/counsellor/team" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Team</Link>
+                  <Link href="/counsellor/standup" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Standup</Link>
+                  <Link href="/counsellor/escalations" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Escalations</Link>
+                  <Link href="/counsellor/refunds" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Refunds</Link>
+                  <Link href="/counsellor/qa" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">QA</Link>
+                </>
+              )}
+            </nav>
           </div>
           <form action={staffLogoutAction}>
             <button className="inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm text-ink/80 hover:bg-subtle">
