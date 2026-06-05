@@ -14,6 +14,9 @@
 /coverage
 /.test-build
 
+# local object-storage backend (dev)
+/.storage
+
 # next.js
 /.next/
 /out/

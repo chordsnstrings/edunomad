@@ -66,7 +66,29 @@ JS (no native build). Zod validates every Server Action input server-side.
 deliberate stand-in to be replaced by the spec's OTP/RBAC system; RBAC is still
 enforced server-side on every action (deny by default).
 
+## 2026-06-05 — Object storage
+
+**Choice:** S3-compatible storage via `@aws-sdk/client-s3` +
+`@aws-sdk/s3-request-presigner`, with a local filesystem backend for dev.
+**Alternatives considered:** UploadThing, direct fetch + manual SigV4.
+**Rationale:** One API works across AWS S3 / Cloudflare R2 / DigitalOcean
+Spaces / MinIO — chosen by `STORAGE_*` env. Signed download URLs default to a
+15-minute expiry; large files upload via presigned PUT. Document binary is
+never logged. The local backend (HMAC-signed `/api/storage` route) keeps dev
+self-contained without cloud credentials.
+**Consequences:** `src/lib/storage.ts` is the single entry point; the AWS SDK is
+dynamically imported only when S3 is configured (keeps the dev path light).
+
+## 2026-06-05 — i18n & ICU
+
+**Choice:** `intl-messageformat` (FormatJS) with TS message catalogs per locale.
+**Alternatives considered:** next-intl, react-intl, Lingui.
+**Rationale:** Minimal footprint, full ICU (plurals/select), framework-agnostic
+so it works in server components, route handlers and tests alike without
+routing changes. EN is generated from the microcopy doc; BN/HI/NE fall back.
+**Consequences:** `src/i18n/*`; locale via cookie/Accept-Language.
+
 ---
 
-Remaining picks (queue/jobs, object storage, push, payments, i18n library,
-hosting, analytics provider) to be recorded as those goals are tackled.
+Remaining picks (queue/jobs, push, payments, hosting, analytics provider) to be
+recorded as those goals are tackled.

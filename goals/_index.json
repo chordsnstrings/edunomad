@@ -240,11 +240,11 @@
         "G001"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G014-object-storage-+-signed-urls-for-documents.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:44:22.931Z",
+      "completed_at": "2026-06-05T13:44:22.931Z",
       "blocker_reason": null,
       "blocked_at": null
     },
