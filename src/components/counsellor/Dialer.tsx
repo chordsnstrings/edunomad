@@ -54,7 +54,7 @@ export function Dialer({ studentId, phone, studentName }: { studentId: string; p
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ studentId, transcript, notes, outcomeTag: outcome, durationSec: seconds }),
     });
-    router.push(`/counsellor/leads/${studentId}`);
+    router.push(`/counsellor/leads/${studentId}/summary`);
   }
 
   const mmss = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;

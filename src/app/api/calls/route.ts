@@ -50,5 +50,12 @@ export async function POST(req: NextRequest) {
     channels: { in_app: true },
     payload: { outcomeTag, durationSec: durationSec ?? 0 },
   });
+
+  // Outcome nudges the lead score (clamped 0–100).
+  const delta = outcomeTag === "hot" ? 10 : outcomeTag === "qualified" ? 5 : outcomeTag === "cold" ? -5 : 0;
+  if (delta) {
+    const next = Math.max(0, Math.min(100, (student.leadScore ?? 0) + delta));
+    await prisma.student.update({ where: { id: studentId }, data: { leadScore: next } });
+  }
   return Response.json({ ok: true });
 }

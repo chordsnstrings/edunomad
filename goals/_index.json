@@ -812,11 +812,11 @@
         "G033"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G049-counsellor-outcome-tagging-+-whatsapp-summary-template.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:46:38.749Z",
+      "completed_at": "2026-06-05T15:46:38.749Z",
       "blocker_reason": null,
       "blocked_at": null
     },
