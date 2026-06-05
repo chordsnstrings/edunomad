@@ -1040,11 +1040,11 @@
         "G059"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G063-inbound-email-parser---reference_id-matching.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:03:05.192Z",
+      "completed_at": "2026-06-05T16:03:05.192Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1056,11 +1056,11 @@
         "G063"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G064-operations-new-replies-inbox-with-manual-classification.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:03:05.192Z",
+      "completed_at": "2026-06-05T16:03:05.192Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1072,11 +1072,11 @@
         "G064"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G065-application-status-events-emit-+-downstream-notifications.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:03:05.192Z",
+      "completed_at": "2026-06-05T16:03:05.192Z",
       "blocker_reason": null,
       "blocked_at": null
     },

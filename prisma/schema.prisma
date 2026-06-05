@@ -385,6 +385,21 @@ enum ShortlistStatus {
   withdrawn
 }
 
+/// W2 — an inbound university email, matched to an application by reference_id.
+model InboundEmail {
+  id             String   @id @default(uuid())
+  fromAddress    String
+  subject        String
+  body           String
+  referenceId    String?
+  applicationId  String?
+  classified     Boolean  @default(false)
+  classification String?
+  receivedAt     DateTime @default(now())
+
+  @@index([classified])
+}
+
 enum SubmissionStatus {
   not_submitted
   packaged
