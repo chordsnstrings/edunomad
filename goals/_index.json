@@ -1732,11 +1732,11 @@
         "G013"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G106-parent-daily-whatsapp-digest-at-1800-local.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:47:37.991Z",
+      "completed_at": "2026-06-05T19:47:37.991Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1781,11 +1781,11 @@
         "G103"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G109-parent-counsellor-chat-with-auto-translation.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:47:37.991Z",
+      "completed_at": "2026-06-05T19:47:37.991Z",
       "blocker_reason": null,
       "blocked_at": null
     },
