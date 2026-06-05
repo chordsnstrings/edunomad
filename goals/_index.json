@@ -845,11 +845,11 @@
         "G006"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G051-operations-work-queue---locked-shortlists-arrive.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:50:18.651Z",
+      "completed_at": "2026-06-05T15:50:18.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -861,11 +861,11 @@
         "G051"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G052-per-case-view---pre-packaging-audit.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:50:18.651Z",
+      "completed_at": "2026-06-05T15:50:18.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },

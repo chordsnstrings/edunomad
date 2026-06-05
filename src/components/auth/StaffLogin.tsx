@@ -6,7 +6,7 @@ import { ShieldCheck } from "lucide-react";
 import { isValidPhone } from "@/components/ui/PhoneInput";
 
 /** OTP login for internal staff (existing users only — no provisioning). */
-export function StaffLogin({ redirectTo = "/counsellor" }: { redirectTo?: string }) {
+export function StaffLogin({ redirectTo = "/counsellor", title = "Counsellor sign in" }: { redirectTo?: string; title?: string }) {
   const router = useRouter();
   const [phase, setPhase] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState("");
@@ -49,7 +49,7 @@ export function StaffLogin({ redirectTo = "/counsellor" }: { redirectTo?: string
         <span className="grid h-12 w-12 place-items-center rounded-full bg-navy text-gold-400">
           <ShieldCheck className="h-6 w-6" />
         </span>
-        <h1 className="mt-3 text-lg font-semibold text-navy">Counsellor sign in</h1>
+        <h1 className="mt-3 text-lg font-semibold text-navy">{title}</h1>
         <p className="mt-1 text-sm text-muted">{phase === "phone" ? "Sign in with your work number." : `Code sent to ${phone}.`}</p>
       </div>
       {phase === "phone" ? (
