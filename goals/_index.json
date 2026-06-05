@@ -307,11 +307,11 @@
         "G006"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G018-activity-feed-query-+-visibility-filtering.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:49:17.574Z",
+      "completed_at": "2026-06-05T13:49:17.574Z",
       "blocker_reason": null,
       "blocked_at": null
     },
