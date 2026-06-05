@@ -2857,11 +2857,11 @@
         "G001"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G177-error-monitoring-+-alerting-sentry-or-chosen.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:37:03.014Z",
+      "completed_at": "2026-06-05T20:37:03.014Z",
       "blocker_reason": null,
       "blocked_at": null
     },
