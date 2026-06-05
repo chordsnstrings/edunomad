@@ -553,6 +553,27 @@ model InstitutionCredential {
   updatedAt     DateTime @updatedAt
 }
 
+enum ParentInviteStatus {
+  sent
+  accepted
+  expired
+}
+
+/// W4 — invitation linking a parent/sponsor to a student.
+model ParentInvite {
+  id           String             @id @default(uuid())
+  studentId    String
+  parentPhone  String
+  pinHash      String
+  status       ParentInviteStatus @default(sent)
+  parentUserId String?
+  sentAt       DateTime           @default(now())
+  acceptedAt   DateTime?
+
+  @@index([studentId])
+  @@index([parentUserId])
+}
+
 enum CommType {
   call
   message

@@ -80,6 +80,9 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
           Offers
         </Link>
       </div>
+      <Link href="/app/parent" className="mt-3 block rounded-xl border border-line bg-white p-4 text-center text-sm font-semibold text-navy hover:border-navy">
+        Invite a parent / sponsor
+      </Link>
     </div>
   );
 }

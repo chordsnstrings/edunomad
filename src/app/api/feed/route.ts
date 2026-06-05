@@ -4,6 +4,7 @@ import { getCurrentSession } from "@/lib/current-user";
 import { getSession } from "@/lib/auth";
 import { detectLocale } from "@/i18n/locale";
 import { getActivityFeed, roleToVisibilityCode } from "@/lib/feed";
+import { getParentStudent } from "@/lib/parent";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,9 @@ export async function GET(req: NextRequest) {
       roleShort = "S";
       const st = await prisma.student.findFirst({ where: { userId: user.userId }, select: { id: true } });
       studentId = st?.id;
+    } else if (user.role === "parent") {
+      roleShort = "P";
+      studentId = (await getParentStudent(user.userId))?.id;
     } else {
       roleShort = roleToVisibilityCode(user.role) ?? "C";
     }

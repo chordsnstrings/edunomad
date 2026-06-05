@@ -1649,11 +1649,11 @@
         "G013"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G101-parent-invite-send-from-student.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:40:23.651Z",
+      "completed_at": "2026-06-05T19:40:23.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1665,11 +1665,11 @@
         "G101"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G102-parent-invite-accept-flow---pin-+-otp.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:40:23.651Z",
+      "completed_at": "2026-06-05T19:40:23.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1682,11 +1682,11 @@
         "G046"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G103-parent-dashboard---single-student-view.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:40:23.651Z",
+      "completed_at": "2026-06-05T19:40:23.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1699,11 +1699,11 @@
         "G018"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G104-parent-activity-feed---parent-visible-events-only.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:40:23.651Z",
+      "completed_at": "2026-06-05T19:40:23.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
