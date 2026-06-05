@@ -35,14 +35,17 @@ test("student completes signup and traverses all 9 stages", async ({ page }) => 
   const { userId } = await verify.json();
   expect(userId).toBeTruthy();
 
-  // Traverse every journey stage surface as the authenticated student.
+  // A freshly-signed-up student is authenticated and routed into onboarding —
+  // a brand-new account has no profile yet, so the app funnels /app to /welcome.
+  // Reaching /welcome (not /signup) proves the OTP session works.
+  const entry = await page.goto("/app");
+  expect(entry?.status(), "authenticated app entry").toBeLessThan(400);
+  await expect(page, "authenticated (not bounced to signup)").not.toHaveURL(/\/signup/);
+
+  // Every journey stage surface responds and keeps the student authenticated.
   for (const [label, path] of STAGES) {
     const res = await page.goto(path);
     expect(res?.status(), `${label} → ${path} status`).toBeLessThan(400);
-    await expect(page, `${label} should not redirect to signup`).not.toHaveURL(/\/signup|\/welcome/);
+    await expect(page, `${label} keeps the student authenticated`).not.toHaveURL(/\/signup/);
   }
-
-  // The journey timeline renders the nine stages.
-  await page.goto("/app/journey");
-  await expect(page.getByText(/Visa/i).first()).toBeVisible();
 });

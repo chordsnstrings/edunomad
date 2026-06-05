@@ -33,7 +33,7 @@ export function ContactSection({
             </p>
           )}
 
-          <dl className="mt-8 space-y-5">
+          <div className="mt-8 space-y-5">
             <ContactRow icon={<Mail className="h-5 w-5" />} label="Email">
               <a
                 href={`mailto:${settings.email}`}
@@ -56,7 +56,7 @@ export function ContactSection({
                 <span className="text-ink">{settings.businessHours}</span>
               </ContactRow>
             )}
-          </dl>
+          </div>
         </div>
 
         {/* Big tappable contact card with the resolved per-country numbers */}
@@ -122,10 +122,10 @@ function ContactRow({
         {icon}
       </span>
       <div>
-        <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted">
           {label}
-        </dt>
-        <dd className="mt-0.5">{children}</dd>
+        </p>
+        <div className="mt-0.5">{children}</div>
       </div>
     </div>
   );

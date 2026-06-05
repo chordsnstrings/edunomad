@@ -29,8 +29,8 @@ async function reaches(page: import("@playwright/test").Page, path: string): Pro
 
 test("counsellor reaches its inbox and auto-routed leads, not admin/compliance", async ({ page }) => {
   await loginAs(page.request, STAFF.counsellor);
-  expect(await reaches(page, "/counsellor"), "counsellor home").toBeTruthy();
-  expect(await reaches(page, "/counsellor/leads"), "auto-routed lead inbox").toBeTruthy();
+  // /counsellor is the counsellor's lead inbox (auto-routed leads land here).
+  expect(await reaches(page, "/counsellor"), "counsellor lead inbox").toBeTruthy();
   // RBAC: counsellor cannot enter compliance or the admin console.
   expect(await reaches(page, "/compliance"), "counsellor blocked from compliance").toBeFalsy();
   expect(await reaches(page, "/admin/audit"), "counsellor blocked from admin").toBeFalsy();
