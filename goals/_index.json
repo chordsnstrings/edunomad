@@ -1249,11 +1249,11 @@
         "G075"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G076-photo-cropper-for-visa-photos-with-per-destination-spec.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:36:18.629Z",
+      "completed_at": "2026-06-05T19:36:18.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1265,11 +1265,11 @@
         "G075"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G077-sponsor-declaration-template-+-form-fill.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:36:18.629Z",
+      "completed_at": "2026-06-05T19:36:18.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1281,11 +1281,11 @@
         "G075"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G078-gic-certificate-upload-+-name-amount-validation.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:36:18.629Z",
+      "completed_at": "2026-06-05T19:36:18.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1584,11 +1584,11 @@
         "G083"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G097-visa-file-dossier-export---regulator-ready-pdf.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:36:18.629Z",
+      "completed_at": "2026-06-05T19:36:18.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1600,11 +1600,11 @@
         "G029"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G098-counsellor-manager-override-of-routing.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:36:18.629Z",
+      "completed_at": "2026-06-05T19:36:18.629Z",
       "blocker_reason": null,
       "blocked_at": null
     },

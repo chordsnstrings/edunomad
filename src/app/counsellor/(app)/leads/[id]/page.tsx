@@ -8,6 +8,7 @@ import { renderEventTemplate } from "@/lib/event-templates";
 import { leadScoreBreakdown } from "@/lib/leadscore";
 import { matchSnippets } from "@/lib/sop-snippets";
 import { NotesEditor } from "@/components/counsellor/NotesEditor";
+import { reassignAction } from "./lead-actions";
 
 export const metadata: Metadata = { title: "Lead", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -26,6 +27,7 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
   const breakdown = leadScoreBreakdown(student as Parameters<typeof leadScoreBreakdown>[0]);
   const snippets = matchSnippets(student as Parameters<typeof matchSnippets>[0]);
   const dests = (student.destinations as string[] | null) ?? [];
+  const counsellors = session.role === "counsellor_manager" ? await prisma.counsellorProfile.findMany({ where: { active: true } }) : [];
 
   return (
     <div>
@@ -78,6 +80,19 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
               ))}
             </ul>
           </section>
+
+          {counsellors.length > 0 && (
+            <section className="rounded-2xl border border-line bg-white p-5">
+              <h2 className="mb-2 text-sm font-semibold text-navy">Reassign counsellor</h2>
+              <form action={reassignAction} className="flex gap-2">
+                <input type="hidden" name="studentId" value={id} />
+                <select name="counsellorUserId" defaultValue={student.assignedCounsellorId ?? ""} className="flex-1 rounded-lg border border-line px-3 py-2 text-sm">
+                  {counsellors.map((c) => <option key={c.userId} value={c.userId}>{c.fullName}</option>)}
+                </select>
+                <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Reassign</button>
+              </form>
+            </section>
+          )}
 
           <section className="rounded-2xl border border-line bg-white p-5">
             <NotesEditor studentId={id} initial={note?.body ?? ""} />

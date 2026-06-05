@@ -45,7 +45,11 @@ export default async function DocumentsPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">
-      <h1 className="mb-4 text-xl font-semibold text-navy">Documents</h1>
+      <h1 className="mb-3 text-xl font-semibold text-navy">Documents</h1>
+      <div className="mb-4 flex gap-2">
+        <Link href="/app/documents/photo" className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-navy hover:bg-subtle">Visa photo tool</Link>
+        <Link href="/app/documents/sponsor" className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-navy hover:bg-subtle">Sponsor declaration</Link>
+      </div>
       <div className="space-y-6">
         {stages.map((stage) => (
           <section key={stage}>

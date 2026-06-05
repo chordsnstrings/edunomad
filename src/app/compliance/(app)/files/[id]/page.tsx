@@ -30,7 +30,10 @@ export default async function FileView({ params, searchParams }: { params: Promi
       <Link href="/compliance" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-navy"><ArrowLeft className="h-4 w-4" /> Queue</Link>
       <h1 className="mt-3 text-xl font-semibold text-navy">Visa file — {vf.destinationCountry}</h1>
       <p className="text-sm text-muted">{student?.fullName ?? student?.phone} · {vf.completenessPct}% complete</p>
-      <Link href={`/compliance/files/${id}/audit`} className="mt-1 inline-block text-sm text-navy underline">View file audit log →</Link>
+      <div className="mt-1 flex gap-3">
+        <Link href={`/compliance/files/${id}/audit`} className="text-sm text-navy underline">File audit log →</Link>
+        <a href={`/api/visa/${id}/dossier`} target="_blank" rel="noreferrer" className="text-sm text-navy underline">Export dossier →</a>
+      </div>
 
       {sp.signed && <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">Signed off and stamped.</p>}
       {sp.reauth === "failed" && <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">Re-authentication failed. Request a new code and try again.</p>}

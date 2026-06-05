@@ -14,11 +14,12 @@ export async function POST(req: NextRequest) {
   const student = await getMyStudent(session.userId);
   if (!student) return Response.json({ error: "no_student" }, { status: 404 });
 
-  const { documentType, storageKey, mimeType, sizeBytes } = (await req.json().catch(() => ({}))) as {
+  const { documentType, storageKey, mimeType, sizeBytes, amountCad } = (await req.json().catch(() => ({}))) as {
     documentType?: string;
     storageKey?: string;
     mimeType?: string;
     sizeBytes?: number;
+    amountCad?: number;
   };
   if (!documentType || !storageKey) return Response.json({ error: "missing" }, { status: 400 });
 
@@ -30,6 +31,16 @@ export async function POST(req: NextRequest) {
   }
   const prev = latest?.version ?? 0;
   const qa = runDocQa({ fullName: student.fullName }, sizeBytes ?? 0);
+
+  // G078 — GIC certificate: validate name (via runDocQa) + amount threshold.
+  let gicFlagged = false;
+  if (documentType === "gic_certificate") {
+    const GIC_THRESHOLD_CAD = 22895;
+    const amt = Number(amountCad ?? 0);
+    const amountOk = amt >= GIC_THRESHOLD_CAD;
+    (qa.results as Record<string, unknown>).gic = { amount_at_or_above_threshold: { pass: amountOk, amount: amt, threshold: GIC_THRESHOLD_CAD } };
+    gicFlagged = !amountOk;
+  }
 
   const doc = await prisma.document.create({
     data: {
@@ -53,7 +64,7 @@ export async function POST(req: NextRequest) {
     actorId: session.userId,
     visibility: { S: true, C: true, O: true },
     channels: { in_app: true },
-    payload: { documentType, version: doc.version, flagged: qa.flagged },
+    payload: { documentType, version: doc.version, flagged: qa.flagged || gicFlagged },
   });
   return Response.json({ ok: true, flagged: qa.flagged });
 }

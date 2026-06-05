@@ -13,6 +13,8 @@ export function DocumentUpload({ documentType }: { documentType: string }) {
   const [progress, setProgress] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [amount, setAmount] = useState("");
+  const isGic = documentType === "gic_certificate";
 
   function pick(f: File | undefined) {
     if (!f) return;
@@ -47,7 +49,7 @@ export function DocumentUpload({ documentType }: { documentType: string }) {
       await fetch("/api/documents/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ documentType, storageKey: presign.storageKey, mimeType: file.type, sizeBytes: file.size }),
+        body: JSON.stringify({ documentType, storageKey: presign.storageKey, mimeType: file.type, sizeBytes: file.size, ...(isGic ? { amountCad: Number(amount) || 0 } : {}) }),
       });
       router.push("/app/documents");
     } catch {
@@ -87,6 +89,9 @@ export function DocumentUpload({ documentType }: { documentType: string }) {
             <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-subtle">
               <div className="h-full rounded-full bg-gold-500 transition-all" style={{ width: `${progress}%` }} />
             </div>
+          )}
+          {isGic && (
+            <input value={amount} onChange={(e) => setAmount(e.target.value)} inputMode="numeric" placeholder="GIC amount (CAD)" className="mt-3 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy" />
           )}
           <button onClick={upload} disabled={busy} className="mt-4 w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">
             {busy ? `Uploading… ${progress}%` : "Upload"}
