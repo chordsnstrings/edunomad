@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent, computeCompleteness } from "@/lib/student";
+import { computeLeadScore } from "@/lib/leadscore";
 import { emit } from "@/lib/events";
 import { assignCounsellor } from "@/lib/routing";
 
@@ -15,7 +16,8 @@ export async function submitProfileAction() {
   if (!student) redirect("/welcome");
 
   const completenessPct = computeCompleteness(student as unknown as Record<string, unknown>);
-  await prisma.student.update({ where: { id: student.id }, data: { completenessPct } });
+  const leadScore = computeLeadScore({ ...(student as object), completenessPct } as Parameters<typeof computeLeadScore>[0]);
+  await prisma.student.update({ where: { id: student.id }, data: { completenessPct, leadScore } });
   await emit({
     type: "profile.completed",
     stage: 1,

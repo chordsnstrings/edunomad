@@ -795,11 +795,11 @@
         "G026"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G048-lead-score-computation-+-display.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:29:45.775Z",
+      "completed_at": "2026-06-05T15:29:45.775Z",
       "blocker_reason": null,
       "blocked_at": null
     },

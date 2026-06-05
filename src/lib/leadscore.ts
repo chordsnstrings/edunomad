@@ -1,29 +1,44 @@
 export type StudentForScore = {
   completenessPct?: number | null;
-  academic?: { scoreType?: string; score?: number | null } | null;
   englishProficiency?: { type?: string } | null;
   budgetMaxUsd?: number | null;
   destinations?: string[] | null;
+  intakeTarget?: { choice?: string } | null;
+  sourceAttribution?: Record<string, unknown> | null;
 };
 
 export type ScoreFactor = { factor: string; points: number; max: number };
 
-function academicPct(a?: { scoreType?: string; score?: number | null } | null): number | null {
-  if (!a || a.score == null) return null;
-  return a.scoreType === "gpa" ? Number(a.score) * 10 : Number(a.score);
-}
-
-/** Transparent lead-score breakdown (max 100). */
+// G048 weights: completeness 30, English 15, budget realism 20,
+// destination clarity 10, intake urgency 10, source quality 15.
 export function leadScoreBreakdown(s: StudentForScore): ScoreFactor[] {
-  const pct = academicPct(s.academic);
   const eng = s.englishProficiency?.type;
-  const engPoints = eng === "in_hand" ? 20 : eng === "moi" ? 14 : eng === "planning" ? 10 : eng === "none" ? 4 : 0;
+  const english = eng === "in_hand" ? 15 : eng === "moi" ? 12 : eng === "planning" ? 8 : eng === "none" ? 3 : 0;
+
+  const max = s.budgetMaxUsd ?? 0;
+  const budget = max >= 10000 ? 20 : max > 0 ? 12 : 0;
+
+  const dests = s.destinations?.length ?? 0;
+  const destination = dests >= 1 ? 10 : 0;
+
+  const choice = s.intakeTarget?.choice;
+  const intake = choice === "specific" ? 10 : choice === "next_viable" ? 7 : choice === "undecided" ? 3 : 0;
+
+  const attr = s.sourceAttribution ?? {};
+  const source =
+    attr["referral_code"] || attr["fair_qr_token"]
+      ? 15
+      : attr["utm_source"] || attr["utm_campaign"]
+        ? 10
+        : 7;
+
   return [
     { factor: "Profile completeness", points: Math.round(((s.completenessPct ?? 0) / 100) * 30), max: 30 },
-    { factor: "Academic strength", points: pct == null ? 0 : Math.max(0, Math.min(25, Math.round((pct - 40) / 2.4))), max: 25 },
-    { factor: "English readiness", points: engPoints, max: 20 },
-    { factor: "Budget clarity", points: s.budgetMaxUsd ? (s.budgetMaxUsd >= 15000 ? 15 : 8) : 0, max: 15 },
-    { factor: "Destinations set", points: (s.destinations?.length ?? 0) > 0 ? 10 : 0, max: 10 },
+    { factor: "English readiness", points: english, max: 15 },
+    { factor: "Budget realism", points: budget, max: 20 },
+    { factor: "Destination clarity", points: destination, max: 10 },
+    { factor: "Intake urgency", points: intake, max: 10 },
+    { factor: "Source quality", points: source, max: 15 },
   ];
 }
 
