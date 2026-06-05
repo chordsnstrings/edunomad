@@ -340,11 +340,11 @@
         "G019"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G020-student-signup---phone-otp-+-welcome.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:00:37.834Z",
+      "completed_at": "2026-06-05T15:00:37.834Z",
       "blocker_reason": null,
       "blocked_at": null
     },

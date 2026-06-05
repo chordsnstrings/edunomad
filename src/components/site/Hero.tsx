@@ -39,7 +39,7 @@ export function Hero({
 
           <div className="mt-8 flex flex-col gap-3 xs:flex-row">
             <Link
-              href="#contact"
+              href="/signup"
               className={buttonClasses("gold", "lg", "w-full xs:w-auto")}
             >
               Get started <ArrowRight className="h-4 w-4" />
