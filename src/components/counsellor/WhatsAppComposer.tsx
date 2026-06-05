@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Send } from "lucide-react";
+import { Send, AlertTriangle, X } from "lucide-react";
+import { checkGuards } from "@/lib/compliance";
+import type { ComplianceGuard } from "@/lib/reference/scripts";
 
 type Tpl = { id: string; body: string; variables: number; approvedInLang: boolean };
 
@@ -35,7 +37,18 @@ export function WhatsAppComposer({
     setVars(initVars(templates.find((t) => t.id === nextId), defaults));
   }
 
-  async function send() {
+  const [guard, setGuard] = useState<ComplianceGuard | null>(null);
+
+  function send() {
+    const g = checkGuards(render(tpl?.body ?? "", vars));
+    if (g) {
+      setGuard(g); // compliance guard tripped on send-button click
+      return;
+    }
+    void doSend();
+  }
+
+  async function doSend() {
     setBusy(true);
     try {
       const res = await fetch("/api/whatsapp/send", {
@@ -50,6 +63,17 @@ export function WhatsAppComposer({
     } finally {
       setBusy(false);
     }
+  }
+
+  async function override() {
+    if (!guard) return;
+    await fetch("/api/compliance/flag", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ studentId, guardId: guard.id, message: render(tpl?.body ?? "", vars) }),
+    });
+    setGuard(null);
+    void doSend();
   }
 
   return (
@@ -86,6 +110,27 @@ export function WhatsAppComposer({
       <button type="button" onClick={send} disabled={busy || sent} className="inline-flex items-center gap-2 rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">
         <Send className="h-4 w-4" /> {sent ? "Sent" : busy ? "Sending…" : "Send WhatsApp"}
       </button>
+
+      {guard && (
+        <div className="fixed inset-0 z-[90] grid place-items-center bg-black/40 px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-5">
+            <div className="mb-2 flex items-center gap-2 text-navy">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <h2 className="text-base font-semibold">Compliance check</h2>
+              <button onClick={() => setGuard(null)} className="ml-auto text-muted"><X className="h-4 w-4" /></button>
+            </div>
+            <p className="text-sm leading-relaxed text-ink">{guard.modalText}</p>
+            <div className="mt-4 flex gap-2">
+              <button onClick={() => setGuard(null)} className="flex-1 rounded-lg border border-line py-2 text-sm font-semibold text-navy hover:bg-subtle">
+                Rephrase
+              </button>
+              <button onClick={override} className="flex-1 rounded-lg bg-red-600 py-2 text-sm font-semibold text-white hover:bg-red-700">
+                Continue anyway
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -601,11 +601,11 @@
         "G035"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G036-sop-intro-script-+-10-qualification-questions-panel.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:40:11.551Z",
+      "completed_at": "2026-06-05T15:40:11.551Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -617,11 +617,11 @@
         "G035"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G037-sop-objections-panel---keyword-search-+-insert.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:40:11.551Z",
+      "completed_at": "2026-06-05T15:40:11.551Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -634,11 +634,11 @@
         "G033"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G038-compliance-keyword-guards---real-time-on-counsellor-messages.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:40:11.551Z",
+      "completed_at": "2026-06-05T15:40:11.551Z",
       "blocker_reason": null,
       "blocked_at": null
     },
