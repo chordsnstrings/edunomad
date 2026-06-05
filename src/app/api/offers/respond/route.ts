@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent } from "@/lib/student";
 import { emit } from "@/lib/events";
+import { createVisaFile } from "@/lib/visa";
 
 export const dynamic = "force-dynamic";
 
@@ -30,5 +31,8 @@ export async function POST(req: NextRequest) {
     channels: { in_app: true, push: true },
     payload: {},
   });
+
+  // Accepting an offer opens the visa file (Stage 8).
+  if (decision === "accept") await createVisaFile(applicationId);
   return Response.json({ ok: true });
 }

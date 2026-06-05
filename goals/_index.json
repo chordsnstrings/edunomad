@@ -1200,11 +1200,11 @@
         "G068"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G073-visa-file-auto-creation-trigger.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:20:53.609Z",
+      "completed_at": "2026-06-05T19:20:53.609Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1216,11 +1216,11 @@
         "G014"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G074-forms-repository-in-app---per-regulator-current-versions.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:20:53.609Z",
+      "completed_at": "2026-06-05T19:20:53.609Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1233,11 +1233,11 @@
         "G074"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G075-visa-file-builder---tier-b-pdf-upload-+-completeness-check.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:20:53.609Z",
+      "completed_at": "2026-06-05T19:20:53.609Z",
       "blocker_reason": null,
       "blocked_at": null
     },

@@ -400,6 +400,65 @@ model InboundEmail {
   @@index([classified])
 }
 
+enum VisaDecision {
+  pending
+  approved
+  refused
+  info_requested
+}
+
+/// W3 — the visa application packet. Sole sign-off authority: Compliance (§1.12).
+model VisaFile {
+  id                 String             @id @default(uuid())
+  applicationId      String             @unique
+  studentId          String
+  destinationCountry DestinationCountry
+  checklistState     Json?
+  completenessPct    Int                @default(0)
+  prepStartedAt      DateTime           @default(now())
+  readyForSignoffAt  DateTime?
+  signedOffAt        DateTime?
+  signedOffBy        String?
+  registrationNumber String?
+  versionHash        String?
+  submittedAt        DateTime?
+  submissionProof    Json?
+  decisionStatus     VisaDecision       @default(pending)
+  decisionAt         DateTime?
+  refusalReasons     Json?
+  returnedForChanges Boolean            @default(false)
+  returnReason       String?
+  biometricsDoneAt   DateTime?
+  vfsAppointmentAt   DateTime?
+  passportReturnedAt DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  @@index([studentId])
+}
+
+/// W3 — immutable record of each Compliance sign-off.
+model ComplianceSignOff {
+  id                 String   @id @default(uuid())
+  visaFileId         String
+  complianceUserId   String
+  registrationNumber String
+  versionHash        String
+  createdAt          DateTime @default(now())
+
+  @@index([visaFileId])
+}
+
+/// W3 — RCIC/MARA/OISC registration profile per Compliance user (G099).
+model RcicProfile {
+  id                 String    @id @default(uuid())
+  userId             String    @unique
+  registrationBody   String
+  registrationNumber String
+  validUntil         DateTime?
+  createdAt          DateTime  @default(now())
+}
+
 enum SubmissionStatus {
   not_submitted
   packaged
