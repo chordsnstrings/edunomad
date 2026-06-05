@@ -95,11 +95,11 @@
         "G002"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G005-event-table-+-emit-helper-+-chain-hash.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:27:50.861Z",
+      "completed_at": "2026-06-05T13:27:50.861Z",
       "blocker_reason": null,
       "blocked_at": null
     },
