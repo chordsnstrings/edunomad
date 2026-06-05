@@ -373,11 +373,11 @@
         "G021"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G022-profile-builder-step-2---english-proficiency.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:06:46.492Z",
+      "completed_at": "2026-06-05T15:06:46.492Z",
       "blocker_reason": null,
       "blocked_at": null
     },
