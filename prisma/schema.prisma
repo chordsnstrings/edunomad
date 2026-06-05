@@ -286,6 +286,19 @@ model Programme {
   @@index([fieldCategory])
 }
 
+/// W1 — a counsellor's working notes on a student (one editable note per author).
+model Note {
+  id           String   @id @default(uuid())
+  studentId    String
+  authorUserId String
+  body         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([studentId, authorUserId])
+  @@index([studentId])
+}
+
 enum CommType {
   call
   message

@@ -536,11 +536,11 @@
         "G031"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G032-counsellor-lead-detail-view-with-sop-right-rail.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:21:30.608Z",
+      "completed_at": "2026-06-05T15:21:30.608Z",
       "blocker_reason": null,
       "blocked_at": null
     },
