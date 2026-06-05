@@ -40,6 +40,10 @@ jobs:
           npx prisma db push --skip-generate
           node prisma/harden.mjs
           npm run db:seed
+          node prisma/seed-catalog.mjs
+          node prisma/seed-team.mjs
+          node prisma/seed-ops.mjs
+          node prisma/seed-sop.mjs
       - name: Lint
         run: npm run lint
       - name: Type-check
