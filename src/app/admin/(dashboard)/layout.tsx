@@ -16,6 +16,8 @@ export default async function AdminLayout({
 }) {
   const session = await getSession();
   if (!session) redirect("/admin/login");
+  // Block the dashboard until 2FA is enrolled (mandatory roles) and verified.
+  if (!session.tfa) redirect("/admin/2fa");
   const settings = await getSettings();
 
   return (

@@ -101,13 +101,16 @@ model CountryContact {
 /// Admin accounts for the settings panel. This is a focused stand-in for the
 /// full phone-OTP + RBAC system described in CLAUDE.md §6/§11 (goals G006-G011).
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  name         String   @default("Administrator")
-  passwordHash String
-  role         String   @default("super_admin")
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String    @default("Administrator")
+  passwordHash  String
+  role          String    @default("super_admin")
+  totpSecret    String?
+  totpEnabledAt DateTime?
+  recoveryCodes String[]  @default([])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 // ─────────────────────────────────────────────────────────────────────

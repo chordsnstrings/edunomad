@@ -29,12 +29,14 @@ export async function startSession(user: {
   email: string;
   name: string;
   role: string;
+  tfa?: boolean;
 }) {
   const token = await signSession({
     sub: user.id,
     email: user.email,
     name: user.name,
     role: user.role,
+    tfa: user.tfa === true,
   });
   const store = await cookies();
   store.set(SESSION_COOKIE, token, {

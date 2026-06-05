@@ -10,6 +10,7 @@ export type SessionPayload = {
   email: string;
   name: string;
   role: string;
+  tfa?: boolean; // 2FA satisfied (verified or not required)
 };
 
 function secret() {
@@ -42,6 +43,7 @@ export async function verifySession(
       email: String(payload.email),
       name: String(payload.name),
       role: String(payload.role),
+      tfa: payload.tfa === true,
     };
   } catch {
     return null;

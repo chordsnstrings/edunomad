@@ -191,11 +191,11 @@
         "G008"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G011-2fa-for-internal-roles-compliance-+-super-admin-mandatory.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T14:34:58.784Z",
+      "completed_at": "2026-06-05T14:34:58.784Z",
       "blocker_reason": null,
       "blocked_at": null
     },

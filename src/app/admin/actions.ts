@@ -9,6 +9,13 @@ import {
   endSession,
   getSession,
 } from "@/lib/auth";
+import {
+  isTwoFactorEnabled,
+  mustEnrollTwoFactor,
+  confirmEnrollment,
+  verifyTwoFactor,
+  disableTwoFactor,
+} from "@/lib/twofactor";
 import { settingsSchema, countrySchema } from "@/lib/validation";
 import { SINGLETON_ID } from "@/lib/settings";
 
@@ -47,18 +54,59 @@ export async function loginAction(
   const session = await authenticate(email, password);
   if (!session) return { error: "Invalid email or password." };
 
+  // 2FA gate: enrolled users verify a code; mandatory roles must enrol first.
+  const enabled = await isTwoFactorEnabled(session.sub);
+  const tfa = !enabled && !mustEnrollTwoFactor(session.role);
   await startSession({
     id: session.sub,
     email: session.email,
     name: session.name,
     role: session.role,
+    tfa,
   });
-  redirect("/admin");
+  redirect(tfa ? "/admin" : "/admin/2fa");
 }
 
 export async function logoutAction() {
   await endSession();
   redirect("/admin/login");
+}
+
+// ── Two-factor (TOTP) ───────────────────────────────────────────────
+export async function confirmEnrollmentAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const session = await getSession();
+  if (!session) redirect("/admin/login");
+  const code = String(formData.get("code") ?? "").trim();
+  if (!(await confirmEnrollment(session.sub, code))) {
+    return { error: "That code didn't match. Enter the current 6-digit code." };
+  }
+  await startSession({ id: session.sub, email: session.email, name: session.name, role: session.role, tfa: true });
+  redirect("/admin");
+}
+
+export async function verifyTwoFactorAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const session = await getSession();
+  if (!session) redirect("/admin/login");
+  const code = String(formData.get("code") ?? "").trim();
+  if (!(await verifyTwoFactor(session.sub, code))) {
+    return { error: "Invalid code. Use your authenticator app or a recovery code." };
+  }
+  await startSession({ id: session.sub, email: session.email, name: session.name, role: session.role, tfa: true });
+  redirect("/admin");
+}
+
+export async function disableTwoFactorAction() {
+  const session = await ensureAdmin();
+  await disableTwoFactor(session.sub, session.sub);
+  const tfa = !mustEnrollTwoFactor(session.role);
+  await startSession({ id: session.sub, email: session.email, name: session.name, role: session.role, tfa });
+  redirect(tfa ? "/admin" : "/admin/2fa");
 }
 
 // ── Company settings ────────────────────────────────────────────────
