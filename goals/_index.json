@@ -1313,11 +1313,11 @@
         "G075"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G080-pre-compliance-audit-queue-operations-manager.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1329,11 +1329,11 @@
         "G075"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G081-cross-document-consistency-checker.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1345,11 +1345,11 @@
         "G081"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G082-misrepresentation-flag-detector---surface-to-compliance.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1362,11 +1362,11 @@
         "G011"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G083-compliance-sign-off-ui---full-file-view.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1378,11 +1378,11 @@
         "G083"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G084-compliance-sign-off-action---re-auth-+-stamping.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1394,11 +1394,11 @@
         "G083"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G085-compliance-return-with-changes-flow.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1410,11 +1410,11 @@
         "G083"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G086-compliance-refusal-to-sign-protocol.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1616,11 +1616,11 @@
         "G083"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G099-rcic-mara-registration-profile-per-compliance-user.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:26:57.848Z",
+      "completed_at": "2026-06-05T19:26:57.848Z",
       "blocker_reason": null,
       "blocked_at": null
     },

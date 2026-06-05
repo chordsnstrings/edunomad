@@ -24,6 +24,9 @@ export default async function OperationsLayout({ children }: { children: React.R
               {session.role === "operations_manager" && (
                 <Link href="/operations/approvals" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Approvals</Link>
               )}
+              {session.role === "operations_manager" && (
+                <Link href="/operations/visa-audit" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Visa audit</Link>
+              )}
             </nav>
           </div>
           <form action={opsLogoutAction}>

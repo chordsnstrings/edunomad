@@ -35,6 +35,13 @@ async function main() {
       update: {},
     });
   }
+  // RCIC registration profile for the compliance user (G099).
+  const comp = await prisma.user.findUnique({ where: { phone: "+8801000000020" } });
+  if (comp && !(await prisma.rcicProfile.findUnique({ where: { userId: comp.id } }))) {
+    await prisma.rcicProfile.create({
+      data: { userId: comp.id, registrationBody: "RCIC", registrationNumber: "R" + (700000 + Math.floor(Math.random() * 99999)), validUntil: new Date(Date.now() + 365 * 24 * 3600 * 1000) },
+    });
+  }
   console.log(`[seed-ops] ensured ${USERS.length} internal users`);
 }
 

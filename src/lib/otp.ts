@@ -84,6 +84,21 @@ export async function verifyOtp(phone: string, code: string): Promise<OtpVerifyR
   return { ok: true, token, userId: user.id };
 }
 
+/** Re-authentication: verify a fresh OTP without creating a session (used to
+ *  confirm identity for high-stakes actions like a Compliance sign-off). */
+export async function verifyOtpForReauth(phone: string, code: string): Promise<boolean> {
+  const now = new Date();
+  const ch = await prisma.otpChallenge.findUnique({ where: { phone } });
+  if (!ch || (ch.lockedUntil && ch.lockedUntil > now) || ch.expiresAt < now) return false;
+  if (!constantTimeEqual(ch.codeHash, hashCode(phone, code))) {
+    const attempts = ch.attempts + 1;
+    await prisma.otpChallenge.update({ where: { phone }, data: { attempts, lockedUntil: attempts >= MAX_ATTEMPTS ? new Date(now.getTime() + LOCK_MS) : null } });
+    return false;
+  }
+  await prisma.otpChallenge.delete({ where: { phone } });
+  return true;
+}
+
 /** First OTP login self-provisions a student-tenant user (tenant_id == self). */
 async function findOrCreateUser(phone: string) {
   const existing = await prisma.user.findUnique({ where: { phone } });
