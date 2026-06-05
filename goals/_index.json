@@ -357,11 +357,11 @@
         "G018"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G021-profile-builder-step-1---academic-background.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:03:47.222Z",
+      "completed_at": "2026-06-05T15:03:47.222Z",
       "blocker_reason": null,
       "blocked_at": null
     },
