@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import type { ActorType, Event, Prisma } from "@prisma/client";
 import { prisma } from "./db";
 import { computeChainHash, GENESIS_HASH } from "./hashchain";
+import { trackEventFunnel } from "./analytics";
 
 // Advisory-lock key serialises chain appends so concurrent emits can't race.
 const EVENT_LOCK = 911001;
@@ -62,7 +63,7 @@ export async function emit(input: EmitInput): Promise<Event> {
   const applicationId = input.applicationId ?? null;
   const actorId = input.actorId ?? null;
 
-  return prisma.$transaction(async (tx) => {
+  const event = await prisma.$transaction(async (tx) => {
     await tx.$executeRaw`SELECT pg_advisory_xact_lock(${EVENT_LOCK})`;
     const prev = await tx.event.findFirst({
       orderBy: { seq: "desc" },
@@ -102,6 +103,12 @@ export async function emit(input: EmitInput): Promise<Event> {
       },
     });
   });
+
+  // Privacy-respecting analytics (G178): forward catalog events to the product
+  // funnel. Fire-and-forget post-commit — never adds latency, never throws.
+  void trackEventFunnel(input.type, { stage: input.stage }).catch(() => {});
+
+  return event;
 }
 
 export type ChainVerifyResult = {
