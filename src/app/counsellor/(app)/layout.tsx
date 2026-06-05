@@ -26,6 +26,7 @@ export default async function CounsellorLayout({ children }: { children: React.R
                   <Link href="/counsellor/escalations" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Escalations</Link>
                   <Link href="/counsellor/refunds" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Refunds</Link>
                   <Link href="/counsellor/qa" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">QA</Link>
+                  <Link href="/counsellor/manage" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Manage</Link>
                 </>
               )}
             </nav>

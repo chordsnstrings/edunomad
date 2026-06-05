@@ -583,6 +583,60 @@ model Refund {
   updatedAt         DateTime @updatedAt
 }
 
+/// W5 — counsellor hiring pipeline candidate (G125).
+model Candidate {
+  id        String   @id @default(uuid())
+  name      String
+  stage     String   @default("applied")
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+/// W5 — scheduled counsellor training session (G126).
+model TrainingSession {
+  id          String   @id @default(uuid())
+  topic       String
+  scheduledAt DateTime
+  createdAt   DateTime @default(now())
+}
+
+/// W5 — voluntary attrition / exit interview log (G133).
+model ExitInterview {
+  id             String   @id @default(uuid())
+  counsellorName String
+  reason         String
+  notes          String?
+  createdAt      DateTime @default(now())
+}
+
+/// W5 — 1:1 record with a fixed agenda checklist (G120).
+model OneOnOne {
+  id               String   @id @default(uuid())
+  counsellorUserId String
+  managerUserId    String
+  agenda           Json?
+  notes            String?
+  createdAt        DateTime @default(now())
+}
+
+/// W5 — end-of-day team thread post (G130).
+model TeamPost {
+  id           String   @id @default(uuid())
+  authorUserId String
+  body         String
+  createdAt    DateTime @default(now())
+}
+
+/// W5 — counsellor leave record (G127).
+model LeaveRecord {
+  id               String   @id @default(uuid())
+  counsellorUserId String
+  fromDate         DateTime
+  toDate           DateTime
+  reason           String?
+  createdAt        DateTime @default(now())
+}
+
 /// W5 — performance improvement plan with weekly checkpoints.
 model Pip {
   id               String   @id @default(uuid())
