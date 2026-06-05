@@ -220,6 +220,72 @@ model Student {
   @@index([assignedCounsellorId])
 }
 
+enum DestinationCountry {
+  CA
+  UK
+  AU
+  MY
+}
+
+enum DegreeLevel {
+  foundation
+  diploma
+  bachelor
+  master
+  phd
+}
+
+/// W1 — a university/college and its admissions + commercial attributes.
+model Institution {
+  id                   String             @id @default(uuid())
+  name                 String
+  country              DestinationCountry
+  city                 String
+  tier                 Int                @default(2)
+  tuitionMinUsd        Int
+  tuitionMaxUsd        Int
+  intakeMonths         Int[]
+  englishMinIelts      Float              @default(6.0)
+  englishMinDuolingo   Int                @default(105)
+  englishMinPte        Int                @default(50)
+  acceptsMoiLetter     Boolean            @default(false)
+  postStudyWorkYears   Int                @default(0)
+  scholarshipAvailable Boolean            @default(false)
+  dliOrEquivalentId    String?
+  submissionTier       Int                @default(2)
+  admissionsEmail      String?
+  portalUrl            String?
+  commissionRateMinPct Float              @default(10)
+  commissionRateMaxPct Float              @default(15)
+  paymentTermsDays     Int                @default(45)
+  active               Boolean            @default(true)
+  notes                String?
+  programmes           Programme[]
+
+  @@index([country])
+}
+
+/// W1 — an offered course at an institution.
+model Programme {
+  id                         String      @id @default(uuid())
+  institutionId              String
+  institution                Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  name                       String
+  degreeLevel                DegreeLevel
+  fieldCategory              String
+  durationMonths             Int         @default(24)
+  tuitionPerYearUsd          Int
+  intakeMonthsSupported      Int[]
+  englishMinSpecificIelts    Float?
+  englishMinSpecificDuolingo Int?
+  minAcademicPercentage      Float?
+  active                     Boolean     @default(true)
+  notes                      String?
+
+  @@index([institutionId])
+  @@index([fieldCategory])
+}
+
 enum ActorType {
   student
   parent

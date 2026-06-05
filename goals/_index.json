@@ -454,11 +454,11 @@
         "G002"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G027-eligibility-match-engine.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:11:40.066Z",
+      "completed_at": "2026-06-05T15:11:40.066Z",
       "blocker_reason": null,
       "blocked_at": null
     },
