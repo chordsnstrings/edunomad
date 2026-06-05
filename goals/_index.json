@@ -421,11 +421,11 @@
         "G024"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G025-profile-builder-step-5---budget.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:06:46.955Z",
+      "completed_at": "2026-06-05T15:06:46.955Z",
       "blocker_reason": null,
       "blocked_at": null
     },
