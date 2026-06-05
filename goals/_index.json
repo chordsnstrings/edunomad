@@ -828,11 +828,11 @@
         "G031"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G050-counsellor-manager-team-heatmap-dashboard-basic.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:47:50.790Z",
+      "completed_at": "2026-06-05T15:47:50.790Z",
       "blocker_reason": null,
       "blocked_at": null
     },
