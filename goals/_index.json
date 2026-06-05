@@ -13,7 +13,7 @@
     "CC": "Cross-cutting platform"
   },
   "size_legend": {
-    "XS": "\u2264 1 hour",
+    "XS": "≤ 1 hour",
     "S": "1-4 hours",
     "M": "4 hours - 1 day",
     "L": "1-3 days"
@@ -31,11 +31,11 @@
       "workflow": "W0",
       "deps": [],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G001-repo-scaffold-with-chosen-stack.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:27:37.936Z",
+      "completed_at": "2026-06-05T13:27:37.936Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -47,11 +47,11 @@
         "G001"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G002-postgres-setup-with-chosen-orm.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:27:37.936Z",
+      "completed_at": "2026-06-05T13:27:37.936Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -73,17 +73,17 @@
     },
     {
       "id": "G004",
-      "title": "Multi-tenant data model \u2014 User, tenant scoping",
+      "title": "Multi-tenant data model — User, tenant scoping",
       "workflow": "W0",
       "deps": [
         "G002"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G004-multi-tenant-data-model---user-tenant-scoping.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:27:37.936Z",
+      "completed_at": "2026-06-05T13:27:37.936Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -105,7 +105,7 @@
     },
     {
       "id": "G006",
-      "title": "RBAC middleware \u2014 server-side enforcement",
+      "title": "RBAC middleware — server-side enforcement",
       "workflow": "W0",
       "deps": [
         "G004"
@@ -137,7 +137,7 @@
     },
     {
       "id": "G008",
-      "title": "Phone OTP auth \u2014 send + verify",
+      "title": "Phone OTP auth — send + verify",
       "workflow": "W0",
       "deps": [
         "G004"
@@ -169,7 +169,7 @@
     },
     {
       "id": "G010",
-      "title": "i18n setup \u2014 EN/BN/HI/NE with ICU",
+      "title": "i18n setup — EN/BN/HI/NE with ICU",
       "workflow": "W0",
       "deps": [
         "G001"
@@ -218,7 +218,7 @@
     },
     {
       "id": "G013",
-      "title": "WhatsApp Cloud API integration \u2014 mocked initially",
+      "title": "WhatsApp Cloud API integration — mocked initially",
       "workflow": "W0",
       "deps": [
         "G005"
@@ -250,7 +250,7 @@
     },
     {
       "id": "G015",
-      "title": "Brand baseline \u2014 colours, typography, base components",
+      "title": "Brand baseline — colours, typography, base components",
       "workflow": "W0",
       "deps": [
         "G001"
@@ -266,7 +266,7 @@
     },
     {
       "id": "G016",
-      "title": "Offline support \u2014 SOP content + draft documents",
+      "title": "Offline support — SOP content + draft documents",
       "workflow": "W0",
       "deps": [
         "G003",
@@ -333,7 +333,7 @@
     },
     {
       "id": "G020",
-      "title": "Student signup \u2014 phone OTP + welcome",
+      "title": "Student signup — phone OTP + welcome",
       "workflow": "W1",
       "deps": [
         "G008",
@@ -350,7 +350,7 @@
     },
     {
       "id": "G021",
-      "title": "Profile builder step 1 \u2014 academic background",
+      "title": "Profile builder step 1 — academic background",
       "workflow": "W1",
       "deps": [
         "G020",
@@ -367,7 +367,7 @@
     },
     {
       "id": "G022",
-      "title": "Profile builder step 2 \u2014 English proficiency",
+      "title": "Profile builder step 2 — English proficiency",
       "workflow": "W1",
       "deps": [
         "G021"
@@ -383,7 +383,7 @@
     },
     {
       "id": "G023",
-      "title": "Profile builder step 3 \u2014 destinations ranked",
+      "title": "Profile builder step 3 — destinations ranked",
       "workflow": "W1",
       "deps": [
         "G022"
@@ -399,7 +399,7 @@
     },
     {
       "id": "G024",
-      "title": "Profile builder step 4 \u2014 field of study",
+      "title": "Profile builder step 4 — field of study",
       "workflow": "W1",
       "deps": [
         "G023"
@@ -415,7 +415,7 @@
     },
     {
       "id": "G025",
-      "title": "Profile builder step 5 \u2014 budget",
+      "title": "Profile builder step 5 — budget",
       "workflow": "W1",
       "deps": [
         "G024"
@@ -431,7 +431,7 @@
     },
     {
       "id": "G026",
-      "title": "Profile builder step 6 \u2014 intake target + completeness computation",
+      "title": "Profile builder step 6 — intake target + completeness computation",
       "workflow": "W1",
       "deps": [
         "G025"
@@ -464,7 +464,7 @@
     },
     {
       "id": "G028",
-      "title": "Eligibility result screen \u2014 tabs and cost summary",
+      "title": "Eligibility result screen — tabs and cost summary",
       "workflow": "W1",
       "deps": [
         "G027"
@@ -513,7 +513,7 @@
     },
     {
       "id": "G031",
-      "title": "Counsellor inbox \u2014 list view with tabs",
+      "title": "Counsellor inbox — list view with tabs",
       "workflow": "W1",
       "deps": [
         "G029",
@@ -563,7 +563,7 @@
     },
     {
       "id": "G034",
-      "title": "Calendar booker \u2014 schedule call with student",
+      "title": "Calendar booker — schedule call with student",
       "workflow": "W1",
       "deps": [
         "G032"
@@ -611,7 +611,7 @@
     },
     {
       "id": "G037",
-      "title": "SOP objections panel \u2014 keyword search + insert",
+      "title": "SOP objections panel — keyword search + insert",
       "workflow": "W1",
       "deps": [
         "G035"
@@ -627,7 +627,7 @@
     },
     {
       "id": "G038",
-      "title": "Compliance keyword guards \u2014 real-time on counsellor messages",
+      "title": "Compliance keyword guards — real-time on counsellor messages",
       "workflow": "W1",
       "deps": [
         "G013",
@@ -660,7 +660,7 @@
     },
     {
       "id": "G040",
-      "title": "Student document vault \u2014 list with upload status",
+      "title": "Student document vault — list with upload status",
       "workflow": "W1",
       "deps": [
         "G039",
@@ -677,7 +677,7 @@
     },
     {
       "id": "G041",
-      "title": "Document upload \u2014 mobile camera + auto-crop",
+      "title": "Document upload — mobile camera + auto-crop",
       "workflow": "W1",
       "deps": [
         "G040"
@@ -693,7 +693,7 @@
     },
     {
       "id": "G042",
-      "title": "Automatic doc first-pass check \u2014 legibility + name OCR",
+      "title": "Automatic doc first-pass check — legibility + name OCR",
       "workflow": "W1",
       "deps": [
         "G041"
@@ -709,7 +709,7 @@
     },
     {
       "id": "G043",
-      "title": "Shortlist builder UI \u2014 add/remove programmes",
+      "title": "Shortlist builder UI — add/remove programmes",
       "workflow": "W1",
       "deps": [
         "G028"
@@ -741,7 +741,7 @@
     },
     {
       "id": "G045",
-      "title": "Shortlist lock \u2014 quality gate",
+      "title": "Shortlist lock — quality gate",
       "workflow": "W1",
       "deps": [
         "G043"
@@ -838,7 +838,7 @@
     },
     {
       "id": "G051",
-      "title": "Operations work queue \u2014 locked shortlists arrive",
+      "title": "Operations work queue — locked shortlists arrive",
       "workflow": "W2",
       "deps": [
         "G045",
@@ -855,7 +855,7 @@
     },
     {
       "id": "G052",
-      "title": "Per-case view \u2014 pre-packaging audit",
+      "title": "Per-case view — pre-packaging audit",
       "workflow": "W2",
       "deps": [
         "G051"
@@ -871,7 +871,7 @@
     },
     {
       "id": "G053",
-      "title": "Document QA tool \u2014 30-item rubric per type",
+      "title": "Document QA tool — 30-item rubric per type",
       "workflow": "W2",
       "deps": [
         "G052"
@@ -887,7 +887,7 @@
     },
     {
       "id": "G054",
-      "title": "Doc rework WhatsApp \u2014 one-tap send",
+      "title": "Doc rework WhatsApp — one-tap send",
       "workflow": "W2",
       "deps": [
         "G053",
@@ -952,7 +952,7 @@
     },
     {
       "id": "G058",
-      "title": "Per-uni packaging tool \u2014 drag-drop assembler",
+      "title": "Per-uni packaging tool — drag-drop assembler",
       "workflow": "W2",
       "deps": [
         "G052"
@@ -984,7 +984,7 @@
     },
     {
       "id": "G060",
-      "title": "Tier 2 portal credential vault \u2014 encrypted store + open-and-submit flow",
+      "title": "Tier 2 portal credential vault — encrypted store + open-and-submit flow",
       "workflow": "W2",
       "deps": [
         "G014"
@@ -1034,7 +1034,7 @@
     },
     {
       "id": "G063",
-      "title": "Inbound email parser \u2014 reference_id matching",
+      "title": "Inbound email parser — reference_id matching",
       "workflow": "W2",
       "deps": [
         "G059"
@@ -1130,7 +1130,7 @@
     },
     {
       "id": "G069",
-      "title": "Operations Manager \u2014 application approvals queue",
+      "title": "Operations Manager — application approvals queue",
       "workflow": "W2",
       "deps": [
         "G053"
@@ -1210,7 +1210,7 @@
     },
     {
       "id": "G074",
-      "title": "Forms repository in app \u2014 per regulator current versions",
+      "title": "Forms repository in app — per regulator current versions",
       "workflow": "W3",
       "deps": [
         "G014"
@@ -1226,7 +1226,7 @@
     },
     {
       "id": "G075",
-      "title": "Visa file builder \u2014 Tier B PDF upload + completeness check",
+      "title": "Visa file builder — Tier B PDF upload + completeness check",
       "workflow": "W3",
       "deps": [
         "G073",
@@ -1339,7 +1339,7 @@
     },
     {
       "id": "G082",
-      "title": "Misrepresentation flag detector \u2014 surface to Compliance",
+      "title": "Misrepresentation flag detector — surface to Compliance",
       "workflow": "W3",
       "deps": [
         "G081"
@@ -1355,7 +1355,7 @@
     },
     {
       "id": "G083",
-      "title": "Compliance sign-off UI \u2014 full file view",
+      "title": "Compliance sign-off UI — full file view",
       "workflow": "W3",
       "deps": [
         "G080",
@@ -1372,7 +1372,7 @@
     },
     {
       "id": "G084",
-      "title": "Compliance sign-off action \u2014 re-auth + stamping",
+      "title": "Compliance sign-off action — re-auth + stamping",
       "workflow": "W3",
       "deps": [
         "G083"
@@ -1468,7 +1468,7 @@
     },
     {
       "id": "G090",
-      "title": "Per-destination visa status tracker \u2014 IRCC daily check",
+      "title": "Per-destination visa status tracker — IRCC daily check",
       "workflow": "W3",
       "deps": [
         "G089"
@@ -1484,7 +1484,7 @@
     },
     {
       "id": "G091",
-      "title": "Visa decision handling \u2014 approved",
+      "title": "Visa decision handling — approved",
       "workflow": "W3",
       "deps": [
         "G090"
@@ -1500,7 +1500,7 @@
     },
     {
       "id": "G092",
-      "title": "Visa decision handling \u2014 refused",
+      "title": "Visa decision handling — refused",
       "workflow": "W3",
       "deps": [
         "G090"
@@ -1562,7 +1562,7 @@
     },
     {
       "id": "G096",
-      "title": "Regulator notification flow \u2014 misrepresentation post-sign-off",
+      "title": "Regulator notification flow — misrepresentation post-sign-off",
       "workflow": "W3",
       "deps": [
         "G082"
@@ -1578,7 +1578,7 @@
     },
     {
       "id": "G097",
-      "title": "Visa file dossier export \u2014 regulator-ready PDF",
+      "title": "Visa file dossier export — regulator-ready PDF",
       "workflow": "W3",
       "deps": [
         "G083"
@@ -1659,7 +1659,7 @@
     },
     {
       "id": "G102",
-      "title": "Parent invite accept flow \u2014 PIN + OTP",
+      "title": "Parent invite accept flow — PIN + OTP",
       "workflow": "W4",
       "deps": [
         "G101"
@@ -1675,7 +1675,7 @@
     },
     {
       "id": "G103",
-      "title": "Parent dashboard \u2014 single student view",
+      "title": "Parent dashboard — single student view",
       "workflow": "W4",
       "deps": [
         "G102",
@@ -1692,7 +1692,7 @@
     },
     {
       "id": "G104",
-      "title": "Parent activity feed \u2014 parent-visible events only",
+      "title": "Parent activity feed — parent-visible events only",
       "workflow": "W4",
       "deps": [
         "G103",
@@ -1742,7 +1742,7 @@
     },
     {
       "id": "G107",
-      "title": "Payment approval modal \u2014 Parent flow",
+      "title": "Payment approval modal — Parent flow",
       "workflow": "W4",
       "deps": [
         "G103"
@@ -1758,7 +1758,7 @@
     },
     {
       "id": "G108",
-      "title": "Payment gateway integrations \u2014 bKash, Nagad, SSL, card, bank transfer",
+      "title": "Payment gateway integrations — bKash, Nagad, SSL, card, bank transfer",
       "workflow": "W4",
       "deps": [
         "G107"
@@ -1807,7 +1807,7 @@
     },
     {
       "id": "G111",
-      "title": "Parent FAQ surface \u2014 searchable + auto-suggest",
+      "title": "Parent FAQ surface — searchable + auto-suggest",
       "workflow": "W4",
       "deps": [
         "G103"
@@ -1871,7 +1871,7 @@
     },
     {
       "id": "G115",
-      "title": "CM dashboard \u2014 yesterday's standup screen",
+      "title": "CM dashboard — yesterday's standup screen",
       "workflow": "W5",
       "deps": [
         "G050"
@@ -1903,7 +1903,7 @@
     },
     {
       "id": "G117",
-      "title": "CM QA review tool \u2014 weighted sampling",
+      "title": "CM QA review tool — weighted sampling",
       "workflow": "W5",
       "deps": [
         "G035"
@@ -1951,7 +1951,7 @@
     },
     {
       "id": "G120",
-      "title": "CM 1:1 module \u2014 fixed agenda checklist",
+      "title": "CM 1:1 module — fixed agenda checklist",
       "workflow": "W5",
       "deps": [
         "G115"
@@ -1983,7 +1983,7 @@
     },
     {
       "id": "G122",
-      "title": "Refund approval chain \u2014 multi-stage",
+      "title": "Refund approval chain — multi-stage",
       "workflow": "W5",
       "deps": [],
       "size": "M",
@@ -1997,7 +1997,7 @@
     },
     {
       "id": "G123",
-      "title": "CM team heatmap \u2014 real-time updates",
+      "title": "CM team heatmap — real-time updates",
       "workflow": "W5",
       "deps": [
         "G115"
@@ -2197,7 +2197,7 @@
     },
     {
       "id": "G136",
-      "title": "SOP CMS \u2014 list view",
+      "title": "SOP CMS — list view",
       "workflow": "W6",
       "deps": [
         "G135"
@@ -2213,7 +2213,7 @@
     },
     {
       "id": "G137",
-      "title": "SOP CMS \u2014 editor with block types",
+      "title": "SOP CMS — editor with block types",
       "workflow": "W6",
       "deps": [
         "G135"
@@ -2229,7 +2229,7 @@
     },
     {
       "id": "G138",
-      "title": "SOP block type \u2014 script (with trigger condition)",
+      "title": "SOP block type — script (with trigger condition)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2245,7 +2245,7 @@
     },
     {
       "id": "G139",
-      "title": "SOP block type \u2014 template (with variables)",
+      "title": "SOP block type — template (with variables)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2261,7 +2261,7 @@
     },
     {
       "id": "G140",
-      "title": "SOP block type \u2014 decision_tree (wizard)",
+      "title": "SOP block type — decision_tree (wizard)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2277,7 +2277,7 @@
     },
     {
       "id": "G141",
-      "title": "SOP block type \u2014 checklist (enforced gate)",
+      "title": "SOP block type — checklist (enforced gate)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2293,7 +2293,7 @@
     },
     {
       "id": "G142",
-      "title": "SOP block type \u2014 kpi (live target display)",
+      "title": "SOP block type — kpi (live target display)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2309,7 +2309,7 @@
     },
     {
       "id": "G143",
-      "title": "SOP block type \u2014 compliance_warning (keyword guards)",
+      "title": "SOP block type — compliance_warning (keyword guards)",
       "workflow": "W6",
       "deps": [
         "G137",
@@ -2326,7 +2326,7 @@
     },
     {
       "id": "G144",
-      "title": "SOP block type \u2014 trigger_rule (declarative surfacing)",
+      "title": "SOP block type — trigger_rule (declarative surfacing)",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2358,7 +2358,7 @@
     },
     {
       "id": "G146",
-      "title": "SOP review workflow \u2014 submit/approve/reject",
+      "title": "SOP review workflow — submit/approve/reject",
       "workflow": "W6",
       "deps": [
         "G145"
@@ -2406,7 +2406,7 @@
     },
     {
       "id": "G149",
-      "title": "SOP contextual surfacing engine \u2014 runtime",
+      "title": "SOP contextual surfacing engine — runtime",
       "workflow": "W6",
       "deps": [
         "G144"
@@ -2438,7 +2438,7 @@
     },
     {
       "id": "G151",
-      "title": "SOP checklist quality enforcement \u2014 runtime hooks",
+      "title": "SOP checklist quality enforcement — runtime hooks",
       "workflow": "W6",
       "deps": [
         "G141"
@@ -2454,7 +2454,7 @@
     },
     {
       "id": "G152",
-      "title": "SOP KPI engine \u2014 live values to dashboards",
+      "title": "SOP KPI engine — live values to dashboards",
       "workflow": "W6",
       "deps": [
         "G142"
@@ -2486,7 +2486,7 @@
     },
     {
       "id": "G154",
-      "title": "SOP role permissions \u2014 owner editing rules",
+      "title": "SOP role permissions — owner editing rules",
       "workflow": "W6",
       "deps": [
         "G006",
@@ -2519,7 +2519,7 @@
     },
     {
       "id": "G156",
-      "title": "SOP block referencing \u2014 link from one SOP to another",
+      "title": "SOP block referencing — link from one SOP to another",
       "workflow": "W6",
       "deps": [
         "G135"
@@ -2535,7 +2535,7 @@
     },
     {
       "id": "G157",
-      "title": "SOP CMS publishing pipeline \u2014 staging vs production",
+      "title": "SOP CMS publishing pipeline — staging vs production",
       "workflow": "W6",
       "deps": [
         "G148"
@@ -2551,7 +2551,7 @@
     },
     {
       "id": "G158",
-      "title": "SOP authoring guidelines \u2014 inline help for editors",
+      "title": "SOP authoring guidelines — inline help for editors",
       "workflow": "W6",
       "deps": [
         "G137"
@@ -2632,7 +2632,7 @@
     },
     {
       "id": "G163",
-      "title": "Regulator inquiry workflow \u2014 evidence packet assembly",
+      "title": "Regulator inquiry workflow — evidence packet assembly",
       "workflow": "W7",
       "deps": [
         "G160"
@@ -2648,7 +2648,7 @@
     },
     {
       "id": "G164",
-      "title": "Incident response \u2014 auto-create incident channel + load runbook",
+      "title": "Incident response — auto-create incident channel + load runbook",
       "workflow": "W7",
       "deps": [],
       "size": "L",
@@ -2710,7 +2710,7 @@
     },
     {
       "id": "G168",
-      "title": "Data export \u2014 student PII compliance (DSAR/erasure)",
+      "title": "Data export — student PII compliance (DSAR/erasure)",
       "workflow": "W7",
       "deps": [
         "G160"
@@ -2804,7 +2804,7 @@
     },
     {
       "id": "G174",
-      "title": "Lighthouse PWA audit \u2265 90",
+      "title": "Lighthouse PWA audit ≥ 90",
       "workflow": "CC",
       "deps": [
         "G003",
@@ -2813,7 +2813,7 @@
       "size": "M",
       "status": "not_started",
       "owner": "claude_code",
-      "filename": "G174-lighthouse-pwa-audit-\u2265-90.md",
+      "filename": "G174-lighthouse-pwa-audit-≥-90.md",
       "started_at": null,
       "completed_at": null,
       "blocker_reason": null,
@@ -2867,7 +2867,7 @@
     },
     {
       "id": "G178",
-      "title": "Analytics \u2014 privacy-respecting product analytics",
+      "title": "Analytics — privacy-respecting product analytics",
       "workflow": "CC",
       "deps": [
         "G001"
@@ -2883,7 +2883,7 @@
     },
     {
       "id": "G179",
-      "title": "Backup + restore \u2014 daily Postgres backup",
+      "title": "Backup + restore — daily Postgres backup",
       "workflow": "CC",
       "deps": [
         "G002"
@@ -2980,7 +2980,7 @@
     },
     {
       "id": "G185",
-      "title": "Logging \u2014 structured, no PII at INFO",
+      "title": "Logging — structured, no PII at INFO",
       "workflow": "CC",
       "deps": [
         "G001"
@@ -2996,7 +2996,7 @@
     },
     {
       "id": "G186",
-      "title": "End-to-end test \u2014 happy path student journey",
+      "title": "End-to-end test — happy path student journey",
       "workflow": "CC",
       "deps": [
         "G068",
@@ -3013,7 +3013,7 @@
     },
     {
       "id": "G187",
-      "title": "End-to-end test \u2014 counsellor + ops + compliance flow",
+      "title": "End-to-end test — counsellor + ops + compliance flow",
       "workflow": "CC",
       "deps": [
         "G091"
@@ -3029,7 +3029,7 @@
     },
     {
       "id": "G188",
-      "title": "Definition of done \u2014 verification checklist",
+      "title": "Definition of done — verification checklist",
       "workflow": "CC",
       "deps": [],
       "size": "S",

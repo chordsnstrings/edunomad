@@ -109,3 +109,149 @@ model AdminUser {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// W0 Foundations — multi-tenant data model, event spine, audit log
+// (see docs/01-data-model.md, CLAUDE.md §4/§6)
+// ─────────────────────────────────────────────────────────────────────
+
+enum Tenant {
+  edunomad
+  student
+  agency
+  service_partner
+}
+
+enum Language {
+  en
+  bn
+  hi
+  ne
+}
+
+enum UserStatus {
+  active
+  deactivated
+  archived
+}
+
+/// All 22 roles (10 active in Phase 1; the rest reserved per CLAUDE.md §6).
+enum UserRole {
+  super_admin
+  education_manager
+  counsellor_manager
+  counsellor
+  operations_manager
+  operations_team
+  compliance
+  finance
+  student
+  parent
+  // Phase 2 — data model accommodates; UIs deferred
+  agency_owner
+  agency_sub_counsellor
+  housing_partner
+  bank_partner
+  insurance_partner
+  transport_partner
+  sim_partner
+  test_prep_partner
+  pre_departure_coord
+  marketing
+  bd_manager
+  alumni
+}
+
+/// G004 — every business-data entity inherits tenant scoping via tenantId.
+model User {
+  id            String     @id @default(uuid())
+  tenant        Tenant
+  tenantId      String
+  role          UserRole
+  phone         String     @unique
+  email         String?    @unique
+  language      Language   @default(en)
+  status        UserStatus @default(active)
+  createdAt     DateTime   @default(now())
+  deactivatedAt DateTime?
+  archivedAt    DateTime?
+
+  @@index([tenant, tenantId])
+}
+
+enum ActorType {
+  student
+  parent
+  counsellor
+  ops
+  ops_manager
+  counsellor_manager
+  compliance
+  finance
+  education_manager
+  super_admin
+  system
+  university
+}
+
+/// G005 — append-only, hash-chained event spine. The source of truth for
+/// status timelines and the activity feed. Never updated, never deleted.
+model Event {
+  id            String      @id @default(uuid())
+  seq           BigInt      @default(autoincrement()) // deterministic chain order
+  type          String
+  stage         Int
+  studentId     String?
+  applicationId String?
+  actorType     ActorType
+  actorId       String?
+  visibility    Json
+  channels      Json
+  payload       Json
+  createdAt     DateTime    @default(now())
+  chainHash     String
+  reads         EventRead[]
+
+  @@index([studentId, createdAt])
+  @@index([applicationId, createdAt])
+  @@index([seq])
+}
+
+/// Mutable per-user read state — deliberately NOT part of the hash chain.
+model EventRead {
+  userId  String
+  eventId String
+  readAt  DateTime @default(now())
+  event   Event    @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
+
+enum AuditResult {
+  success
+  denied
+  failed
+}
+
+/// G007 — append-only, hash-chained audit log (broader scope than events:
+/// privileged actions, permission denials). Never updated, never deleted.
+model AuditLog {
+  id          String      @id @default(uuid())
+  seq         BigInt      @default(autoincrement())
+  actorUserId String?
+  action      String
+  targetType  String
+  targetId    String?
+  beforeState Json?
+  afterState  Json?
+  ipAddress   String?
+  userAgent   String?
+  result      AuditResult @default(success)
+  reason      String?
+  createdAt   DateTime    @default(now())
+  chainHash   String
+
+  @@index([actorUserId, createdAt])
+  @@index([targetType, targetId])
+  @@index([seq])
+}

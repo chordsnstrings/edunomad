@@ -11,7 +11,9 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "db:reset": "prisma db push --force-reset && prisma db seed"
+    "db:reset": "prisma db push --force-reset && prisma db seed",
+    "db:harden": "node prisma/harden.mjs",
+    "test": "tsc -p tsconfig.test.json && node --env-file-if-exists=.env --test --test-concurrency=1 \".test-build/tests/*.test.js\""
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"

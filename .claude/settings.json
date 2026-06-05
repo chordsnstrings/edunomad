@@ -49,9 +49,7 @@
       "WebFetch(http://*)"
     ]
   },
-  "env": {
-    "NODE_ENV": "development"
-  },
+  "env": {},
   "hooks": {
     "SessionStart": [
       {

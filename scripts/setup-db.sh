@@ -53,9 +53,10 @@ if [ "$HAS_DB" != "1" ]; then
   sudo -u postgres "$PGBIN/createdb" -h localhost -p "$PORT" -U postgres -O edunomad edunomad >/dev/null 2>&1
 fi
 
-# 4) Install deps if needed, then sync schema.
+# 4) Install deps if needed, then sync schema + append-only triggers.
 [ -d node_modules ] || npm install >/dev/null 2>&1
 npx prisma db push --skip-generate >/dev/null 2>&1
+node prisma/harden.mjs >/dev/null 2>&1
 
 # 5) Seed only when the database has no admin user yet (don't clobber edits).
 HAS_ADMIN=$(PGPASSWORD=edunomad "$PGBIN/psql" -h localhost -p "$PORT" -U edunomad -d edunomad -tAc \
