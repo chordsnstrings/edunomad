@@ -2986,11 +2986,11 @@
         "G001"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G185-logging---structured-no-pii-at-info.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T20:36:53.938Z",
+      "completed_at": "2026-06-05T20:36:53.938Z",
       "blocker_reason": null,
       "blocked_at": null
     },
