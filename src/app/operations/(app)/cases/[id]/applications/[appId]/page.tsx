@@ -6,6 +6,7 @@ import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { getLatestDocuments } from "@/lib/documents";
 import { decryptSecret } from "@/lib/crypto-vault";
+import { renderEventTemplate } from "@/lib/event-templates";
 import { packageAction, storeCredentialAction, submitAction, saveOfferAction } from "./actions";
 
 export const metadata: Metadata = { title: "Submit application", robots: { index: false } };
@@ -26,6 +27,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const cred = inst.submissionTier === 2 ? await prisma.institutionCredential.findUnique({ where: { institutionId: inst.id } }) : null;
   const refId = app.referenceId ?? `EN-${appId.slice(0, 8).toUpperCase()}`;
   const isSubmitted = app.submissionStatus === "submitted";
+  const timeline = await prisma.event.findMany({ where: { applicationId: appId }, orderBy: { seq: "desc" }, take: 30 });
 
   return (
     <div>
@@ -120,6 +122,25 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           </form>
         </section>
       )}
+
+      <section className="mt-6">
+        <h2 className="mb-2 text-sm font-semibold text-navy">Application timeline</h2>
+        {timeline.length === 0 ? (
+          <p className="text-sm text-muted">No events yet.</p>
+        ) : (
+          <ul className="space-y-2.5">
+            {timeline.map((e) => (
+              <li key={e.id} className="flex gap-3 text-sm">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-500" />
+                <div>
+                  <p className="text-ink">{renderEventTemplate({ type: e.type, payload: e.payload as Record<string, unknown> | null }, "en")}</p>
+                  <p className="text-xs text-muted">{e.createdAt.toLocaleString()}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

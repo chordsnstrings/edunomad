@@ -22,7 +22,13 @@ export async function POST(req: NextRequest) {
   };
   if (!documentType || !storageKey) return Response.json({ error: "missing" }, { status: 400 });
 
-  const prev = await prisma.document.count({ where: { studentId: student.id, documentType } });
+  // Versioning: a re-upload creates a new version; old versions are retained.
+  // An approved document is final and cannot be replaced (CLAUDE.md §4).
+  const latest = await prisma.document.findFirst({ where: { studentId: student.id, documentType }, orderBy: { version: "desc" } });
+  if (latest?.status === "approved") {
+    return Response.json({ error: "already_approved" }, { status: 409 });
+  }
+  const prev = latest?.version ?? 0;
   const qa = runDocQa({ fullName: student.fullName }, sizeBytes ?? 0);
 
   const doc = await prisma.document.create({

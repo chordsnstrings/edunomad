@@ -16,6 +16,7 @@ export default async function Page({ params }: { params: Promise<{ id: string; d
   const doc = await prisma.document.findUnique({ where: { id: docId } });
   if (!doc || doc.studentId !== id) notFound();
   const items = rubricFor(doc.documentType);
+  const versions = await prisma.document.findMany({ where: { studentId: id, documentType: doc.documentType }, orderBy: { version: "desc" } });
 
   return (
     <div>
@@ -24,6 +25,18 @@ export default async function Page({ params }: { params: Promise<{ id: string; d
       </Link>
       <h1 className="mt-3 text-xl font-semibold text-navy">{doc.documentType}</h1>
       <p className="mb-4 text-sm text-muted">Version {doc.version} · current status: {doc.status}</p>
+      {versions.length > 1 && (
+        <div className="mb-4 rounded-xl border border-line bg-white p-3">
+          <p className="mb-1.5 text-xs font-semibold text-navy">Version history ({versions.length})</p>
+          <ul className="space-y-1 text-xs text-muted">
+            {versions.map((v) => (
+              <li key={v.id} className={v.id === docId ? "font-semibold text-navy" : ""}>
+                v{v.version} · {v.status} · {v.createdAt.toLocaleDateString()}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <QaRubric documentId={docId} items={items} />
     </div>
   );

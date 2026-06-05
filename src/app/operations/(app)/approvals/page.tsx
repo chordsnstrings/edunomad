@@ -1,0 +1,48 @@
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { requireStaff } from "@/lib/require-staff";
+import { prisma } from "@/lib/db";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { approveAction } from "./actions";
+
+export const metadata: Metadata = { title: "Approvals", robots: { index: false } };
+export const dynamic = "force-dynamic";
+
+export default async function ApprovalsPage() {
+  const session = await requireStaff(["operations_team", "operations_manager"]);
+  if (session.role !== "operations_manager") redirect("/operations");
+
+  const apps = await prisma.application.findMany({ where: { submissionStatus: "packaged", opsApproved: false }, take: 100 });
+  const rows = await Promise.all(
+    apps.map(async (a) => {
+      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
+      const student = await prisma.student.findUnique({ where: { id: a.studentId }, select: { fullName: true, phone: true } });
+      return { app: a, name: prog?.name ?? "", institution: prog?.institution.name ?? "", who: student?.fullName ?? student?.phone ?? "" };
+    }),
+  );
+
+  return (
+    <div>
+      <h1 className="mb-1 text-xl font-semibold text-navy">Application approvals</h1>
+      <p className="mb-4 text-sm text-muted">Packaged applications awaiting pre-submission sign-off.</p>
+      {rows.length === 0 ? (
+        <EmptyState title="Nothing to approve" body="Packaged applications appear here for your sign-off." />
+      ) : (
+        <ul className="space-y-2">
+          {rows.map(({ app, name, institution, who }) => (
+            <li key={app.id} className="flex items-center justify-between gap-3 rounded-xl border border-line bg-white p-4">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-navy">{who}</p>
+                <p className="truncate text-xs text-muted">{institution} · {name}</p>
+              </div>
+              <form action={approveAction}>
+                <input type="hidden" name="appId" value={app.id} />
+                <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Approve</button>
+              </form>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
