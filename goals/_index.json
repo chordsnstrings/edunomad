@@ -487,11 +487,11 @@
         "G018"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G029-counsellor-routing-engine-+-auto-assign.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:14:47.662Z",
+      "completed_at": "2026-06-05T15:14:47.662Z",
       "blocker_reason": null,
       "blocked_at": null
     },

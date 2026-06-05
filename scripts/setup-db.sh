@@ -58,6 +58,7 @@ fi
 npx prisma db push --skip-generate >/dev/null 2>&1
 node prisma/harden.mjs >/dev/null 2>&1
 node prisma/seed-catalog.mjs >/dev/null 2>&1
+node prisma/seed-team.mjs >/dev/null 2>&1
 
 # 5) Seed only when the database has no admin user yet (don't clobber edits).
 HAS_ADMIN=$(PGPASSWORD=edunomad "$PGBIN/psql" -h localhost -p "$PORT" -U edunomad -d edunomad -tAc \

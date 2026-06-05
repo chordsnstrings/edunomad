@@ -286,6 +286,21 @@ model Programme {
   @@index([fieldCategory])
 }
 
+/// W1 — counsellor metadata for routing + the assignment screen.
+model CounsellorProfile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  fullName        String
+  photoUrl        String?
+  languages       String[]
+  destinations    String[]
+  capacity        Int      @default(25)
+  tenureStartedAt DateTime @default(now())
+  managerId       String?
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+}
+
 enum ActorType {
   student
   parent

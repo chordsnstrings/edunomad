@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent, computeCompleteness } from "@/lib/student";
 import { emit } from "@/lib/events";
+import { assignCounsellor } from "@/lib/routing";
 
 /** Finalise the profile: recompute completeness, emit profile.completed, go to eligibility. */
 export async function submitProfileAction() {
@@ -25,5 +26,7 @@ export async function submitProfileAction() {
     channels: { in_app: true },
     payload: { completenessPct },
   });
+  // Auto-assign a counsellor (routes to the CM queue if none fit).
+  await assignCounsellor(student.id);
   redirect("/eligibility");
 }
