@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { verifyOtp } from "@/lib/otp";
 import { SESSION_COOKIE } from "@/lib/sessions";
+import { otpVerifyLimit, tooManyResponse } from "@/lib/ratelimit";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,10 @@ export async function POST(req: NextRequest) {
   const phone = String(body.phone ?? "").trim();
   const code = String(body.code ?? "").trim();
   if (!phone || !code) return Response.json({ error: "missing_fields" }, { status: 400 });
+
+  // Rate limit: 5 verify attempts / hour / phone (CLAUDE.md §11).
+  const limit = otpVerifyLimit(phone);
+  if (!limit.ok) return tooManyResponse(limit);
 
   const result = await verifyOtp(phone, code);
   if (!result.ok) {
