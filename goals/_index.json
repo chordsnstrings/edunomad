@@ -470,11 +470,11 @@
         "G027"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G028-eligibility-result-screen---tabs-and-cost-summary.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:11:40.237Z",
+      "completed_at": "2026-06-05T15:11:40.237Z",
       "blocker_reason": null,
       "blocked_at": null
     },
