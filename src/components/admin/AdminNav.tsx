@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Building2, Phone, BookText } from "lucide-react";
+import { LayoutDashboard, Building2, Phone, BookText, ScrollText, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
@@ -10,6 +10,8 @@ const ITEMS = [
   { label: "Company settings", href: "/admin/settings", icon: Building2 },
   { label: "Country numbers", href: "/admin/countries", icon: Phone },
   { label: "SOP CMS", href: "/admin/sop", icon: BookText },
+  { label: "Audit log", href: "/admin/audit", icon: ScrollText },
+  { label: "Incidents", href: "/admin/incidents", icon: ShieldAlert },
 ];
 
 export function AdminNav({ orientation = "vertical" }: { orientation?: "vertical" | "horizontal" }) {

@@ -20,7 +20,10 @@ export default async function FileAuditPage({ params }: { params: Promise<{ id: 
   return (
     <div>
       <Link href={`/compliance/files/${id}`} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-navy"><ArrowLeft className="h-4 w-4" /> File</Link>
-      <h1 className="mt-3 text-xl font-semibold text-navy">File audit log</h1>
+      <div className="mt-3 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-navy">File audit log</h1>
+        <a href={`/api/visa/${id}/evidence`} target="_blank" rel="noreferrer" className="text-sm text-navy underline">Evidence packet →</a>
+      </div>
 
       <section className="mt-4">
         <h2 className="mb-2 text-sm font-semibold text-navy">Audit entries (hash-chained)</h2>

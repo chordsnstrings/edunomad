@@ -355,6 +355,28 @@ enum SopStatus {
   locked
 }
 
+/// W7 — incident response record with runbook + post-incident review.
+model Incident {
+  id                String    @id @default(uuid())
+  title             String
+  severity          String    @default("sev3")
+  status            String    @default("open")
+  runbook           Json?
+  createdByUserId   String
+  resolvedAt        DateTime?
+  reviewScheduledAt DateTime?
+  reviewNotes       String?
+  createdAt         DateTime  @default(now())
+}
+
+/// W7 — compliance training log per staff member.
+model TrainingLog {
+  id          String   @id @default(uuid())
+  staffName   String
+  topic       String
+  completedAt DateTime @default(now())
+}
+
 /// W6 — SOP CMS article (block-typed, versioned, reviewed, published).
 model SopArticle {
   id                String   @id @default(uuid())
