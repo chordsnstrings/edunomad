@@ -53,9 +53,18 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
           {checklist.filter((d) => d.required).map((d) => {
             const doc = latest.get(d.documentType);
             return (
-              <li key={d.documentType} className="flex items-center justify-between rounded-lg border border-line bg-white px-3 py-2 text-sm">
-                <span className="text-ink">{d.label}</span>
-                <span className={doc ? "text-green-700" : "text-red-600"}>{doc ? doc.status : "missing"}</span>
+              <li key={d.documentType} className="rounded-lg border border-line bg-white text-sm">
+                {doc ? (
+                  <Link href={`/operations/cases/${id}/docs/${doc.id}`} className="flex items-center justify-between px-3 py-2 hover:bg-subtle">
+                    <span className="text-ink">{d.label}</span>
+                    <span className="text-navy underline">{doc.status} · review</span>
+                  </Link>
+                ) : (
+                  <div className="flex items-center justify-between px-3 py-2">
+                    <span className="text-ink">{d.label}</span>
+                    <span className="text-red-600">missing</span>
+                  </div>
+                )}
               </li>
             );
           })}
