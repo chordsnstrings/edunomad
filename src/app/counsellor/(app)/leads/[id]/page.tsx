@@ -47,8 +47,11 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
               <Link href={`/counsellor/leads/${id}/whatsapp`} className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </Link>
-              <Link href={`/counsellor/leads/${id}/book`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">
-                <Phone className="h-4 w-4" /> Book call
+              <Link href={`/counsellor/leads/${id}/call`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">
+                <Phone className="h-4 w-4" /> Call now
+              </Link>
+              <Link href={`/counsellor/leads/${id}/book`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle">
+                Book call
               </Link>
             </div>
           </section>

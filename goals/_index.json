@@ -585,11 +585,11 @@
         "G034"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G035-integrated-dialer-with-call-recording-+-transcription.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:27:58.854Z",
+      "completed_at": "2026-06-05T15:27:58.854Z",
       "blocker_reason": null,
       "blocked_at": null
     },
