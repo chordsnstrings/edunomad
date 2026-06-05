@@ -569,11 +569,11 @@
         "G032"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G034-calendar-booker---schedule-call-with-student.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:26:25.187Z",
+      "completed_at": "2026-06-05T15:26:25.187Z",
       "blocker_reason": null,
       "blocked_at": null
     },

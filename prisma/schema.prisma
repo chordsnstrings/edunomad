@@ -299,6 +299,27 @@ model Note {
   @@index([studentId])
 }
 
+enum BookingStatus {
+  scheduled
+  rescheduled
+  cancelled
+  completed
+}
+
+/// W1 — a scheduled counsellor call with a student.
+model Booking {
+  id               String        @id @default(uuid())
+  studentId        String
+  counsellorUserId String
+  startsAt         DateTime
+  durationMin      Int           @default(45)
+  status           BookingStatus @default(scheduled)
+  rescheduleToken  String        @unique
+  createdAt        DateTime      @default(now())
+
+  @@index([counsellorUserId, startsAt])
+}
+
 enum CommType {
   call
   message
