@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Bell, Route, MessageCircle } from "lucide-react";
+import { Home, Bell, ListChecks, Route, MessageCircle } from "lucide-react";
 
 const TABS = [
   { href: "/app", icon: Home, label: "Home" },
   { href: "/app/activity", icon: Bell, label: "Activity" },
+  { href: "/app/shortlist", icon: ListChecks, label: "Shortlist" },
   { href: "/app/journey", icon: Route, label: "Journey" },
   { href: "/app/messages", icon: MessageCircle, label: "Messages" },
 ];

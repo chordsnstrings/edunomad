@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { estimateTotalCost } from "@/lib/cost";
+import { getCurrentSession } from "@/lib/current-user";
+import { getMyStudent } from "@/lib/student";
+import { AddToShortlistButton } from "@/components/app/AddToShortlistButton";
 
 export const metadata: Metadata = { title: "Programme", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -17,6 +20,18 @@ export default async function ProgrammePage({ params }: { params: Promise<{ id: 
   if (!prog) notFound();
 
   const cost = estimateTotalCost(prog.institution.country, prog.tuitionPerYearUsd, prog.durationMonths);
+
+  const session = await getCurrentSession();
+  let shortlistButton: React.ReactNode = null;
+  if (session?.role === "student") {
+    const student = await getMyStudent(session.userId);
+    if (student) {
+      const existing = await prisma.application.findUnique({
+        where: { studentId_programmeId: { studentId: student.id, programmeId: prog.id } },
+      });
+      shortlistButton = <AddToShortlistButton programmeId={prog.id} initialAdded={!!existing} />;
+    }
+  }
   const rows: [string, string][] = [
     ["Tuition", `${money(cost.tuitionTotal)} (${cost.years} yr${cost.years > 1 ? "s" : ""})`],
     ["Living", money(cost.livingTotal)],
@@ -46,6 +61,8 @@ export default async function ProgrammePage({ params }: { params: Promise<{ id: 
           <Fact label="MOI accepted" value={prog.institution.acceptsMoiLetter ? "Yes" : "No"} />
         </div>
       </div>
+
+      {shortlistButton && <div className="mt-4">{shortlistButton}</div>}
 
       <div className="mt-4 rounded-2xl border border-line bg-white p-5">
         <h2 className="text-sm font-semibold text-navy">Estimated total cost</h2>

@@ -715,11 +715,11 @@
         "G028"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G043-shortlist-builder-ui---add-remove-programmes.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:35:08.973Z",
+      "completed_at": "2026-06-05T15:35:08.973Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -747,11 +747,11 @@
         "G043"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G045-shortlist-lock---quality-gate.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T15:35:08.973Z",
+      "completed_at": "2026-06-05T15:35:08.973Z",
       "blocker_reason": null,
       "blocked_at": null
     },

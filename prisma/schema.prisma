@@ -320,6 +320,29 @@ model Booking {
   @@index([counsellorUserId, startsAt])
 }
 
+enum ShortlistStatus {
+  draft
+  locked
+  withdrawn
+}
+
+/// W1/W2 — a student's application to a programme (starts as a shortlist entry).
+model Application {
+  id                      String          @id @default(uuid())
+  studentId               String
+  programmeId             String
+  institutionId           String
+  shortlistStatus         ShortlistStatus @default(draft)
+  rationale               String?
+  recommendedByCounsellor Boolean         @default(false)
+  bucket                  String?
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+
+  @@unique([studentId, programmeId])
+  @@index([studentId])
+}
+
 enum CommType {
   call
   message
