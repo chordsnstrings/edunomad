@@ -63,11 +63,11 @@
         "G001"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G003-pwa-manifest-and-service-worker-scaffold.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:35:23.688Z",
+      "completed_at": "2026-06-05T13:35:23.688Z",
       "blocker_reason": null,
       "blocked_at": null
     },

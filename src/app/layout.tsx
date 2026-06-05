@@ -4,6 +4,8 @@ import "./globals.css";
 import { getSettings } from "@/lib/settings";
 import { buildMetadata } from "@/lib/seo";
 import { Analytics } from "@/components/site/Analytics";
+import { ToastProvider } from "@/components/ui/Toast";
+import { PwaController } from "@/components/pwa/PwaController";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,7 +41,8 @@ export default async function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        <ToastProvider>{children}</ToastProvider>
+        <PwaController />
         <Analytics settings={settings} />
       </body>
     </html>
