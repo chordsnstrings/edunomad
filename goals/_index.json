@@ -1426,11 +1426,11 @@
         "G084"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G087-vfs-appointment-booking-link-integration.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1442,11 +1442,11 @@
         "G087"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G088-biometrics-completion-tracking.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1458,11 +1458,11 @@
         "G087"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G089-visa-application-submission-via-official-channel.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1474,11 +1474,11 @@
         "G089"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G090-per-destination-visa-status-tracker---ircc-daily-check.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1490,11 +1490,11 @@
         "G090"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G091-visa-decision-handling---approved.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1506,11 +1506,11 @@
         "G090"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G092-visa-decision-handling---refused.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1522,11 +1522,11 @@
         "G090"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G093-visa-additional-documents-request-handling.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1538,11 +1538,11 @@
         "G090"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G094-passport-return-tracking.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:29:25.279Z",
+      "completed_at": "2026-06-05T19:29:25.279Z",
       "blocker_reason": null,
       "blocked_at": null
     },

@@ -21,6 +21,7 @@ export default async function OperationsLayout({ children }: { children: React.R
               <Link href="/operations/replies" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Replies</Link>
               <Link href="/operations/sla" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">SLA</Link>
               <Link href="/operations/forms" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Forms</Link>
+              <Link href="/operations/visa-status" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Visa status</Link>
               {session.role === "operations_manager" && (
                 <Link href="/operations/approvals" className="rounded-lg px-2 py-1 text-ink/70 hover:bg-subtle">Approvals</Link>
               )}
