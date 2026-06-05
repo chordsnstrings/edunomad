@@ -224,11 +224,11 @@
         "G005"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G013-whatsapp-cloud-api-integration---mocked-initially.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:47:09.575Z",
+      "completed_at": "2026-06-05T13:47:09.575Z",
       "blocker_reason": null,
       "blocked_at": null
     },
