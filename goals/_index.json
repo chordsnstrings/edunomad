@@ -1088,11 +1088,11 @@
         "G064"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G066-conditional-offer-+-conditions-tracker.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:05:05.607Z",
+      "completed_at": "2026-06-05T16:05:05.607Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1104,11 +1104,11 @@
         "G064"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G067-offer-letter-document-handling-+-student-review.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:05:05.607Z",
+      "completed_at": "2026-06-05T16:05:05.607Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1120,11 +1120,11 @@
         "G067"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G068-student-offer-accept---decline-ui.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T16:05:05.607Z",
+      "completed_at": "2026-06-05T16:05:05.607Z",
       "blocker_reason": null,
       "blocked_at": null
     },

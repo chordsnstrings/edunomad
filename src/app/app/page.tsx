@@ -76,8 +76,8 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
         <Link href="/app/documents" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
           Documents
         </Link>
-        <Link href="/eligibility" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
-          Browse matches
+        <Link href="/app/offers" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
+          Offers
         </Link>
       </div>
     </div>

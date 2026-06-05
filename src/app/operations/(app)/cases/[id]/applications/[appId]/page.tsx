@@ -6,7 +6,7 @@ import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { getLatestDocuments } from "@/lib/documents";
 import { decryptSecret } from "@/lib/crypto-vault";
-import { packageAction, storeCredentialAction, submitAction } from "./actions";
+import { packageAction, storeCredentialAction, submitAction, saveOfferAction } from "./actions";
 
 export const metadata: Metadata = { title: "Submit application", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -106,6 +106,18 @@ export default async function Page({ params, searchParams }: { params: Promise<{
               </form>
             </div>
           )}
+        </section>
+      )}
+
+      {app.decisionStatus?.startsWith("offer") && (
+        <section className="mt-6">
+          <h2 className="mb-2 text-sm font-semibold text-navy">Offer — letter &amp; conditions</h2>
+          <form action={saveOfferAction} className="space-y-2 rounded-xl border border-line bg-white p-4">
+            <input type="hidden" name="appId" value={appId} /><input type="hidden" name="caseId" value={id} />
+            <input name="offerUrl" defaultValue={app.offerUrl ?? ""} placeholder="Offer letter URL" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+            <textarea name="conditions" defaultValue={((app.conditions as string[] | null) ?? []).join("\n")} rows={4} placeholder="One condition per line (for conditional offers)" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+            <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Save offer details</button>
+          </form>
         </section>
       )}
     </div>

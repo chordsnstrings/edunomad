@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { packageApplication, submitApplication } from "@/lib/submission";
 import { encryptSecret } from "@/lib/crypto-vault";
+import { Prisma } from "@prisma/client";
 
 async function ops() {
   const s = await getCurrentSession();
@@ -29,6 +30,19 @@ export async function storeCredentialAction(formData: FormData) {
     where: { institutionId },
     create: { institutionId, portalUrl: String(formData.get("portalUrl") ?? ""), username: String(formData.get("username") ?? ""), passwordEnc: encryptSecret(String(formData.get("password") ?? "")) },
     update: { portalUrl: String(formData.get("portalUrl") ?? ""), username: String(formData.get("username") ?? ""), passwordEnc: encryptSecret(String(formData.get("password") ?? "")) },
+  });
+  redirect(`/operations/cases/${caseId}/applications/${appId}`);
+}
+
+export async function saveOfferAction(formData: FormData) {
+  await ops();
+  const appId = String(formData.get("appId"));
+  const caseId = String(formData.get("caseId"));
+  const offerUrl = String(formData.get("offerUrl") ?? "").trim() || null;
+  const conditions = String(formData.get("conditions") ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
+  await prisma.application.update({
+    where: { id: appId },
+    data: { offerUrl, conditions: conditions as unknown as Prisma.InputJsonValue },
   });
   redirect(`/operations/cases/${caseId}/applications/${appId}`);
 }
