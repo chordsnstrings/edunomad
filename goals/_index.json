@@ -273,11 +273,11 @@
         "G015"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G016-offline-support---sop-content-+-draft-documents.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T14:56:13.778Z",
+      "completed_at": "2026-06-05T14:56:13.778Z",
       "blocker_reason": null,
       "blocked_at": null
     },

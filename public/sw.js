@@ -29,6 +29,23 @@ self.addEventListener("fetch", (event) => {
   // Never cache admin or API responses.
   if (url.pathname.startsWith("/admin") || url.pathname.startsWith("/api")) return;
 
+  // SOP content — stale-while-revalidate so it stays readable offline (G016).
+  if (url.pathname.startsWith("/sop")) {
+    event.respondWith(
+      caches.open(CACHE).then(async (cache) => {
+        const cached = await cache.match(request);
+        const network = fetch(request)
+          .then((res) => {
+            cache.put(request, res.clone()).catch(() => {});
+            return res;
+          })
+          .catch(() => cached);
+        return cached || network;
+      }),
+    );
+    return;
+  }
+
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)

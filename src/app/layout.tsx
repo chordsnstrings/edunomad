@@ -6,6 +6,7 @@ import { buildMetadata } from "@/lib/seo";
 import { Analytics } from "@/components/site/Analytics";
 import { ToastProvider } from "@/components/ui/Toast";
 import { PwaController } from "@/components/pwa/PwaController";
+import { SyncManager } from "@/components/pwa/SyncManager";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -41,7 +42,10 @@ export default async function RootLayout({
         >
           Skip to content
         </a>
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          {children}
+          <SyncManager />
+        </ToastProvider>
         <PwaController />
         <Analytics settings={settings} />
       </body>
