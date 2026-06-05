@@ -183,6 +183,43 @@ model User {
   @@index([tenant, tenantId])
 }
 
+enum SourceCountry {
+  BD
+  IN
+  NP
+}
+
+/// W1 — the student/customer. Profile fields are JSON, filled by the builder.
+model Student {
+  id                   String        @id @default(uuid())
+  userId               String?       @unique
+  tenantId             String
+  fullName             String?
+  phone                String        @unique
+  email                String?
+  language             Language      @default(en)
+  sourceCountry        SourceCountry @default(BD)
+  sourceAttribution    Json?
+  dateOfBirth          DateTime?
+  academic             Json?
+  englishProficiency   Json?
+  destinations         Json?
+  fieldOfStudy         String?
+  fieldCategory        String?
+  budgetMinUsd         Int?
+  budgetMaxUsd         Int?
+  fundingSource        String?
+  intakeTarget         Json?
+  completenessPct      Int           @default(0)
+  assignedCounsellorId String?
+  leadScore            Int           @default(0)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([tenantId])
+  @@index([assignedCounsellorId])
+}
+
 enum ActorType {
   student
   parent

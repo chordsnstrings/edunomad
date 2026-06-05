@@ -1,6 +1,7 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
+import { SourceAttribution } from "@/components/site/SourceAttribution";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { getSiteContext } from "@/lib/context";
 import {
@@ -25,6 +26,7 @@ export default async function SiteLayout({
           serviceJsonLd(settings),
         ]}
       />
+      <SourceAttribution />
       <Header />
       <main id="main" className="flex-1">
         {children}

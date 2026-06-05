@@ -323,11 +323,11 @@
         "G015"
       ],
       "size": "S",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G019-landing-page-with-source-attribution.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T14:58:33.970Z",
+      "completed_at": "2026-06-05T14:58:33.970Z",
       "blocker_reason": null,
       "blocked_at": null
     },
