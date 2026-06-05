@@ -1748,11 +1748,11 @@
         "G103"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G107-payment-approval-modal---parent-flow.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:42:35.651Z",
+      "completed_at": "2026-06-05T19:42:35.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },
@@ -1764,11 +1764,11 @@
         "G107"
       ],
       "size": "L",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G108-payment-gateway-integrations---bkash-nagad-ssl-card-bank-tra.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T19:42:35.651Z",
+      "completed_at": "2026-06-05T19:42:35.651Z",
       "blocker_reason": null,
       "blocked_at": null
     },

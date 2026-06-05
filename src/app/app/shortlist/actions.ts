@@ -33,5 +33,10 @@ export async function lockShortlistAction() {
     channels: { in_app: true, push: true },
     payload: { count },
   });
+  // Raise the service-fee invoice (payable by the student or an invited parent).
+  const hasInvoice = await prisma.invoice.findFirst({ where: { studentId: student.id, purpose: "EduNomad service fee" } });
+  if (!hasInvoice) {
+    await prisma.invoice.create({ data: { studentId: student.id, amountLocal: 25000, currency: "BDT", amountUsd: 230, purpose: "EduNomad service fee" } });
+  }
   redirect("/app/shortlist?locked=1");
 }

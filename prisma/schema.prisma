@@ -553,6 +553,62 @@ model InstitutionCredential {
   updatedAt     DateTime @updatedAt
 }
 
+enum InvoiceStatus {
+  issued
+  paid
+  partially_paid
+  void
+  refunded
+}
+
+enum PaymentMethod {
+  bkash
+  nagad
+  ssl
+  card
+  bank_transfer
+}
+
+enum PaymentStatus {
+  initiated
+  succeeded
+  failed
+  refunded
+}
+
+/// W4 — an invoice raised against a student (service fee, deposit, GIC referral…).
+model Invoice {
+  id          String        @id @default(uuid())
+  studentId   String
+  amountLocal Int
+  currency    String        @default("BDT")
+  amountUsd   Int
+  purpose     String
+  dueDate     DateTime?
+  status      InvoiceStatus @default(issued)
+  createdAt   DateTime      @default(now())
+  payments    Payment[]
+
+  @@index([studentId])
+}
+
+/// W4 — a payment against an invoice (platform gateways only — §1.11).
+model Payment {
+  id               String        @id @default(uuid())
+  invoiceId        String
+  amountLocal      Int
+  currency         String        @default("BDT")
+  method           PaymentMethod
+  externalRef      String?
+  status           PaymentStatus @default(initiated)
+  approvedByUserId String?
+  processedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  invoice          Invoice       @relation(fields: [invoiceId], references: [id])
+
+  @@index([invoiceId])
+}
+
 enum ParentInviteStatus {
   sent
   accepted
