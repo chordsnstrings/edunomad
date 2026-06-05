@@ -3,8 +3,10 @@ import { Container } from "@/components/ui/Container";
 import { buttonClasses } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { CountrySwitcher } from "./CountrySwitcher";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { getSiteContext } from "@/lib/context";
+import { detectLocale } from "@/i18n/locale";
 
 const NAV = [
   { label: "Why EduNomad", href: "/#features" },
@@ -15,6 +17,7 @@ const NAV = [
 
 export async function Header() {
   const { settings, contact, countries, isOverride } = await getSiteContext();
+  const locale = await detectLocale();
   const options = countries.map((c) => ({ code: c.countryCode, name: c.countryName }));
 
   return (
@@ -41,6 +44,7 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher current={locale} />
           <CountrySwitcher
             countries={options}
             currentCode={contact.countryCode}

@@ -175,11 +175,11 @@
         "G001"
       ],
       "size": "M",
-      "status": "not_started",
+      "status": "done",
       "owner": "claude_code",
       "filename": "G010-i18n-setup---en-bn-hi-ne-with-icu.md",
-      "started_at": null,
-      "completed_at": null,
+      "started_at": "2026-06-05T13:39:35.500Z",
+      "completed_at": "2026-06-05T13:39:35.500Z",
       "blocker_reason": null,
       "blocked_at": null
     },
