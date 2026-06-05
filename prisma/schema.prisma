@@ -1,0 +1,111 @@
+// EduNomad — Prisma schema
+// Postgres is the system of record (see CLAUDE.md §1.3 and docs/00-stack-decisions.md).
+// To use a managed Postgres (Neon / Supabase / RDS) just change DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Singleton row holding every company-specific, admin-editable setting.
+/// There is always exactly one row, with id = "singleton".
+model SiteSettings {
+  id String @id @default("singleton")
+
+  // ── Brand ───────────────────────────────────────────────
+  companyName      String  @default("EduNomad")
+  legalName        String  @default("EduNomad Ltd.")
+  tagline          String  @default("Study abroad, simplified.")
+  shortDescription String  @default("EduNomad helps students apply to universities abroad and complete the full journey to visa approval and arrival.")
+  longDescription  String  @default("") @db.Text
+  logoText         String  @default("EduNomad")
+  logoUrl          String?
+  faviconUrl       String?
+  foundingYear     Int     @default(2024)
+
+  // ── Default / global contact (fallback when no country match) ──
+  defaultCountryCode String @default("BD") // ISO-3166 alpha-2
+  defaultPhone       String @default("+880 1700 000000")
+  defaultWhatsapp    String @default("+880 1700 000000")
+  email              String @default("hello@edunomad.app")
+  supportEmail       String @default("support@edunomad.app")
+  addressLine        String @default("Level 5, Gulshan Avenue")
+  city               String @default("Dhaka")
+  stateRegion        String @default("Dhaka")
+  postalCode         String @default("1212")
+  country            String @default("Bangladesh")
+  mapUrl             String?
+  businessHours      String @default("Sun–Thu, 10:00–18:00")
+
+  // ── Social ──────────────────────────────────────────────
+  facebookUrl          String?
+  instagramUrl         String?
+  linkedinUrl          String?
+  youtubeUrl           String?
+  twitterUrl           String?
+  tiktokUrl            String?
+  whatsappCommunityUrl String?
+
+  // ── SEO ─────────────────────────────────────────────────
+  siteUrl         String  @default("https://edunomad.app") // canonical base URL
+  metaTitle       String  @default("EduNomad — Study abroad, simplified.")
+  metaDescription String  @default("Apply to universities in Canada, the UK, Australia and Malaysia with expert counsellors. Documents, applications, GIC and visa — handled end to end.") @db.Text
+  metaKeywords    String  @default("study abroad, student visa, university applications, study in canada, education consultant")
+  ogImageUrl      String?
+  twitterHandle   String  @default("@edunomad")
+  themeColor      String  @default("#0B1A2E")
+
+  // ── LLM SEO (llms.txt) ──────────────────────────────────
+  llmsSummary String @default("") @db.Text
+
+  // ── Analytics ───────────────────────────────────────────
+  gaMeasurementId String? // G-XXXXXXX
+  gtmId           String? // GTM-XXXXXXX
+  plausibleDomain String?
+  metaPixelId     String?
+
+  // ── Feature toggles ─────────────────────────────────────
+  showFloatingWhatsapp Boolean @default(true)
+  showFloatingCall     Boolean @default(true)
+  geoEnabled           Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Per-country contact numbers. The visitor's country (from IP / headers /
+/// override) selects the row; falls back to SiteSettings defaults when absent.
+model CountryContact {
+  id          String  @id @default(cuid())
+  countryCode String  @unique // ISO-3166 alpha-2, e.g. BD, IN, NP, CA
+  countryName String
+  flagEmoji   String  @default("")
+  whatsapp    String // E.164, e.g. +8801700000000
+  phone       String // E.164
+  displayName String  @default("") // e.g. "Dhaka Office"
+  languages   String  @default("en") // comma list for hreflang / availableLanguage
+  note        String  @default("")
+  enabled     Boolean @default(true)
+  sortOrder   Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([enabled, sortOrder])
+}
+
+/// Admin accounts for the settings panel. This is a focused stand-in for the
+/// full phone-OTP + RBAC system described in CLAUDE.md §6/§11 (goals G006-G011).
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String   @default("Administrator")
+  passwordHash String
+  role         String   @default("super_admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

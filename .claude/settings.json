@@ -1,0 +1,64 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Glob",
+      "Grep",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pnpm:*)",
+      "Bash(yarn:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(sed:*)",
+      "Bash(awk:*)",
+      "Bash(jq:*)",
+      "Bash(psql:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(pwd)",
+      "Bash(test:*)",
+      "WebSearch",
+      "WebFetch(https://docs.anthropic.com/*)",
+      "WebFetch(https://nextjs.org/*)",
+      "WebFetch(https://www.postgresql.org/*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777*)",
+      "Read(./**/.env*)",
+      "Read(./**/secrets/**)",
+      "Read(./**/credentials/**)",
+      "Read(./**/*.pem)",
+      "Read(./**/*.key)",
+      "WebFetch(http://*)"
+    ]
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash scripts/setup-db.sh" }
+        ]
+      }
+    ]
+  }
+}

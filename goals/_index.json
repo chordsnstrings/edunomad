@@ -1,0 +1,3045 @@
+{
+  "version": 1,
+  "total_goals": 188,
+  "workflows": {
+    "W0": "Foundations",
+    "W1": "Student onboarding through shortlist lock",
+    "W2": "Application packaging through submission",
+    "W3": "Visa file preparation, sign-off, submission",
+    "W4": "Parent visibility and financial approval",
+    "W5": "Counsellor Manager day-to-day",
+    "W6": "SOP authoring and publishing",
+    "W7": "Compliance audit trail and incident response",
+    "CC": "Cross-cutting platform"
+  },
+  "size_legend": {
+    "XS": "\u2264 1 hour",
+    "S": "1-4 hours",
+    "M": "4 hours - 1 day",
+    "L": "1-3 days"
+  },
+  "status_legend": [
+    "not_started",
+    "in_progress",
+    "blocked",
+    "done"
+  ],
+  "goals": [
+    {
+      "id": "G001",
+      "title": "Repo scaffold with chosen stack",
+      "workflow": "W0",
+      "deps": [],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G001-repo-scaffold-with-chosen-stack.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G002",
+      "title": "Postgres setup with chosen ORM",
+      "workflow": "W0",
+      "deps": [
+        "G001"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G002-postgres-setup-with-chosen-orm.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G003",
+      "title": "PWA manifest and service worker scaffold",
+      "workflow": "W0",
+      "deps": [
+        "G001"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G003-pwa-manifest-and-service-worker-scaffold.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G004",
+      "title": "Multi-tenant data model \u2014 User, tenant scoping",
+      "workflow": "W0",
+      "deps": [
+        "G002"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G004-multi-tenant-data-model---user-tenant-scoping.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G005",
+      "title": "Event table + emit helper + chain hash",
+      "workflow": "W0",
+      "deps": [
+        "G002"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G005-event-table-+-emit-helper-+-chain-hash.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G006",
+      "title": "RBAC middleware \u2014 server-side enforcement",
+      "workflow": "W0",
+      "deps": [
+        "G004"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G006-rbac-middleware---server-side-enforcement.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G007",
+      "title": "AuditLog entity + hash chain",
+      "workflow": "W0",
+      "deps": [
+        "G002"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G007-auditlog-entity-+-hash-chain.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G008",
+      "title": "Phone OTP auth \u2014 send + verify",
+      "workflow": "W0",
+      "deps": [
+        "G004"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G008-phone-otp-auth---send-+-verify.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G009",
+      "title": "Session management + idle timeout",
+      "workflow": "W0",
+      "deps": [
+        "G008"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G009-session-management-+-idle-timeout.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G010",
+      "title": "i18n setup \u2014 EN/BN/HI/NE with ICU",
+      "workflow": "W0",
+      "deps": [
+        "G001"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G010-i18n-setup---en-bn-hi-ne-with-icu.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G011",
+      "title": "2FA for internal roles (Compliance + Super Admin mandatory)",
+      "workflow": "W0",
+      "deps": [
+        "G008"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G011-2fa-for-internal-roles-compliance-+-super-admin-mandatory.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G012",
+      "title": "Web Push notifications with quiet hours",
+      "workflow": "W0",
+      "deps": [
+        "G003",
+        "G005"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G012-web-push-notifications-with-quiet-hours.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G013",
+      "title": "WhatsApp Cloud API integration \u2014 mocked initially",
+      "workflow": "W0",
+      "deps": [
+        "G005"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G013-whatsapp-cloud-api-integration---mocked-initially.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G014",
+      "title": "Object storage + signed URLs for documents",
+      "workflow": "W0",
+      "deps": [
+        "G001"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G014-object-storage-+-signed-urls-for-documents.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G015",
+      "title": "Brand baseline \u2014 colours, typography, base components",
+      "workflow": "W0",
+      "deps": [
+        "G001"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G015-brand-baseline---colours-typography-base-components.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G016",
+      "title": "Offline support \u2014 SOP content + draft documents",
+      "workflow": "W0",
+      "deps": [
+        "G003",
+        "G015"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G016-offline-support---sop-content-+-draft-documents.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G017",
+      "title": "Event template rendering with i18n",
+      "workflow": "W0",
+      "deps": [
+        "G005",
+        "G010"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G017-event-template-rendering-with-i18n.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G018",
+      "title": "Activity feed query + visibility filtering",
+      "workflow": "W0",
+      "deps": [
+        "G005",
+        "G006"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G018-activity-feed-query-+-visibility-filtering.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G019",
+      "title": "Landing page with source attribution",
+      "workflow": "W1",
+      "deps": [
+        "G015"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G019-landing-page-with-source-attribution.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G020",
+      "title": "Student signup \u2014 phone OTP + welcome",
+      "workflow": "W1",
+      "deps": [
+        "G008",
+        "G019"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G020-student-signup---phone-otp-+-welcome.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G021",
+      "title": "Profile builder step 1 \u2014 academic background",
+      "workflow": "W1",
+      "deps": [
+        "G020",
+        "G018"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G021-profile-builder-step-1---academic-background.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G022",
+      "title": "Profile builder step 2 \u2014 English proficiency",
+      "workflow": "W1",
+      "deps": [
+        "G021"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G022-profile-builder-step-2---english-proficiency.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G023",
+      "title": "Profile builder step 3 \u2014 destinations ranked",
+      "workflow": "W1",
+      "deps": [
+        "G022"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G023-profile-builder-step-3---destinations-ranked.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G024",
+      "title": "Profile builder step 4 \u2014 field of study",
+      "workflow": "W1",
+      "deps": [
+        "G023"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G024-profile-builder-step-4---field-of-study.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G025",
+      "title": "Profile builder step 5 \u2014 budget",
+      "workflow": "W1",
+      "deps": [
+        "G024"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G025-profile-builder-step-5---budget.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G026",
+      "title": "Profile builder step 6 \u2014 intake target + completeness computation",
+      "workflow": "W1",
+      "deps": [
+        "G025"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G026-profile-builder-step-6---intake-target-+-completeness-comput.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G027",
+      "title": "Eligibility match engine",
+      "workflow": "W1",
+      "deps": [
+        "G026",
+        "G002"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G027-eligibility-match-engine.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G028",
+      "title": "Eligibility result screen \u2014 tabs and cost summary",
+      "workflow": "W1",
+      "deps": [
+        "G027"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G028-eligibility-result-screen---tabs-and-cost-summary.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G029",
+      "title": "Counsellor routing engine + auto-assign",
+      "workflow": "W1",
+      "deps": [
+        "G026",
+        "G018"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G029-counsellor-routing-engine-+-auto-assign.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G030",
+      "title": "Counsellor assignment screen for student",
+      "workflow": "W1",
+      "deps": [
+        "G029"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G030-counsellor-assignment-screen-for-student.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G031",
+      "title": "Counsellor inbox \u2014 list view with tabs",
+      "workflow": "W1",
+      "deps": [
+        "G029",
+        "G006"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G031-counsellor-inbox---list-view-with-tabs.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G032",
+      "title": "Counsellor lead detail view with SOP right rail",
+      "workflow": "W1",
+      "deps": [
+        "G031"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G032-counsellor-lead-detail-view-with-sop-right-rail.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G033",
+      "title": "WhatsApp greeting template insert + send",
+      "workflow": "W1",
+      "deps": [
+        "G013",
+        "G032"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G033-whatsapp-greeting-template-insert-+-send.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G034",
+      "title": "Calendar booker \u2014 schedule call with student",
+      "workflow": "W1",
+      "deps": [
+        "G032"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G034-calendar-booker---schedule-call-with-student.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G035",
+      "title": "Integrated dialer with call recording + transcription",
+      "workflow": "W1",
+      "deps": [
+        "G034"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G035-integrated-dialer-with-call-recording-+-transcription.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G036",
+      "title": "SOP intro script + 10 qualification questions panel",
+      "workflow": "W1",
+      "deps": [
+        "G035"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G036-sop-intro-script-+-10-qualification-questions-panel.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G037",
+      "title": "SOP objections panel \u2014 keyword search + insert",
+      "workflow": "W1",
+      "deps": [
+        "G035"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G037-sop-objections-panel---keyword-search-+-insert.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G038",
+      "title": "Compliance keyword guards \u2014 real-time on counsellor messages",
+      "workflow": "W1",
+      "deps": [
+        "G013",
+        "G033"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G038-compliance-keyword-guards---real-time-on-counsellor-messages.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G039",
+      "title": "Per-student personalised document checklist generator",
+      "workflow": "W1",
+      "deps": [
+        "G026"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G039-per-student-personalised-document-checklist-generator.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G040",
+      "title": "Student document vault \u2014 list with upload status",
+      "workflow": "W1",
+      "deps": [
+        "G039",
+        "G014"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G040-student-document-vault---list-with-upload-status.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G041",
+      "title": "Document upload \u2014 mobile camera + auto-crop",
+      "workflow": "W1",
+      "deps": [
+        "G040"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G041-document-upload---mobile-camera-+-auto-crop.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G042",
+      "title": "Automatic doc first-pass check \u2014 legibility + name OCR",
+      "workflow": "W1",
+      "deps": [
+        "G041"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G042-automatic-doc-first-pass-check---legibility-+-name-ocr.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G043",
+      "title": "Shortlist builder UI \u2014 add/remove programmes",
+      "workflow": "W1",
+      "deps": [
+        "G028"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G043-shortlist-builder-ui---add-remove-programmes.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G044",
+      "title": "Shortlist counsellor co-edit view",
+      "workflow": "W1",
+      "deps": [
+        "G043"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G044-shortlist-counsellor-co-edit-view.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G045",
+      "title": "Shortlist lock \u2014 quality gate",
+      "workflow": "W1",
+      "deps": [
+        "G043"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G045-shortlist-lock---quality-gate.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G046",
+      "title": "Student status timeline (9-stage)",
+      "workflow": "W1",
+      "deps": [
+        "G018"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G046-student-status-timeline-9-stage.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G047",
+      "title": "Student activity feed",
+      "workflow": "W1",
+      "deps": [
+        "G018"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G047-student-activity-feed.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G048",
+      "title": "Lead score computation + display",
+      "workflow": "W1",
+      "deps": [
+        "G026"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G048-lead-score-computation-+-display.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G049",
+      "title": "Counsellor outcome tagging + WhatsApp summary template",
+      "workflow": "W1",
+      "deps": [
+        "G035",
+        "G033"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G049-counsellor-outcome-tagging-+-whatsapp-summary-template.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G050",
+      "title": "Counsellor Manager team heatmap dashboard (basic)",
+      "workflow": "W1",
+      "deps": [
+        "G031"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G050-counsellor-manager-team-heatmap-dashboard-basic.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G051",
+      "title": "Operations work queue \u2014 locked shortlists arrive",
+      "workflow": "W2",
+      "deps": [
+        "G045",
+        "G006"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G051-operations-work-queue---locked-shortlists-arrive.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G052",
+      "title": "Per-case view \u2014 pre-packaging audit",
+      "workflow": "W2",
+      "deps": [
+        "G051"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G052-per-case-view---pre-packaging-audit.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G053",
+      "title": "Document QA tool \u2014 30-item rubric per type",
+      "workflow": "W2",
+      "deps": [
+        "G052"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G053-document-qa-tool---30-item-rubric-per-type.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G054",
+      "title": "Doc rework WhatsApp \u2014 one-tap send",
+      "workflow": "W2",
+      "deps": [
+        "G053",
+        "G013"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G054-doc-rework-whatsapp---one-tap-send.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G055",
+      "title": "SOP polish screen with Claude API integration",
+      "workflow": "W2",
+      "deps": [
+        "G052"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G055-sop-polish-screen-with-claude-api-integration.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G056",
+      "title": "SOP plagiarism gate",
+      "workflow": "W2",
+      "deps": [
+        "G055"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G056-sop-plagiarism-gate.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G057",
+      "title": "SOP lock + version history",
+      "workflow": "W2",
+      "deps": [
+        "G055"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G057-sop-lock-+-version-history.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G058",
+      "title": "Per-uni packaging tool \u2014 drag-drop assembler",
+      "workflow": "W2",
+      "deps": [
+        "G052"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G058-per-uni-packaging-tool---drag-drop-assembler.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G059",
+      "title": "Tier 1 email submission gateway",
+      "workflow": "W2",
+      "deps": [
+        "G058"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G059-tier-1-email-submission-gateway.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G060",
+      "title": "Tier 2 portal credential vault \u2014 encrypted store + open-and-submit flow",
+      "workflow": "W2",
+      "deps": [
+        "G014"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G060-tier-2-portal-credential-vault---encrypted-store-+-open-and.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G061",
+      "title": "Tier 3 API submission (stubbed)",
+      "workflow": "W2",
+      "deps": [
+        "G058"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G061-tier-3-api-submission-stubbed.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G062",
+      "title": "Submission proof gate",
+      "workflow": "W2",
+      "deps": [
+        "G059",
+        "G060",
+        "G061"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G062-submission-proof-gate.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G063",
+      "title": "Inbound email parser \u2014 reference_id matching",
+      "workflow": "W2",
+      "deps": [
+        "G059"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G063-inbound-email-parser---reference_id-matching.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G064",
+      "title": "Operations 'new replies' inbox with manual classification",
+      "workflow": "W2",
+      "deps": [
+        "G063"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G064-operations-new-replies-inbox-with-manual-classification.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G065",
+      "title": "Application status events emit + downstream notifications",
+      "workflow": "W2",
+      "deps": [
+        "G064"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G065-application-status-events-emit-+-downstream-notifications.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G066",
+      "title": "Conditional offer + conditions tracker",
+      "workflow": "W2",
+      "deps": [
+        "G064"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G066-conditional-offer-+-conditions-tracker.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G067",
+      "title": "Offer letter document handling + student review",
+      "workflow": "W2",
+      "deps": [
+        "G064"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G067-offer-letter-document-handling-+-student-review.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G068",
+      "title": "Student offer accept / decline UI",
+      "workflow": "W2",
+      "deps": [
+        "G067"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G068-student-offer-accept---decline-ui.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G069",
+      "title": "Operations Manager \u2014 application approvals queue",
+      "workflow": "W2",
+      "deps": [
+        "G053"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G069-operations-manager---application-approvals-queue.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G070",
+      "title": "Application timeline view (per application)",
+      "workflow": "W2",
+      "deps": [
+        "G046"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G070-application-timeline-view-per-application.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G071",
+      "title": "University SLA tracker",
+      "workflow": "W2",
+      "deps": [
+        "G059"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G071-university-sla-tracker.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G072",
+      "title": "Document version control on re-upload",
+      "workflow": "W2",
+      "deps": [
+        "G041"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G072-document-version-control-on-re-upload.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G073",
+      "title": "Visa file auto-creation trigger",
+      "workflow": "W3",
+      "deps": [
+        "G068"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G073-visa-file-auto-creation-trigger.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G074",
+      "title": "Forms repository in app \u2014 per regulator current versions",
+      "workflow": "W3",
+      "deps": [
+        "G014"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G074-forms-repository-in-app---per-regulator-current-versions.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G075",
+      "title": "Visa file builder \u2014 Tier B PDF upload + completeness check",
+      "workflow": "W3",
+      "deps": [
+        "G073",
+        "G074"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G075-visa-file-builder---tier-b-pdf-upload-+-completeness-check.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G076",
+      "title": "Photo cropper for visa photos with per-destination spec",
+      "workflow": "W3",
+      "deps": [
+        "G075"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G076-photo-cropper-for-visa-photos-with-per-destination-spec.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G077",
+      "title": "Sponsor declaration template + form-fill",
+      "workflow": "W3",
+      "deps": [
+        "G075"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G077-sponsor-declaration-template-+-form-fill.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G078",
+      "title": "GIC certificate upload + name/amount validation",
+      "workflow": "W3",
+      "deps": [
+        "G075"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G078-gic-certificate-upload-+-name-amount-validation.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G079",
+      "title": "Per-country checklist regulatory updates flow",
+      "workflow": "W3",
+      "deps": [
+        "G074"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G079-per-country-checklist-regulatory-updates-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G080",
+      "title": "Pre-Compliance audit queue (Operations Manager)",
+      "workflow": "W3",
+      "deps": [
+        "G075"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G080-pre-compliance-audit-queue-operations-manager.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G081",
+      "title": "Cross-document consistency checker",
+      "workflow": "W3",
+      "deps": [
+        "G075"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G081-cross-document-consistency-checker.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G082",
+      "title": "Misrepresentation flag detector \u2014 surface to Compliance",
+      "workflow": "W3",
+      "deps": [
+        "G081"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G082-misrepresentation-flag-detector---surface-to-compliance.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G083",
+      "title": "Compliance sign-off UI \u2014 full file view",
+      "workflow": "W3",
+      "deps": [
+        "G080",
+        "G011"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G083-compliance-sign-off-ui---full-file-view.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G084",
+      "title": "Compliance sign-off action \u2014 re-auth + stamping",
+      "workflow": "W3",
+      "deps": [
+        "G083"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G084-compliance-sign-off-action---re-auth-+-stamping.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G085",
+      "title": "Compliance return-with-changes flow",
+      "workflow": "W3",
+      "deps": [
+        "G083"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G085-compliance-return-with-changes-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G086",
+      "title": "Compliance refusal-to-sign protocol",
+      "workflow": "W3",
+      "deps": [
+        "G083"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G086-compliance-refusal-to-sign-protocol.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G087",
+      "title": "VFS appointment booking link integration",
+      "workflow": "W3",
+      "deps": [
+        "G084"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G087-vfs-appointment-booking-link-integration.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G088",
+      "title": "Biometrics completion tracking",
+      "workflow": "W3",
+      "deps": [
+        "G087"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G088-biometrics-completion-tracking.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G089",
+      "title": "Visa application submission via official channel",
+      "workflow": "W3",
+      "deps": [
+        "G087"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G089-visa-application-submission-via-official-channel.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G090",
+      "title": "Per-destination visa status tracker \u2014 IRCC daily check",
+      "workflow": "W3",
+      "deps": [
+        "G089"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G090-per-destination-visa-status-tracker---ircc-daily-check.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G091",
+      "title": "Visa decision handling \u2014 approved",
+      "workflow": "W3",
+      "deps": [
+        "G090"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G091-visa-decision-handling---approved.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G092",
+      "title": "Visa decision handling \u2014 refused",
+      "workflow": "W3",
+      "deps": [
+        "G090"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G092-visa-decision-handling---refused.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G093",
+      "title": "Visa additional documents request handling",
+      "workflow": "W3",
+      "deps": [
+        "G090"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G093-visa-additional-documents-request-handling.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G094",
+      "title": "Passport return tracking",
+      "workflow": "W3",
+      "deps": [
+        "G090"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G094-passport-return-tracking.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G095",
+      "title": "Regulatory bulletin board (Compliance authoring)",
+      "workflow": "W3",
+      "deps": [],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G095-regulatory-bulletin-board-compliance-authoring.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G096",
+      "title": "Regulator notification flow \u2014 misrepresentation post-sign-off",
+      "workflow": "W3",
+      "deps": [
+        "G082"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G096-regulator-notification-flow---misrepresentation-post-sign-of.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G097",
+      "title": "Visa file dossier export \u2014 regulator-ready PDF",
+      "workflow": "W3",
+      "deps": [
+        "G083"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G097-visa-file-dossier-export---regulator-ready-pdf.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G098",
+      "title": "Counsellor Manager override of routing",
+      "workflow": "W3",
+      "deps": [
+        "G029"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G098-counsellor-manager-override-of-routing.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G099",
+      "title": "RCIC/MARA registration profile per Compliance user",
+      "workflow": "W3",
+      "deps": [
+        "G083"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G099-rcic-mara-registration-profile-per-compliance-user.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G100",
+      "title": "Visa file audit log per-file view",
+      "workflow": "W3",
+      "deps": [
+        "G007",
+        "G083"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G100-visa-file-audit-log-per-file-view.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G101",
+      "title": "Parent invite send from student",
+      "workflow": "W4",
+      "deps": [
+        "G013"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G101-parent-invite-send-from-student.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G102",
+      "title": "Parent invite accept flow \u2014 PIN + OTP",
+      "workflow": "W4",
+      "deps": [
+        "G101"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G102-parent-invite-accept-flow---pin-+-otp.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G103",
+      "title": "Parent dashboard \u2014 single student view",
+      "workflow": "W4",
+      "deps": [
+        "G102",
+        "G046"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G103-parent-dashboard---single-student-view.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G104",
+      "title": "Parent activity feed \u2014 parent-visible events only",
+      "workflow": "W4",
+      "deps": [
+        "G103",
+        "G018"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G104-parent-activity-feed---parent-visible-events-only.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G105",
+      "title": "Parent push notifications + WhatsApp on milestones",
+      "workflow": "W4",
+      "deps": [
+        "G012",
+        "G013"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G105-parent-push-notifications-+-whatsapp-on-milestones.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G106",
+      "title": "Parent daily WhatsApp digest at 18:00 local",
+      "workflow": "W4",
+      "deps": [
+        "G013"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G106-parent-daily-whatsapp-digest-at-1800-local.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G107",
+      "title": "Payment approval modal \u2014 Parent flow",
+      "workflow": "W4",
+      "deps": [
+        "G103"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G107-payment-approval-modal---parent-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G108",
+      "title": "Payment gateway integrations \u2014 bKash, Nagad, SSL, card, bank transfer",
+      "workflow": "W4",
+      "deps": [
+        "G107"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G108-payment-gateway-integrations---bkash-nagad-ssl-card-bank-tra.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G109",
+      "title": "Parent-counsellor chat with auto-translation",
+      "workflow": "W4",
+      "deps": [
+        "G013",
+        "G103"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G109-parent-counsellor-chat-with-auto-translation.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G110",
+      "title": "Parent 'Talk to a manager' escalation",
+      "workflow": "W4",
+      "deps": [
+        "G103"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G110-parent-talk-to-a-manager-escalation.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G111",
+      "title": "Parent FAQ surface \u2014 searchable + auto-suggest",
+      "workflow": "W4",
+      "deps": [
+        "G103"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G111-parent-faq-surface---searchable-+-auto-suggest.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G112",
+      "title": "Parent profile + locale settings",
+      "workflow": "W4",
+      "deps": [
+        "G102"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G112-parent-profile-+-locale-settings.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G113",
+      "title": "Parent complaint filing flow",
+      "workflow": "W4",
+      "deps": [
+        "G103"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G113-parent-complaint-filing-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G114",
+      "title": "Parent app lock + PIN re-enter",
+      "workflow": "W4",
+      "deps": [
+        "G102"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G114-parent-app-lock-+-pin-re-enter.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G115",
+      "title": "CM dashboard \u2014 yesterday's standup screen",
+      "workflow": "W5",
+      "deps": [
+        "G050"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G115-cm-dashboard---yesterdays-standup-screen.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G116",
+      "title": "CM lead routing override interface",
+      "workflow": "W5",
+      "deps": [
+        "G098"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G116-cm-lead-routing-override-interface.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G117",
+      "title": "CM QA review tool \u2014 weighted sampling",
+      "workflow": "W5",
+      "deps": [
+        "G035"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G117-cm-qa-review-tool---weighted-sampling.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G118",
+      "title": "20-point QA rubric integration",
+      "workflow": "W5",
+      "deps": [
+        "G117"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G118-20-point-qa-rubric-integration.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G119",
+      "title": "CM escalation queue with SLA timers per type",
+      "workflow": "W5",
+      "deps": [
+        "G110"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G119-cm-escalation-queue-with-sla-timers-per-type.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G120",
+      "title": "CM 1:1 module \u2014 fixed agenda checklist",
+      "workflow": "W5",
+      "deps": [
+        "G115"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G120-cm-11-module---fixed-agenda-checklist.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G121",
+      "title": "CM PIP template trigger + weekly checkpoints",
+      "workflow": "W5",
+      "deps": [
+        "G118"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G121-cm-pip-template-trigger-+-weekly-checkpoints.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G122",
+      "title": "Refund approval chain \u2014 multi-stage",
+      "workflow": "W5",
+      "deps": [],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G122-refund-approval-chain---multi-stage.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G123",
+      "title": "CM team heatmap \u2014 real-time updates",
+      "workflow": "W5",
+      "deps": [
+        "G115"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G123-cm-team-heatmap---real-time-updates.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G124",
+      "title": "CM per-counsellor scorecard",
+      "workflow": "W5",
+      "deps": [
+        "G118"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G124-cm-per-counsellor-scorecard.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G125",
+      "title": "Counsellor hiring pipeline view (basic)",
+      "workflow": "W5",
+      "deps": [],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G125-counsellor-hiring-pipeline-view-basic.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G126",
+      "title": "Counsellor training session scheduling",
+      "workflow": "W5",
+      "deps": [],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G126-counsellor-training-session-scheduling.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G127",
+      "title": "Counsellor leave + capacity input",
+      "workflow": "W5",
+      "deps": [],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G127-counsellor-leave-+-capacity-input.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G128",
+      "title": "Counsellor performance bands + automated tier compute",
+      "workflow": "W5",
+      "deps": [
+        "G118"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G128-counsellor-performance-bands-+-automated-tier-compute.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G129",
+      "title": "Counsellor reassignment workflow with case context handoff",
+      "workflow": "W5",
+      "deps": [
+        "G116"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G129-counsellor-reassignment-workflow-with-case-context-handoff.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G130",
+      "title": "End-of-day team thread post",
+      "workflow": "W5",
+      "deps": [
+        "G115"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G130-end-of-day-team-thread-post.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G131",
+      "title": "Counsellor-side: my-stats screen",
+      "workflow": "W5",
+      "deps": [
+        "G124"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G131-counsellor-side-my-stats-screen.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G132",
+      "title": "Hot-lead reassignment workflow",
+      "workflow": "W5",
+      "deps": [
+        "G129"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G132-hot-lead-reassignment-workflow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G133",
+      "title": "Voluntary attrition / exit interview log",
+      "workflow": "W5",
+      "deps": [],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G133-voluntary-attrition---exit-interview-log.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G134",
+      "title": "CM-to-EM monthly business review template",
+      "workflow": "W5",
+      "deps": [
+        "G123"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G134-cm-to-em-monthly-business-review-template.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G135",
+      "title": "SOP entity + block storage",
+      "workflow": "W6",
+      "deps": [
+        "G002"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G135-sop-entity-+-block-storage.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G136",
+      "title": "SOP CMS \u2014 list view",
+      "workflow": "W6",
+      "deps": [
+        "G135"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G136-sop-cms---list-view.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G137",
+      "title": "SOP CMS \u2014 editor with block types",
+      "workflow": "W6",
+      "deps": [
+        "G135"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G137-sop-cms---editor-with-block-types.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G138",
+      "title": "SOP block type \u2014 script (with trigger condition)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G138-sop-block-type---script-with-trigger-condition.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G139",
+      "title": "SOP block type \u2014 template (with variables)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G139-sop-block-type---template-with-variables.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G140",
+      "title": "SOP block type \u2014 decision_tree (wizard)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G140-sop-block-type---decision_tree-wizard.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G141",
+      "title": "SOP block type \u2014 checklist (enforced gate)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G141-sop-block-type---checklist-enforced-gate.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G142",
+      "title": "SOP block type \u2014 kpi (live target display)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G142-sop-block-type---kpi-live-target-display.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G143",
+      "title": "SOP block type \u2014 compliance_warning (keyword guards)",
+      "workflow": "W6",
+      "deps": [
+        "G137",
+        "G038"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G143-sop-block-type---compliance_warning-keyword-guards.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G144",
+      "title": "SOP block type \u2014 trigger_rule (declarative surfacing)",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G144-sop-block-type---trigger_rule-declarative-surfacing.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G145",
+      "title": "SOP version control + diff",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G145-sop-version-control-+-diff.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G146",
+      "title": "SOP review workflow \u2014 submit/approve/reject",
+      "workflow": "W6",
+      "deps": [
+        "G145"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G146-sop-review-workflow---submit-approve-reject.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G147",
+      "title": "SOP translation pipeline status per block",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G147-sop-translation-pipeline-status-per-block.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G148",
+      "title": "SOP publish + 'SOP updated' banner to affected users",
+      "workflow": "W6",
+      "deps": [
+        "G146"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G148-sop-publish-+-sop-updated-banner-to-affected-users.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G149",
+      "title": "SOP contextual surfacing engine \u2014 runtime",
+      "workflow": "W6",
+      "deps": [
+        "G144"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G149-sop-contextual-surfacing-engine---runtime.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G150",
+      "title": "SOP cross-app search",
+      "workflow": "W6",
+      "deps": [
+        "G135"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G150-sop-cross-app-search.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G151",
+      "title": "SOP checklist quality enforcement \u2014 runtime hooks",
+      "workflow": "W6",
+      "deps": [
+        "G141"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G151-sop-checklist-quality-enforcement---runtime-hooks.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G152",
+      "title": "SOP KPI engine \u2014 live values to dashboards",
+      "workflow": "W6",
+      "deps": [
+        "G142"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G152-sop-kpi-engine---live-values-to-dashboards.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G153",
+      "title": "SOP audit log of version views",
+      "workflow": "W6",
+      "deps": [
+        "G148"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G153-sop-audit-log-of-version-views.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G154",
+      "title": "SOP role permissions \u2014 owner editing rules",
+      "workflow": "W6",
+      "deps": [
+        "G006",
+        "G135"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G154-sop-role-permissions---owner-editing-rules.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G155",
+      "title": "SOP corpus seed import from operating manual docx",
+      "workflow": "W6",
+      "deps": [
+        "G135"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G155-sop-corpus-seed-import-from-operating-manual-docx.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G156",
+      "title": "SOP block referencing \u2014 link from one SOP to another",
+      "workflow": "W6",
+      "deps": [
+        "G135"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G156-sop-block-referencing---link-from-one-sop-to-another.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G157",
+      "title": "SOP CMS publishing pipeline \u2014 staging vs production",
+      "workflow": "W6",
+      "deps": [
+        "G148"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G157-sop-cms-publishing-pipeline---staging-vs-production.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G158",
+      "title": "SOP authoring guidelines \u2014 inline help for editors",
+      "workflow": "W6",
+      "deps": [
+        "G137"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G158-sop-authoring-guidelines---inline-help-for-editors.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G159",
+      "title": "Audit log explorer UI",
+      "workflow": "W7",
+      "deps": [
+        "G007"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G159-audit-log-explorer-ui.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G160",
+      "title": "Audit log export with hash-chain integrity proof",
+      "workflow": "W7",
+      "deps": [
+        "G159"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G160-audit-log-export-with-hash-chain-integrity-proof.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G161",
+      "title": "Hash-chain integrity check service",
+      "workflow": "W7",
+      "deps": [
+        "G005",
+        "G007"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G161-hash-chain-integrity-check-service.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G162",
+      "title": "Per-visa-file audit trail with one-click dossier export",
+      "workflow": "W7",
+      "deps": [
+        "G097"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G162-per-visa-file-audit-trail-with-one-click-dossier-export.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G163",
+      "title": "Regulator inquiry workflow \u2014 evidence packet assembly",
+      "workflow": "W7",
+      "deps": [
+        "G160"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G163-regulator-inquiry-workflow---evidence-packet-assembly.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G164",
+      "title": "Incident response \u2014 auto-create incident channel + load runbook",
+      "workflow": "W7",
+      "deps": [],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G164-incident-response---auto-create-incident-channel-+-load-runb.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G165",
+      "title": "Incident severity classification + runbook variants",
+      "workflow": "W7",
+      "deps": [
+        "G164"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G165-incident-severity-classification-+-runbook-variants.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G166",
+      "title": "Post-incident review template + scheduling",
+      "workflow": "W7",
+      "deps": [
+        "G164"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G166-post-incident-review-template-+-scheduling.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G167",
+      "title": "Misrepresentation regulator notification flow",
+      "workflow": "W7",
+      "deps": [
+        "G096"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G167-misrepresentation-regulator-notification-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G168",
+      "title": "Data export \u2014 student PII compliance (DSAR/erasure)",
+      "workflow": "W7",
+      "deps": [
+        "G160"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G168-data-export---student-pii-compliance-dsar-erasure.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G169",
+      "title": "Compliance training log per staff member",
+      "workflow": "W7",
+      "deps": [],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G169-compliance-training-log-per-staff-member.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G170",
+      "title": "Compliance bulletin publish workflow",
+      "workflow": "W7",
+      "deps": [
+        "G095"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G170-compliance-bulletin-publish-workflow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G171",
+      "title": "Visa refusal pattern analysis (basic)",
+      "workflow": "W7",
+      "deps": [
+        "G092"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G171-visa-refusal-pattern-analysis-basic.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G172",
+      "title": "Cross-tenant access audit",
+      "workflow": "W7",
+      "deps": [
+        "G006"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G172-cross-tenant-access-audit.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G173",
+      "title": "Audit log retention enforcement + archival",
+      "workflow": "W7",
+      "deps": [
+        "G007"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G173-audit-log-retention-enforcement-+-archival.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G174",
+      "title": "Lighthouse PWA audit \u2265 90",
+      "workflow": "CC",
+      "deps": [
+        "G003",
+        "G016"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G174-lighthouse-pwa-audit-\u2265-90.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G175",
+      "title": "Performance budgets enforced",
+      "workflow": "CC",
+      "deps": [],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G175-performance-budgets-enforced.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G176",
+      "title": "WCAG AA accessibility validation on primary flows",
+      "workflow": "CC",
+      "deps": [
+        "G015"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G176-wcag-aa-accessibility-validation-on-primary-flows.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G177",
+      "title": "Error monitoring + alerting (Sentry or chosen)",
+      "workflow": "CC",
+      "deps": [
+        "G001"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G177-error-monitoring-+-alerting-sentry-or-chosen.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G178",
+      "title": "Analytics \u2014 privacy-respecting product analytics",
+      "workflow": "CC",
+      "deps": [
+        "G001"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G178-analytics---privacy-respecting-product-analytics.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G179",
+      "title": "Backup + restore \u2014 daily Postgres backup",
+      "workflow": "CC",
+      "deps": [
+        "G002"
+      ],
+      "size": "M",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G179-backup-+-restore---daily-postgres-backup.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G180",
+      "title": "Production deployment + CI/CD pipeline",
+      "workflow": "CC",
+      "deps": [
+        "G001",
+        "G002"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G180-production-deployment-+-ci-cd-pipeline.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G181",
+      "title": "Health endpoints + uptime monitoring",
+      "workflow": "CC",
+      "deps": [
+        "G180"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G181-health-endpoints-+-uptime-monitoring.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G182",
+      "title": "Rate limiting on public endpoints",
+      "workflow": "CC",
+      "deps": [
+        "G008"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G182-rate-limiting-on-public-endpoints.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G183",
+      "title": "TLS everywhere + HSTS",
+      "workflow": "CC",
+      "deps": [
+        "G180"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G183-tls-everywhere-+-hsts.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G184",
+      "title": "Secret management",
+      "workflow": "CC",
+      "deps": [
+        "G180"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G184-secret-management.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G185",
+      "title": "Logging \u2014 structured, no PII at INFO",
+      "workflow": "CC",
+      "deps": [
+        "G001"
+      ],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G185-logging---structured-no-pii-at-info.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G186",
+      "title": "End-to-end test \u2014 happy path student journey",
+      "workflow": "CC",
+      "deps": [
+        "G068",
+        "G091"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G186-end-to-end-test---happy-path-student-journey.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G187",
+      "title": "End-to-end test \u2014 counsellor + ops + compliance flow",
+      "workflow": "CC",
+      "deps": [
+        "G091"
+      ],
+      "size": "L",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G187-end-to-end-test---counsellor-+-ops-+-compliance-flow.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    },
+    {
+      "id": "G188",
+      "title": "Definition of done \u2014 verification checklist",
+      "workflow": "CC",
+      "deps": [],
+      "size": "S",
+      "status": "not_started",
+      "owner": "claude_code",
+      "filename": "G188-definition-of-done---verification-checklist.md",
+      "started_at": null,
+      "completed_at": null,
+      "blocker_reason": null,
+      "blocked_at": null
+    }
+  ]
+}
