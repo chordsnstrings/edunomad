@@ -35,6 +35,9 @@ envs:
   - { key: SENTRY_DSN, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
   - { key: ANALYTICS_PROVIDER, scope: RUN_TIME, value: plausible }
   - { key: PLAUSIBLE_DOMAIN, scope: RUN_TIME, value: edunomad.app }
+  # SEO. INDEXNOW_KEY is public (proves host ownership); served at /indexnow-key.txt.
+  - { key: NEXT_PUBLIC_SITE_URL, scope: RUN_AND_BUILD_TIME, value: "https://edunomad.app" }
+  - { key: INDEXNOW_KEY, scope: RUN_TIME, value: "8f3c1d9a4b7e2056c9d8a1f04e6b32759a0e5d61" }
 
 services:
   - name: web

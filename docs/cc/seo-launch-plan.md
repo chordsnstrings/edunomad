@@ -56,7 +56,9 @@ can't be done from the repo.
 - [ ] Deploy to the production domain (HTTPS). Set `NEXT_PUBLIC_SITE_URL`.
 - [ ] Create **Google Search Console** + **Bing Webmaster Tools**; verify the domain.
 - [ ] Submit `sitemap.xml` and `feed.xml` in both.
-- [ ] Enable **IndexNow** (Bing) and ping it for the top 50 URLs.
+- [ ] **IndexNow is built in** — the key is served at `/indexnow-key.txt`. Submit
+      every URL instantly with `SITE_URL=https://your-domain npm run seo:indexnow`
+      (Bing/Yandex; Bing powers ChatGPT search). Re-run it whenever content changes.
 
 **Day 1–3 — prioritise indexing**
 - [ ] In GSC, use URL Inspection → "Request indexing" for the ~25 cornerstone

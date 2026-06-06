@@ -136,6 +136,37 @@ const BN: NativeArticle[] = [
     ],
     faqs: [{ q: "শুধু Duolingo দিয়ে study permit হয়?", a: "না — IRCC Duolingo নেয় না। admission-এ ব্যবহার করুন, তারপর study permit ও PGWP-এর জন্য IELTS/PTE দিন।" }],
   },
+  {
+    slug: "canada-study-visa-documents-checklist-bangladesh", locale: "bn",
+    title: "বাংলাদেশ থেকে কানাডা Study Visa Document Checklist (২০২৬)",
+    description: "২০২৬-এ বাংলাদেশি শিক্ষার্থীদের কানাডা study permit-এর সম্পূর্ণ document তালিকা — academics, funds, bank solvency, SOP, medical ও biometrics।",
+    intro: "একটি সম্পূর্ণ ও consistent file-ই regular stream-এ দ্রুত এগোনোর উপায়। বাংলাদেশি আবেদনকারীদের জন্য এই checklist মিলিয়ে নিন।",
+    blocks: [
+      { kind: "h2", text: "প্রধান documents" },
+      { kind: "ul", items: ["বৈধ passport", "DLI থেকে Letter of Acceptance", "PAL/TAL (যেখানে লাগে)", `Proof of funds — ${PF}`, "GIC certificate / tuition receipt", "Bank solvency certificate ও ৬ মাসের statement", "Academic transcript ও certificate", "IELTS/PTE result", "SOP", "Medical confirmation ও biometrics"] },
+      { kind: "callout", text: "Public DLI-তে master/PhD শুরু করলে ১ জানুয়ারি ২০২৬ থেকে PAL লাগে না।" },
+      { kind: "p", text: "EduNomad কখনো ফল নিশ্চয়তা দেয় না।" },
+    ],
+    faqs: [
+      { q: "PAL কি লাগবে?", a: "বেশিরভাগ college/undergraduate-এ লাগে; public DLI-তে master/PhD-তে ১ জানুয়ারি ২০২৬ থেকে লাগে না।" },
+      { q: "Medical কখন করব?", a: "আবেদনের আগে বা সাথে IRCC panel physician-এর কাছে upfront medical করে নিন।" },
+    ],
+  },
+  {
+    slug: "pgwp-and-pr-after-studying-in-canada-bangladesh", locale: "bn",
+    title: "কানাডায় পড়ার পর PGWP ও PR — বাংলাদেশি শিক্ষার্থীদের গাইড (২০২৬)",
+    description: "বাংলাদেশি graduate-রা কীভাবে কানাডায় PGWP ও permanent residency পান — language rule, field rule এবং Express Entry/PNP-র পথ।",
+    intro: "বেশিরভাগ বাংলাদেশি শিক্ষার্থীর আসল লক্ষ্য থেকে যাওয়া ও কাজ করা। ২০২৬-এ study-to-PR পথ এখনও আছে, কিন্তু PGWP-র নিয়ম কড়া হয়েছে — তাই course বাছাই গুরুত্বপূর্ণ।",
+    blocks: [
+      { kind: "callout", text: "PGWP-এর জন্য language test বাধ্যতামূলক: university graduate-দের CLB 7, college-দের CLB 5 (চার skill-এ আলাদা আলাদা; average হয় না)। IELTS General Training/CELPIP/PTE Core লাগে — IELTS Academic নয়।" },
+      { kind: "ul", items: ["University degree: PGWP-তে field-of-study list নেই", "College diploma: programme IRCC-eligible field-এ থাকতে হবে", "TEER 0/1/2/3 কাজের লক্ষ্য রাখুন", "Province-ভিত্তিক PNP stream দেখুন"] },
+      { kind: "p", text: "PGWP দিয়ে ~১ বছর skilled কাজের পর CEC (Express Entry)/PNP-র মাধ্যমে PR-এর পথ খোলে। EduNomad ফল নিশ্চয়তা দেয় না।" },
+    ],
+    faqs: [
+      { q: "সব course-এ কি PGWP পাওয়া যায়?", a: "না — non-degree (college) programme IRCC-eligible field-এ হতে হবে; university degree-তে এই list নেই।" },
+      { q: "PGWP-এর জন্য কোন test?", a: "IELTS General Training/CELPIP/PTE Core (IELTS Academic নয়), CLB 7 (university)/CLB 5 (college)।" },
+    ],
+  },
 ];
 
 // ── Hindi (India) ───────────────────────────────────────────────────────────
@@ -237,6 +268,36 @@ const HI: NativeArticle[] = [
     ],
     faqs: [{ q: "क्या सिर्फ़ Duolingo से study permit मिलता है?", a: "नहीं — IRCC Duolingo नहीं लेता। admission के लिए इस्तेमाल करें, फिर study permit और PGWP के लिए IELTS/PTE दें।" }],
   },
+  {
+    slug: "cost-of-studying-in-canada-from-india", locale: "hi",
+    title: "भारत से कनाडा में पढ़ाई का खर्च (2026): Tuition + Living",
+    description: "2026 में भारतीय छात्रों के लिए असली बजट — tuition, proof of funds, GIC (~₹13–15.3 लाख), flight, insurance और शहर-वार living खर्च।",
+    intro: "सही बजट बनाना ही आपकी visa file को सबसे ज़्यादा सुरक्षित करता है। 2026 में एक भारतीय छात्र का कनाडा में एक साल का असली खर्च यहाँ देखें।",
+    blocks: [
+      { kind: "table", head: ["मद", "अनुमानित (CAD)"], rows: [["Study permit", "$150"], ["Biometrics", "$85"], ["Living (साल 1)", "$20,635 → $22,895 (1 सित 2026)"], ["GIC (मासिक वापसी)", "~CAD 1,700–1,900/माह"], ["Tuition", "college 15k–35k / university 20k–60k"]] },
+      { kind: "p", text: "GIC लगभग ₹13–15.3 लाख होता है (आपका ही पैसा, हर महीने वापस)। ज़्यादातर भारतीय छात्र education loan + GIC से फंड करते हैं।" },
+      { kind: "p", text: "सस्ते शहर (Winnipeg, Saskatoon) और कम-tuition public college चुनकर कुल खर्च काफ़ी घटता है। EduNomad नतीजे की गारंटी नहीं देता।" },
+    ],
+    faqs: [
+      { q: "पहले साल कुल खर्च कितना?", a: "शहर और institution के अनुसार लगभग CAD 30,000–55,000 (tuition + living + GIC)।" },
+      { q: "क्या GIC अतिरिक्त खर्च है?", a: "नहीं — यह आपका ही पैसा है, हर महीने ~CAD 1,700–1,900 वापस मिलता है।" },
+    ],
+  },
+  {
+    slug: "pgwp-and-pr-after-studying-in-canada-india", locale: "hi",
+    title: "कनाडा में पढ़ाई के बाद PGWP और PR — भारतीय छात्रों की गाइड (2026)",
+    description: "भारतीय graduates कैसे कनाडा में PGWP और PR पाते हैं — language rule, field rule, और Express Entry/PNP का रास्ता (2026)।",
+    intro: "ज़्यादातर भारतीय छात्रों का असली लक्ष्य वहाँ रुककर काम करना है। 2026 में study-to-PR रास्ता मौजूद है, पर PGWP नियम सख़्त हुए हैं — इसलिए course चुनाव अहम है।",
+    blocks: [
+      { kind: "callout", text: "PGWP के लिए language test ज़रूरी: university graduates को CLB 7, college को CLB 5 (हर skill अलग; average नहीं)। IELTS General Training/CELPIP/PTE Core चाहिए — IELTS Academic नहीं।" },
+      { kind: "ul", items: ["University degree: PGWP में field-of-study list नहीं", "College diploma: programme IRCC-eligible field में हो", "TEER 0/1/2/3 नौकरियों का लक्ष्य रखें", "1-year master = 3-year PGWP + 135 CRS points"] },
+      { kind: "p", text: "PGWP से ~1 साल skilled काम के बाद CEC (Express Entry)/PNP से PR का रास्ता खुलता है। EduNomad नतीजे की गारंटी नहीं देता।" },
+    ],
+    faqs: [
+      { q: "क्या हर course पर PGWP मिलता है?", a: "नहीं — college (non-degree) programme IRCC-eligible field में होना चाहिए; university degree पर यह list नहीं है।" },
+      { q: "PR का रास्ता क्या है?", a: "PGWP → ~1 साल skilled काम (TEER 0/1/2/3) → CEC (Express Entry)/PNP।" },
+    ],
+  },
 ];
 
 // ── Nepali (Nepal) ──────────────────────────────────────────────────────────
@@ -329,6 +390,36 @@ const NE: NativeArticle[] = [
       { kind: "callout", text: "Scholarship letter proof of funds का रूपमा मान्य हुन्छ र देखाउनुपर्ने रकम घटाउँछ।" },
     ],
     faqs: [{ q: "के नेपालीका लागि fully funded scholarship छ?", a: "Graduate तहमा छ (Vanier, Pearson) — तर अत्यन्त प्रतिस्पर्धात्मक र merit-आधारित।" }],
+  },
+  {
+    slug: "cost-of-studying-in-canada-from-nepal", locale: "ne",
+    title: "नेपालबाट क्यानाडामा अध्ययनको खर्च (२०२६): Tuition + Living",
+    description: "२०२६ मा नेपाली विद्यार्थीका लागि वास्तविक बजेट — tuition, proof of funds, GIC, NOC, flight, insurance र सहर-अनुसार living खर्च।",
+    intro: "सही बजेट बनाउनु नै तपाईंको visa file लाई सबैभन्दा बढी सुरक्षित गर्ने उपाय हो। २०२६ मा नेपाली विद्यार्थीको क्यानाडामा एक वर्षको वास्तविक खर्च यहाँ।",
+    blocks: [
+      { kind: "table", head: ["शीर्षक", "अनुमानित (CAD)"], rows: [["Study permit", "$150"], ["Biometrics", "$85"], ["Living (वर्ष १)", "$20,635 → $22,895 (१ सेप्टे २०२६)"], ["GIC (मासिक फिर्ता)", "~CAD 1,700–1,900/महिना"], ["Tuition", "college 15k–35k / university 20k–60k"]] },
+      { kind: "callout", text: "विदेश पैसा (tuition/GIC) पठाउनुअघि MoEST बाट NOC चाहिन्छ — समयतालिकामा जोड्नुहोस्।" },
+      { kind: "p", text: "सस्ता सहर (Winnipeg, Saskatoon, St. John's) र कम-tuition public college रोजे कुल खर्च घट्छ। EduNomad ले नतिजाको ग्यारेन्टी दिँदैन।" },
+    ],
+    faqs: [
+      { q: "पहिलो वर्ष कुल खर्च कति?", a: "सहर र institution अनुसार करिब CAD 30,000–55,000 (tuition + living + GIC)।" },
+      { q: "के GIC थप खर्च हो?", a: "होइन — यो तपाईंकै पैसा हो, हरेक महिना ~CAD 1,700–1,900 फिर्ता आउँछ।" },
+    ],
+  },
+  {
+    slug: "pgwp-and-pr-after-studying-in-canada-nepal", locale: "ne",
+    title: "क्यानाडामा अध्ययनपछि PGWP र PR — नेपाली विद्यार्थीका लागि (२०२६)",
+    description: "नेपाली graduate हरूले कसरी क्यानाडामा PGWP र PR पाउँछन् — language rule, field rule र Express Entry/PNP को बाटो (२०२६)।",
+    intro: "धेरै नेपाली विद्यार्थीको साँचो लक्ष्य त्यहीँ बसेर काम गर्नु हो। २०२६ मा study-to-PR बाटो छँदैछ, तर PGWP नियम कडा भएका छन् — त्यसैले course छनोट महत्त्वपूर्ण छ।",
+    blocks: [
+      { kind: "callout", text: "PGWP का लागि language test अनिवार्य: university graduate लाई CLB 7, college लाई CLB 5 (हरेक skill अलग; average हुँदैन)। IELTS General Training/CELPIP/PTE Core चाहिन्छ — IELTS Academic होइन।" },
+      { kind: "ul", items: ["University degree: PGWP मा field-of-study list छैन", "College diploma: programme IRCC-eligible field मा हुनुपर्छ", "TEER 0/1/2/3 जागिरको लक्ष्य राख्नुहोस्", "Province-अनुसार PNP stream हेर्नुहोस्"] },
+      { kind: "p", text: "PGWP बाट करिब १ वर्ष skilled काम पछि CEC (Express Entry)/PNP मार्फत PR को बाटो खुल्छ। EduNomad ले नतिजाको ग्यारेन्टी दिँदैन।" },
+    ],
+    faqs: [
+      { q: "के सबै course मा PGWP पाइन्छ?", a: "पाइँदैन — college (non-degree) programme IRCC-eligible field मा हुनुपर्छ; university degree मा यो list छैन।" },
+      { q: "PR को बाटो के हो?", a: "PGWP → करिब १ वर्ष skilled काम (TEER 0/1/2/3) → CEC (Express Entry)/PNP।" },
+    ],
   },
 ];
 
