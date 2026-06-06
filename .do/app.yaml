@@ -1,0 +1,84 @@
+# DigitalOcean App Platform spec for EduNomad.
+#   doctl apps create --spec .do/app.yaml         # first deploy
+#   doctl apps update <app-id> --spec .do/app.yaml # subsequent
+#
+# Set the REPLACE_ME secrets in the App Platform dashboard (Settings → env) or
+# via `doctl` after the first apply. See docs/cc/digitalocean.md.
+name: edunomad
+region: nyc
+
+# Shared environment — inherited by the web service and the migrate job.
+# SECRET values are placeholders; fill them in the dashboard (encrypted at rest).
+envs:
+  - { key: NODE_ENV, scope: RUN_AND_BUILD_TIME, value: production }
+  - { key: DATABASE_URL, scope: RUN_AND_BUILD_TIME, value: "${db.DATABASE_URL}" }
+  - { key: AUTH_SECRET, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: CRON_SECRET, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  # Object storage — DigitalOcean Spaces (S3-compatible).
+  - { key: STORAGE_BUCKET, scope: RUN_TIME, value: edunomad-docs }
+  - { key: STORAGE_REGION, scope: RUN_TIME, value: nyc3 }
+  - { key: STORAGE_ENDPOINT, scope: RUN_TIME, value: "https://nyc3.digitaloceanspaces.com" }
+  - { key: STORAGE_ACCESS_KEY_ID, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: STORAGE_SECRET_ACCESS_KEY, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  # Web Push (VAPID).
+  - { key: VAPID_SUBJECT, scope: RUN_TIME, value: "mailto:ops@edunomad.app" }
+  - { key: VAPID_PUBLIC_KEY, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: VAPID_PRIVATE_KEY, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  # Messaging — WhatsApp Cloud API + Twilio SMS fallback (optional; mocked if unset).
+  - { key: WHATSAPP_CLOUD_API_TOKEN, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: WHATSAPP_PHONE_NUMBER_ID, scope: RUN_TIME, value: REPLACE_ME }
+  - { key: TWILIO_ACCOUNT_SID, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: TWILIO_AUTH_TOKEN, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: TWILIO_FROM, scope: RUN_TIME, value: REPLACE_ME }
+  # Integrations + observability (optional; no-ops when unset).
+  - { key: ANTHROPIC_API_KEY, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: SENTRY_DSN, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+  - { key: ANALYTICS_PROVIDER, scope: RUN_TIME, value: plausible }
+  - { key: PLAUSIBLE_DOMAIN, scope: RUN_TIME, value: edunomad.app }
+
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    source_dir: /
+    github:
+      repo: chordsnstrings/edunomad
+      branch: main
+      deploy_on_push: true
+    http_port: 3000
+    instance_count: 1
+    instance_size_slug: basic-xs
+    routes:
+      - path: /
+    health_check:
+      http_path: /api/health
+      initial_delay_seconds: 20
+      period_seconds: 30
+      timeout_seconds: 5
+      success_threshold: 1
+      failure_threshold: 5
+
+jobs:
+  # Runs BEFORE the new web deployment goes live: schema sync + triggers + seed.
+  - name: migrate
+    kind: PRE_DEPLOY
+    dockerfile_path: Dockerfile
+    source_dir: /
+    github:
+      repo: chordsnstrings/edunomad
+      branch: main
+    instance_size_slug: basic-xs
+    run_command: bash scripts/do-release.sh
+    envs:
+      # First admin user (seed.mjs). Set real values before the first deploy.
+      - { key: ADMIN_EMAIL, scope: RUN_TIME, value: admin@edunomad.app }
+      - { key: ADMIN_PASSWORD, scope: RUN_TIME, type: SECRET, value: REPLACE_ME }
+      # Set to "1" only to seed DEMO staff/SOP fixtures (never in production).
+      - { key: SEED_DEMO, scope: RUN_TIME, value: "0" }
+
+databases:
+  # Dev-tier managed Postgres for staging. For production, attach a dedicated
+  # managed cluster (set `production: true` or reference an existing cluster).
+  - name: db
+    engine: PG
+    version: "16"
+    production: false

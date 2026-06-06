@@ -128,3 +128,21 @@ us portable across Vercel/Fly/containers.
 **Consequences:** `.github/workflows/{ci,deploy,backup}.yml`; migrations via
 `scripts/migrate.sh` with snapshot rollback; secrets validated by
 `scripts/check-secrets.sh`.
+
+## 2026-06-06 — Hosting target: DigitalOcean
+
+**Choice:** DigitalOcean **App Platform** (Dockerfile deploy) + **Managed
+PostgreSQL 16** + **Spaces** (S3-compatible object storage). A production
+multi-stage `Dockerfile` builds the Next.js standalone server; `.do/app.yaml`
+declares the web service, the managed DB, and a `migrate` PRE_DEPLOY job
+(`scripts/do-release.sh`).
+**Alternatives considered:** Vercel + Neon; a bare Droplet with Docker Compose;
+DigitalOcean Kubernetes.
+**Rationale:** App Platform gives managed TLS (auto Let's Encrypt → satisfies the
+HSTS/TLS goal), managed Postgres with backups/PITR, and Spaces reuses our existing
+S3 client (`STORAGE_*`) with zero code change — one provider for compute, data and
+storage. The Dockerfile keeps us portable (the same image runs on a Droplet/DOCR).
+**Consequences:** Prisma generator gains `binaryTargets debian-openssl-3.0.x` for
+the `node:22-slim` runtime; `next.config.ts` uses `output: "standalone"`; the
+pre-deploy job is production-safe (demo fixtures gated behind `SEED_DEMO`). See
+docs/cc/digitalocean.md.

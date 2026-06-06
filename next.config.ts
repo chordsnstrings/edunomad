@@ -13,6 +13,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Self-contained server bundle for Docker / DigitalOcean (lean runtime image).
+  output: "standalone",
   poweredByHeader: false,
   async headers() {
     const headers = [...securityHeaders];
