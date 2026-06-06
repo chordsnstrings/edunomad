@@ -84,4 +84,8 @@
   .bottom-safe {
     bottom: calc(env(safe-area-inset-bottom) + 1rem);
   }
+  /* Clearance for the fixed student bottom nav (nav body ~3.5rem + safe area). */
+  .pb-nav {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 4rem);
+  }
 }

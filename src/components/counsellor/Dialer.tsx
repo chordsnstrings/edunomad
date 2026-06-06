@@ -100,7 +100,7 @@ export function Dialer({ studentId, phone, studentName }: { studentId: string; p
       {state === "ended" && (
         <div className="rounded-2xl border border-line bg-white p-5">
           <p className="mb-2 text-sm font-medium text-navy">Outcome</p>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 gap-2 xs:grid-cols-4">
             {OUTCOMES.map((o) => (
               <button key={o.id} type="button" onClick={() => setOutcome(o.id)} className={`rounded-lg border px-2 py-2 text-sm font-semibold ${outcome === o.id ? "border-navy bg-navy text-white" : "border-line text-navy hover:bg-subtle"}`}>
                 {o.label}

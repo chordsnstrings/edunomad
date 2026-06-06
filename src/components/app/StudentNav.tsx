@@ -15,7 +15,7 @@ const TABS = [
 export function StudentNav() {
   const path = usePathname();
   return (
-    <nav className="bottom-safe fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white">
+    <nav className="pb-safe fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white">
       <div className="mx-auto flex max-w-md">
         {TABS.map((t) => {
           const active = path === t.href;

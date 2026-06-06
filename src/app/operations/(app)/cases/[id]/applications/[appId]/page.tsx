@@ -83,7 +83,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
             <div className="rounded-xl border border-line bg-white p-4">
               <p className="flex items-center gap-2 text-sm font-medium text-navy"><Globe className="h-4 w-4" /> Tier 2 — portal (open &amp; submit)</p>
               {cred ? (
-                <div className="mt-2 rounded-lg bg-subtle p-3 text-xs text-ink">
+                <div className="mt-2 space-y-1 rounded-lg bg-subtle p-3 text-xs text-ink [overflow-wrap:anywhere]">
                   <p>Portal: <a href={cred.portalUrl} target="_blank" rel="noreferrer" className="text-navy underline">{cred.portalUrl}</a></p>
                   <p>User: {cred.username}</p>
                   <p>Pass: <span className="font-mono">{decryptSecret(cred.passwordEnc)}</span></p>
