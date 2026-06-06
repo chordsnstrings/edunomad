@@ -14,6 +14,7 @@
     "db:reset": "prisma db push --force-reset && prisma db seed",
     "db:harden": "node prisma/harden.mjs",
     "db:deploy": "prisma db push --skip-generate && node prisma/harden.mjs && node prisma/seed.mjs && node prisma/seed-catalog.mjs",
+    "db:seed:scenario": "node prisma/seed-team.mjs && node prisma/seed-ops.mjs && node prisma/seed-catalog.mjs && node prisma/seed-sop.mjs && node prisma/seed-scenario.mjs",
     "test": "tsc -p tsconfig.test.json && node --env-file-if-exists=.env --test --test-concurrency=1 \".test-build/tests/*.test.js\"",
     "test:e2e": "playwright test",
     "lighthouse": "npx --yes @lhci/cli@0.14.x autorun",
