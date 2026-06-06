@@ -64,7 +64,7 @@ function BlockView({ b }: { b: Block }) {
   }
 }
 
-export function ArticleView({ article, related }: { article: Article; related: Article[] }) {
+export function ArticleView({ article, related, natives = [] }: { article: Article; related: Article[]; natives?: { locale: string; label: string; href: string }[] }) {
   return (
     <Section>
       <article className="mx-auto max-w-3xl">
@@ -75,6 +75,15 @@ export function ArticleView({ article, related }: { article: Article; related: A
           <ChevronRight className="h-3 w-3" />
           <span className="text-ink/70">{article.categoryLabel}</span>
         </nav>
+
+        {natives.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+            <span className="text-muted">Read in:</span>
+            {natives.map((n) => (
+              <Link key={n.locale} href={n.href} className="rounded-full bg-subtle px-3 py-1 font-semibold text-navy hover:text-gold-600">{n.label}</Link>
+            ))}
+          </div>
+        )}
 
         <h1 className="mt-4 text-2xl font-semibold leading-tight text-navy sm:text-4xl">{article.title}</h1>
         <p className="mt-3 text-base leading-relaxed text-ink/80">{article.intro}</p>
