@@ -160,6 +160,40 @@ export function faqJsonLd(faqs: { q: string; a: string }[]) {
   };
 }
 
+/** Article + author/publisher JSON-LD for a guide page (E-E-A-T signals). */
+export function articleJsonLd(opts: {
+  base: string; url: string; title: string; description: string;
+  datePublished?: string; dateModified?: string; companyName: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: opts.title,
+    description: opts.description,
+    mainEntityOfPage: opts.url,
+    inLanguage: "en",
+    datePublished: opts.datePublished || opts.dateModified,
+    dateModified: opts.dateModified,
+    author: { "@type": "Organization", name: `${opts.companyName} editorial team`, url: opts.base },
+    publisher: { "@id": `${opts.base}/#organization` },
+    isAccessibleForFree: true,
+  };
+}
+
+/** BreadcrumbList JSON-LD. */
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  };
+}
+
 export function serviceJsonLd(settings: SiteSettings) {
   const base = siteUrlFrom(settings);
   return {

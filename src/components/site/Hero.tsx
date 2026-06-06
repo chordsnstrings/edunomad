@@ -28,14 +28,19 @@ export function Hero({
           </span>
 
           <h1 className="mt-5 text-4xl font-semibold leading-[1.08] sm:text-5xl lg:text-6xl">
-            Study abroad,
+            Study in Canada from Bangladesh, India &amp; Nepal —
             <br />
             <span className="text-gold">handled end to end.</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
-            {settings.shortDescription}
+            {settings.shortDescription} Free 2026 guides on costs, proof of funds and GIC, IELTS,
+            the study permit after SDS ended, universities, scholarships and the PGWP-to-PR pathway.
           </p>
+
+          <Link href="/guides" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-gold hover:underline">
+            Browse 600+ study-in-Canada guides <ArrowRight className="h-4 w-4" />
+          </Link>
 
           <div className="mt-8 flex flex-col gap-3 xs:flex-row">
             <Link

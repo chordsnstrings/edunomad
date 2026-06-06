@@ -9,6 +9,7 @@ import { getSiteContext } from "@/lib/context";
 import { detectLocale } from "@/i18n/locale";
 
 const NAV = [
+  { label: "Guides", href: "/guides" },
   { label: "Why EduNomad", href: "/#features" },
   { label: "Destinations", href: "/#destinations" },
   { label: "Journey", href: "/#journey" },
