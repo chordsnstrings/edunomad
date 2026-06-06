@@ -10,9 +10,15 @@
   --color-navy-700: #16304f;
   --color-navy-600: #1f3f66;
 
+  /* Full gold scale so every gold-{n} utility resolves (was: only 100/600). */
   --color-gold: #c9a84c;
-  --color-gold-600: #b3923c;
+  --color-gold-50: #faf7ec;
   --color-gold-100: #f6efd9;
+  --color-gold-300: #e6d59e;
+  --color-gold-400: #d8bd6e;
+  --color-gold-500: #c9a84c;
+  --color-gold-600: #b3923c;
+  --color-gold-700: #927731;
 
   --color-ink: #14181f;
   --color-muted: #58616f;
