@@ -9,7 +9,7 @@
 
 import {
   SOURCE_COUNTRIES, CANADA, TESTS, SCHOLARSHIPS, CITIES, FIELDS, INSTITUTIONS,
-  SOURCES, LAST_UPDATED, countryByCode, type CountryCode, type SourceCountry,
+  SOURCES, LAST_UPDATED, EXTRA, countryByCode, type CountryCode, type SourceCountry,
   type Institution,
 } from "./data";
 
@@ -1372,6 +1372,210 @@ for (const f of FIELDS.slice(0, 6)) for (const c of SOURCE_COUNTRIES) {
     related: [`study-${f.slug}-in-canada-from-${c.slug}`, `${f.slug}-jobs-in-canada-for-${c.slug}-graduates`, `study-in-canada-from-${c.slug}`],
   }));
 }
+
+// ── Category 21: IELTS-band / low-score routes ─────────────────────────────
+all.push(makeArticle({
+  slug: "ielts-5-5-band-colleges-in-canada",
+  category: "tests", categoryLabel: "English test",
+  title: "IELTS 5.5 Band Colleges in Canada (2026): Real List & Visa Truth",
+  description: `Canadian colleges that accept IELTS 5.5 in 2026 (${EXTRA.ielts55Colleges.slice(0, 4).join(", ")} and more), plus what the study permit really needs.`,
+  keywords: ["ielts 5.5 band colleges in canada", "low ielts colleges canada", "canada colleges ielts 5.5"],
+  intro: `A 5.5 doesn't close the door — several colleges admit diploma and pathway students at IELTS 5.5. But the study permit has its own bar. ${EXTRA.ielts55Note}`,
+  blocks: [
+    { kind: "h2", text: "Colleges that accept IELTS 5.5" },
+    { kind: "ul", items: EXTRA.ielts55Colleges.map((n) => `${n} — diploma/pathway entry at around IELTS 5.5 (confirm per programme)`) },
+    { kind: "callout", text: EXTRA.ielts55Note },
+    { kind: "h2", text: "Test options" }, testTable(),
+    { kind: "p", text: NO_GUARANTEE },
+  ],
+  faqs: [
+    { q: "Can I study in Canada with IELTS 5.5?", a: "Yes, for some diploma and pathway programmes; for the study permit aim for 6.0 overall with 5.5 per band on UG/diploma routes." },
+    { q: "Which colleges accept 5.5 bands?", a: EXTRA.ielts55Colleges.join(", ") + " (verify per programme)." },
+  ],
+  related: ["study-in-canada-without-ielts-from-india", "ielts-vs-pte-vs-duolingo-for-canada", "duolingo-accepted-universities-in-canada"],
+}));
+for (const c of SOURCE_COUNTRIES) {
+  all.push(makeArticle({
+    slug: `ielts-5-5-band-colleges-in-canada-for-${c.slug}-students`,
+    category: "tests", categoryLabel: "English test", country: c.code,
+    title: `IELTS 5.5 Band Colleges in Canada for ${c.demonym} Students (2026)`,
+    description: `Where ${c.demonym} students with IELTS 5.5 can study in Canada — real colleges, pathway options and the study-permit reality for 2026.`,
+    keywords: [`ielts 5.5 colleges canada ${c.demonym.toLowerCase()}`, `low ielts canada ${c.name.toLowerCase()}`],
+    intro: `If you scored 5.5, ${c.demonym} students still have routes — diploma and pathway entry at select colleges. ${EXTRA.ielts55Note}`,
+    blocks: [
+      { kind: "ul", items: EXTRA.ielts55Colleges.map((n) => `${n} (verify per programme)`) },
+      { kind: "callout", text: EXTRA.ielts55Note },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [{ q: `Can ${c.demonym} students study in Canada with IELTS 5.5?`, a: "Yes for some diploma/pathway programmes; the study permit still expects roughly 6.0 overall / 5.5 per band on UG routes." }],
+    related: [`study-in-canada-without-ielts-from-${c.slug}`, `ielts-requirements-for-canada-from-${c.slug}`, "ielts-5-5-band-colleges-in-canada"],
+  }));
+}
+
+// ── Category 22: 1-year master's / PG diploma / PR-friendly ─────────────────
+for (const c of SOURCE_COUNTRIES) {
+  all.push(makeArticle({
+    slug: `1-year-masters-in-canada-for-${c.slug}-students`,
+    category: "planning", categoryLabel: "Planning", country: c.code,
+    title: `1-Year Master's in Canada for ${c.demonym} Students (2026): PR Fast-Track`,
+    description: `Why a 1-year master's is the 2026 PR play for ${c.demonym} students — 3-year PGWP, PAL & cap exemption, and 135 CRS points.`,
+    keywords: [`1 year masters in canada ${c.demonym.toLowerCase()}`, `one year master canada ${c.name.toLowerCase()}`, `masters in canada pr ${c.demonym.toLowerCase()}`],
+    intro: `For ${c.demonym} students aiming at PR, a 1-year master's is the standout 2026 route. ${EXTRA.oneYearMaster}`,
+    blocks: [
+      { kind: "callout", text: EXTRA.oneYearMaster },
+      { kind: "h2", text: "Why it works" }, { kind: "ul", items: ["3-year PGWP even for a sub-2-year programme", "Public-DLI master's: no PAL, exempt from the study-permit cap", "+135 CRS points toward Express Entry", "Lower total cost than a 2-year route"] },
+      { kind: "p", text: `Show tuition + ${proof}.` },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [
+      { q: `Can ${c.demonym} students get PR after a 1-year master's?`, a: `${CANADA.pgwp.prPath} A master's adds 135 CRS points and a 3-year PGWP.` },
+      { q: "Do master's students need a PAL?", a: "Not at a public DLI from 1 January 2026 — they're PAL- and cap-exempt." },
+    ],
+    related: [`study-in-canada-after-graduation-from-${c.slug}`, `pgwp-and-pr-after-studying-in-canada-${c.slug}`, `pr-friendly-courses-in-canada-for-${c.slug}-students`],
+  }));
+  all.push(makeArticle({
+    slug: `pg-diploma-courses-in-canada-for-${c.slug}-students`,
+    category: "planning", categoryLabel: "Planning", country: c.code,
+    title: `PG Diploma Courses in Canada for ${c.demonym} Students (2026)`,
+    description: `Post-graduate diploma options in Canada for ${c.demonym} students — cost, the 1+1 PGWP stacking strategy and the PR angle for 2026.`,
+    keywords: [`pg diploma in canada ${c.demonym.toLowerCase()}`, `post graduate diploma canada ${c.name.toLowerCase()}`, `1 year diploma canada ${c.demonym.toLowerCase()}`],
+    intro: `PG diplomas are a cheaper, faster, job-focused route for ${c.demonym} graduates. ${EXTRA.pgDiploma}`,
+    blocks: [
+      { kind: "callout", text: EXTRA.pgDiploma },
+      { kind: "callout", text: CANADA.pgwp.fieldRule },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [
+      { q: "How long is the PGWP for a 1-year diploma?", a: "Usually 1 year. Some students stack two 1-year diplomas (1+1) to reach a 3-year PGWP when both qualify." },
+      { q: "Do PG diplomas qualify for a PGWP?", a: CANADA.pgwp.fieldRule },
+    ],
+    related: [`diploma-vs-degree-in-canada-for-${c.slug}-students`, `1-year-masters-in-canada-for-${c.slug}-students`, `best-courses-to-study-in-canada-for-${c.slug}-students`],
+  }));
+  all.push(makeArticle({
+    slug: `pr-friendly-courses-in-canada-for-${c.slug}-students`,
+    category: "lists", categoryLabel: "Best-of list", country: c.code,
+    title: `PR-Friendly Courses in Canada for ${c.demonym} Students (2026)`,
+    description: `Courses that align best with Canadian PR for ${c.demonym} students in 2026 — ${EXTRA.prFields.slice(0, 3).join(", ")} and more.`,
+    keywords: [`pr friendly courses in canada ${c.demonym.toLowerCase()}`, `best courses for pr canada ${c.name.toLowerCase()}`, `in demand courses canada pr ${c.demonym.toLowerCase()}`],
+    intro: `Not every course leads to PR. For ${c.demonym} students, these fields map cleanly to TEER 0/1/2/3 jobs and Express Entry/PNP.`,
+    blocks: [
+      { kind: "h2", text: "Fields that align with PR" }, { kind: "ul", items: EXTRA.prFields.map((f) => `${f} — strong TEER 1/2 demand`) },
+      { kind: "callout", text: CANADA.pgwp.prPath },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [{ q: `Which course is best for PR in Canada for ${c.demonym} students?`, a: `Fields mapping to TEER 0/1/2/3 — ${EXTRA.prFields.slice(0, 3).join(", ")} — align best, paired with a PGWP-eligible programme.` }],
+    related: [`best-courses-to-study-in-canada-for-${c.slug}-students`, `pgwp-and-pr-after-studying-in-canada-${c.slug}`, `1-year-masters-in-canada-for-${c.slug}-students`],
+  }));
+  all.push(makeArticle({
+    slug: `study-in-canada-without-gic-from-${c.slug}`,
+    category: "funds", categoryLabel: "Funds guide", country: c.code,
+    title: `Study in Canada Without GIC from ${c.name} (2026): Is It Possible?`,
+    description: `Can ${c.demonym} students apply for a Canada study permit without a GIC in 2026? The real alternatives and the trade-offs.`,
+    keywords: [`study in canada without gic ${c.demonym.toLowerCase()}`, `canada study permit without gic ${c.name.toLowerCase()}`, `proof of funds without gic canada`],
+    intro: `${EXTRA.noGic}`,
+    blocks: [
+      { kind: "h2", text: "Alternatives to a GIC" }, { kind: "ul", items: ["Bank balance with a clear, six-month, explainable source", "A sanctioned education loan covering year-one tuition + living", "A sponsor's documented income, tax returns and assets", "Scholarship/assistantship letters"] },
+      { kind: "callout", text: EXTRA.noGic },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [
+      { q: "Is a GIC mandatory for Canada?", a: "No — it's optional, but it's the cleanest single proof of living funds since SDS ended." },
+      { q: `Can ${c.demonym} students apply without a GIC?`, a: "Yes, with strong alternative proof of funds — but expect closer scrutiny of the source." },
+    ],
+    related: [`gic-canada-for-${c.slug}-students`, `proof-of-funds-canada-study-visa-${c.slug}`, `education-loan-for-canada-from-${c.slug}`],
+  }));
+  all.push(makeArticle({
+    slug: `canada-study-permit-refusal-and-reapply-from-${c.slug}`,
+    category: "visa", categoryLabel: "Visa guide", country: c.code,
+    title: `Canada Study Permit Refusal & Reapply from ${c.name} (2026): GCMS Notes`,
+    description: `What ${c.demonym} students do after a Canada study permit refusal in 2026 — order GCMS notes, fix the real issue, and reapply the right way.`,
+    keywords: [`canada study permit refusal reapply ${c.demonym.toLowerCase()}`, `gcms notes canada ${c.name.toLowerCase()}`, `canada visa rejected ${c.demonym.toLowerCase()} what to do`],
+    intro: `A refusal is a setback, not a ban. The single most important step for ${c.demonym} applicants: ${EXTRA.gcms}`,
+    blocks: [
+      { kind: "callout", text: EXTRA.gcms },
+      { kind: "h2", text: "Reapply the right way" }, { kind: "ol", items: ["Order and read your GCMS notes", "Identify the exact concern (funds source, ties, SOP, course fit)", "Fix that specific issue with stronger evidence", "Reapply with a clear Letter of Explanation addressing it"] },
+      { kind: "h2", text: "Common refusal reasons" }, { kind: "ul", items: c.refusalReasons },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [
+      { q: "What are GCMS notes?", a: EXTRA.gcms },
+      { q: "Can I reapply after a study permit refusal?", a: "Yes — read your GCMS notes, fix the specific concern, and reapply with stronger evidence." },
+    ],
+    related: [`canada-student-visa-refusal-reasons-${c.slug}`, `proof-of-funds-canada-study-visa-${c.slug}`, `sop-for-canada-student-visa-from-${c.slug}`],
+  }));
+  all.push(makeArticle({
+    slug: `gic-refund-process-canada-for-${c.slug}-students`,
+    category: "funds", categoryLabel: "Funds guide", country: c.code,
+    title: `GIC Refund Process for ${c.demonym} Students (2026): If Your Visa Is Refused`,
+    description: `How ${c.demonym} students get a GIC refund if the study permit is refused or they don't travel — steps, timeline and fees for 2026.`,
+    keywords: [`gic refund process ${c.demonym.toLowerCase()}`, `gic refund canada ${c.name.toLowerCase()}`, `gic refund if visa rejected`],
+    intro: `Worried about your GIC if the visa doesn't come through? ${EXTRA.gicRefund}`,
+    blocks: [
+      { kind: "callout", text: EXTRA.gicRefund },
+      { kind: "h2", text: "How to claim it" }, { kind: "ol", items: ["Log in to your GIC provider's portal and open a refund request", "Attach proof (refusal letter or withdrawal)", "Confirm the destination account", "Wait ~4–7 weeks; a small admin/wire fee is deducted"] },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [{ q: "Is the GIC refundable if my visa is refused?", a: EXTRA.gicRefund }],
+    related: [`gic-canada-for-${c.slug}-students`, `study-in-canada-without-gic-from-${c.slug}`, `canada-study-permit-refusal-and-reapply-from-${c.slug}`],
+  }));
+}
+// general 1-year master + pg diploma + pr-friendly + gic-refund
+all.push(qa("can-i-get-pr-after-1-year-masters-in-canada", "Can I get PR after a 1-year master's in Canada?", `Yes — ${EXTRA.oneYearMaster} ${CANADA.pgwp.prPath}`, undefined, ["1-year-masters-in-canada-for-india-students", "pgwp-and-pr-after-studying-in-canada-india"]));
+all.push(qa("is-gic-refundable-canada", "Is the GIC refundable for Canada?", EXTRA.gicRefund, undefined, ["gic-refund-process-canada-for-india-students", "gic-canada-for-india-students"]));
+all.push(qa("pr-friendly-courses-in-canada-2026", "What are the most PR-friendly courses in Canada (2026)?", `Courses that map to TEER 0/1/2/3 jobs align best with Express Entry/PNP: ${EXTRA.prFields.join(", ")}. Pair the field with a PGWP-eligible programme.`, undefined, ["pr-friendly-courses-in-canada-for-india-students", "best-courses-to-study-in-canada-for-india-students"]));
+
+// ── Category 23: best universities per city ────────────────────────────────
+for (const ci of CITIES) {
+  const here = INSTITUTIONS.filter((i) => i.city === ci.name);
+  if (!here.length) continue;
+  all.push(makeArticle({
+    slug: `best-universities-in-${ci.slug}-for-international-students`,
+    category: "lists", categoryLabel: "Best-of list",
+    title: `Best Universities & Colleges in ${ci.name} for International Students (2026)`,
+    description: `Top DLIs in ${ci.name}, ${ci.province} for international students — costs, programmes and living (${ci.monthly}/month) for 2026.`,
+    keywords: [`best universities in ${ci.name.toLowerCase()}`, `colleges in ${ci.name.toLowerCase()} international students`, `study in ${ci.name.toLowerCase()}`],
+    intro: `Studying in ${ci.name}? Here are the institutions students shortlist, with honest costs. ${ci.note}`,
+    blocks: [
+      { kind: "table", head: ["Institution", "Type", "Tuition (CAD/yr)", "Known for"], rows: here.map((i) => [i.name, i.type, i.tuition, i.notable.join(", ")]) },
+      { kind: "p", text: `Budget about ${ci.monthly}/month to live in ${ci.name}.` },
+      { kind: "p", text: NO_GUARANTEE },
+    ],
+    faqs: [{ q: `Which university in ${ci.name} is best for international students?`, a: `It depends on your field and budget — compare the institutions above on cost, programme and PGWP eligibility.` }],
+    related: [`cost-of-living-in-${ci.slug}-for-students`, `student-accommodation-in-${ci.slug}`, "best-cities-in-canada-for-international-students"],
+  }));
+}
+
+// ── Category 24: settling-in practicals (per country) ──────────────────────
+const PRACTICALS: { slug: string; title: (n: string) => string; a: string; kw: string[] }[] = [
+  { slug: "health-insurance-for-international-students-in-canada", title: (n) => `Health Insurance for International Students in Canada (${n} Guide, 2026)`, a: "Coverage depends on your province: some (e.g., BC, Alberta, Saskatchewan, Manitoba, Newfoundland) cover eligible international students under the provincial plan after a waiting period; others (e.g., Ontario) require private/university insurance (UHIP). Always arrange cover before classes start.", kw: ["health insurance international students canada", "uhip canada", "provincial health card students"] },
+  { slug: "open-a-bank-account-in-canada-international-student", title: () => "How to Open a Bank Account in Canada as an International Student (2026)", a: "Bring your passport, study permit, proof of enrolment and a Canadian address. Major banks (Scotiabank, RBC, TD, CIBC, BMO) offer no-fee student accounts; if you bought a GIC, you'll often activate the linked account on arrival.", kw: ["open bank account canada international student", "best student bank account canada", "canada bank account study permit"] },
+  { slug: "sin-number-for-international-students-in-canada", title: () => "SIN Number for International Students in Canada (2026): How to Get One", a: "A Social Insurance Number (SIN) is required to work in Canada. Apply free at a Service Canada centre or online once you arrive, using your study permit (it must mention that you're allowed to work). It's usually issued the same day in person.", kw: ["sin number international students canada", "how to get sin canada student", "social insurance number study permit"] },
+  { slug: "tax-for-international-students-in-canada", title: () => "Tax for International Students in Canada (2026): The Basics", a: "If you work or have Canadian income, you generally file a tax return (often by late April). Many students get refunds or benefits (e.g., GST/HST credit) by filing — even with low income, filing is usually worth it. Keep your T4 slips and tuition (T2202) forms.", kw: ["tax for international students canada", "do international students file taxes canada", "t2202 tuition tax"] },
+];
+for (const pr of PRACTICALS) for (const c of SOURCE_COUNTRIES) {
+  all.push(makeArticle({
+    slug: `${pr.slug}-${c.slug}`,
+    category: "planning", categoryLabel: "Planning", country: c.code,
+    title: pr.title(c.demonym).replace("(", `for ${c.demonym} Students (`),
+    description: `${pr.a.slice(0, 150)}`,
+    keywords: pr.kw.map((k) => `${k} ${c.demonym.toLowerCase()}`),
+    intro: `${pr.a}`,
+    blocks: [{ kind: "h2", text: "What to do" }, { kind: "p", text: pr.a }, { kind: "p", text: c.parentLangNote }, { kind: "p", text: NO_GUARANTEE }],
+    faqs: [{ q: pr.title(c.demonym), a: pr.a }],
+    related: [`after-landing-in-canada-checklist-${c.slug}`, `study-in-canada-from-${c.slug}`, `cost-of-studying-in-canada-from-${c.slug}`],
+  }));
+}
+
+// ── Category 25: more general explainers / Q&A ─────────────────────────────
+const MORE_QA: [string, string, string, string[]][] = [
+  ["study-permit-vs-visa-canada-difference", "Study permit vs visa for Canada: what's the difference?", "A study permit is the document that lets you study in Canada; a temporary resident visa (TRV) or eTA is the travel document that lets you enter. IRCC usually issues the visa alongside an approved study permit — you need both.", ["canada-student-visa-from-india", "how-to-apply-for-canada-student-visa-from-india"]],
+  ["what-is-a-co-op-work-permit-canada", "What is a co-op work permit in Canada?", "If your programme has a mandatory work placement, you apply for a co-op (or intern) work permit alongside your study permit. It only covers placements that are a required part of your course — it's separate from the 24-hour off-campus rule.", ["co-op-programs-in-canada-for-india-students", "can-i-work-while-studying-in-canada"]],
+  ["how-to-get-a-pal-certificate-canada", "How do I get a PAL (Provincial Attestation Letter)?", "Your institution or province issues the PAL after you accept your offer — usually once you've paid tuition (in part or full). " + CANADA.pal, ["what-is-a-pal-canada", "do-i-need-a-pal-for-canada-from-india"]],
+  ["can-i-stack-two-diplomas-for-3-year-pgwp", "Can I stack two diplomas for a 3-year PGWP in Canada?", EXTRA.pgDiploma, ["pg-diploma-courses-in-canada-for-india-students", "pgwp-and-pr-after-studying-in-canada-india"]],
+  ["moi-letter-format-for-canada", "What should a Medium of Instruction (MOI) letter contain for Canada?", "An MOI letter is issued on official institutional letterhead, signed by the registrar, stating that your entire prior programme — instruction and examinations — was in English. It supports admission where accepted, but never replaces IELTS/PTE for the study permit or PGWP.", ["moi-vs-ielts-for-canada", "study-in-canada-without-ielts-from-nepal"]],
+  ["how-to-show-source-of-funds-for-canada-study-visa", "How do I show the source of funds for a Canada study visa?", "Trace every major amount: salary slips and tax returns for income, sale deeds for property, loan sanction letters for loans, and gift affidavits for family support. A clean, explainable trail matters more than the headline balance.", ["proof-of-funds-canada-study-visa-india", "bank-statement-for-canada-student-visa-india"]],
+];
+for (const [slug, q, a, related] of MORE_QA) all.push(qa(slug, q, a, undefined, related));
 
 // ── dedupe + export ────────────────────────────────────────────────────────
 const seen = new Set<string>();

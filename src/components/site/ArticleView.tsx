@@ -141,7 +141,8 @@ export function ArticleView({ article, related }: { article: Article; related: A
           <p className="mt-3 text-xs text-muted">
             Figures are approximate and change with IRCC policy and institution updates — verify on
             the official source before you apply. EduNomad does not guarantee admission, scholarship
-            or visa outcomes.
+            or visa outcomes. See our{" "}
+            <Link href="/editorial-standards" className="underline hover:text-navy">editorial standards</Link>.
           </p>
         </section>
       </article>

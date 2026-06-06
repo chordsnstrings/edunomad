@@ -281,6 +281,18 @@ export const INSTITUTIONS: Institution[] = [
 export const universityCount = INSTITUTIONS.filter((i) => i.type === "university").length;
 export const collegeCount = INSTITUTIONS.filter((i) => i.type === "college").length;
 
+// ── Extra researched facts for long-tail + AI-citable pages (June 2026) ─────
+export const EXTRA = {
+  ielts55Colleges: ["Lethbridge College", "Camosun College", "MacEwan University", "Huron University College", "Athabasca University", "Canadore College"],
+  ielts55Note: "Some colleges accept IELTS 5.5 (often with no band below 5.0) for diploma/pathway entry; for the study permit, aim for 6.0 overall with 5.5 in each band for undergraduate/diploma routes.",
+  oneYearMaster: "Master's graduates get a 3-year PGWP even when the programme is under two years, and public-DLI master's students are exempt from both the PAL and the study-permit cap. A Canadian master's also adds 135 CRS points under Express Entry.",
+  pgDiploma: "A post-graduate diploma runs 1–2 years (about CAD 15,000–25,000/year). A 1-year diploma usually yields a 1-year PGWP; some students stack two 1-year diplomas (1+1) to reach a 3-year PGWP when both programmes qualify.",
+  gicRefund: "A GIC is refundable if your study permit is refused, or if you withdraw and return home: submit a refund request to the bank with proof of the decision. Expect roughly 4–7 weeks, less a small (~CAD 200) non-refundable admin/wire fee.",
+  prFields: ["Data Science & AI", "Business Analytics", "Healthcare Management", "Information Technology", "International Business"],
+  gcms: "Order your GCMS notes after a refusal — they reveal the visa officer's exact concern. Never reapply blindly: the new application must directly fix that concern with stronger, credible evidence.",
+  noGic: "You can apply without a GIC by proving funds another way (bank balance with a clear source, a sanctioned education loan, a sponsor's documented income). The GIC is not mandatory — but since SDS ended it remains the cleanest, fastest-to-verify proof.",
+};
+
 // ── Citable sources (shown on pages + in llms.txt for E-E-A-T) ──────────────
 export const SOURCES = [
   { label: "IRCC — Proof of financial support", url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/financial-support.html" },
