@@ -327,6 +327,7 @@ async function main() {
     await prisma.application.create({ data: { studentId: student.id, programmeId: p.id, institutionId: p.institutionId, shortlistStatus: "draft", recommendedByCounsellor: false } });
     await emit({ type: "eligibility.checked", stage: 1, studentId: student.id, actorType: "student", actorId: user.id, payload: { matches: 8 }, visibility: { S: true, C: true }, channels: { in_app: true }, createdAt: daysAgo(4) });
     await emit({ type: "counsellor.assigned", stage: 2, studentId: student.id, actorType: "system", payload: { counsellor: "Asha Rahman" }, visibility: { S: true, C: true }, channels: CH_IMP, createdAt: daysAgo(3) });
+    await emit({ type: "escalation.raised", stage: 2, studentId: student.id, actorType: "student", actorId: user.id, payload: { reason: "No counsellor response in 48h" }, visibility: { C: true, CM: true, EM: true }, channels: { in_app: true }, createdAt: daysAgo(2) });
   }
 
   await verifyChain("post-seed (full)");
