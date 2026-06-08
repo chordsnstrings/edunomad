@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { ArrowRight, Phone } from "lucide-react";
 import { isValidPhone } from "@/components/ui/PhoneInput";
 import { ATTRIBUTION_KEY } from "@/lib/attribution";
+import { useT } from "@/i18n/LocaleProvider";
 
 export function SignupFlow() {
   const router = useRouter();
+  const t = useT();
   const [phase, setPhase] = useState<"phone" | "code">("phone");
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -60,7 +62,7 @@ export function SignupFlow() {
             ? "Too many wrong attempts. Try again later."
             : data.error === "expired"
               ? "That code expired — resend a new one."
-              : "Invalid code.",
+              : t("auth.otp.invalid"),
         );
         return;
       }
@@ -77,12 +79,12 @@ export function SignupFlow() {
           <Phone className="h-6 w-6" />
         </span>
         <h1 className="mt-3 text-lg font-semibold text-navy">
-          {phase === "phone" ? "Start your journey" : "Enter your code"}
+          {phase === "phone" ? t("auth.signup.title") : t("auth.otp.title")}
         </h1>
         <p className="mt-1 text-sm text-muted">
           {phase === "phone"
-            ? "We'll text a 6-digit code to verify your number."
-            : `Sent to ${phone}.`}
+            ? t("auth.signup.subtitle")
+            : t("auth.otp.subtitle", { phone })}
         </p>
       </div>
 
@@ -104,7 +106,7 @@ export function SignupFlow() {
             disabled={busy}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60"
           >
-            {busy ? "Sending…" : "Send code"} <ArrowRight className="h-4 w-4" />
+            {busy ? "…" : t("auth.signup.send_otp")} <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       ) : (
@@ -126,7 +128,7 @@ export function SignupFlow() {
             disabled={busy}
             className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60"
           >
-            {busy ? "Verifying…" : "Verify & continue"}
+            {busy ? "…" : t("auth.otp.verify")}
           </button>
           <button
             type="button"
