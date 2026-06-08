@@ -175,6 +175,7 @@ const bn: Record<string, string> = {
   "app.counsellor.send_message": "বার্তা পাঠান",
   "app.counsellor.book_call": "কল বুক করুন",
   "app.predeparture.message_cta": "এগুলো ব্যবস্থা করতে আপনার কাউন্সেলরকে বার্তা দিন",
+  "onboarding.step_of": "ধাপ {step} / {total}",
   "demo.plural": "{count, plural, one {# প্রোগ্রাম} other {# প্রোগ্রাম}}",
 };
 

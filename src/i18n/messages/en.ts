@@ -175,6 +175,7 @@ const en: Record<string, string> = {
   "app.counsellor.send_message": "Send message",
   "app.counsellor.book_call": "Book call",
   "app.predeparture.message_cta": "Message your counsellor to arrange these",
+  "onboarding.step_of": "Step {step} of {total}",
   "demo.plural": "{count, plural, one {# programme} other {# programmes}}"
 };
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAutosave, SaveBadge } from "./useAutosave";
+import { useT } from "@/i18n/LocaleProvider";
 
 const OPTIONS = [
   { id: "in_hand", title: "I have a score", desc: "IELTS, TOEFL, PTE or Duolingo in hand" },
@@ -12,6 +13,7 @@ const OPTIONS = [
 const TESTS = ["IELTS", "TOEFL", "PTE", "Duolingo"];
 
 export function EnglishStep({ initial }: { initial?: Record<string, unknown> | null }) {
+  const t = useT();
   const e = initial ?? {};
   const [type, setType] = useState(String(e.type ?? ""));
   const [testType, setTestType] = useState(String(e.testType ?? "IELTS"));
@@ -43,7 +45,7 @@ export function EnglishStep({ initial }: { initial?: Record<string, unknown> | n
             type === o.id ? "border-navy bg-navy/5" : "border-line hover:bg-subtle"
           }`}
         >
-          <span className="text-sm font-semibold text-navy">{o.title}</span>
+          <span className="text-sm font-semibold text-navy">{t("profile.step.english.option_" + o.id)}</span>
           <span className="text-xs text-muted">{o.desc}</span>
         </button>
       ))}

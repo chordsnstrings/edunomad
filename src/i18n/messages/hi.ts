@@ -175,6 +175,7 @@ const hi: Record<string, string> = {
   "app.counsellor.send_message": "संदेश भेजें",
   "app.counsellor.book_call": "कॉल बुक करें",
   "app.predeparture.message_cta": "इन्हें व्यवस्थित करने के लिए अपने काउंसलर को संदेश भेजें",
+  "onboarding.step_of": "चरण {step} / {total}",
   "demo.plural": "{count, plural, one {# प्रोग्राम} other {# प्रोग्राम}}",
 };
 
