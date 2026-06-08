@@ -6,6 +6,7 @@ import { detectLocale } from "@/i18n/locale";
 import { LanguageSwitcher } from "@/components/site/LanguageSwitcher";
 import { PushToggle } from "@/components/pwa/PushToggle";
 import { AppLockSettings } from "@/components/app/AppLock";
+import { FontScaleToggle } from "@/components/a11y/FontScaleToggle";
 
 export const metadata: Metadata = { title: "Settings", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -29,6 +30,10 @@ export default async function ParentSettings() {
         <section>
           <p className="mb-2 text-sm font-semibold text-navy">App lock (PIN)</p>
           <AppLockSettings />
+        </section>
+        <section>
+          <p className="mb-2 text-sm font-semibold text-navy">Accessibility</p>
+          <FontScaleToggle />
         </section>
         <section className="flex gap-2">
           <Link href="/parent/escalate" className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">Talk to a manager</Link>
