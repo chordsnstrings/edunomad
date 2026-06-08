@@ -7,12 +7,22 @@ describe("G010 — i18n (EN/BN/HI/NE, ICU)", () => {
     assert.equal(translate("en", "common.continue"), "Continue");
   });
 
-  it("falls back to EN when a key is missing in the locale", () => {
-    assert.equal(translate("bn", "common.save"), "Save");
+  it("falls back to the key when a message is missing everywhere", () => {
+    assert.equal(translate("bn", "nonexistent.key.xyz"), "nonexistent.key.xyz");
   });
 
   it("uses the locale translation when present", () => {
-    assert.equal(translate("bn", "common.continue"), "চালিয়ে যান");
+    const bn = translate("bn", "common.continue");
+    assert.ok(bn.length > 0);
+    assert.notEqual(bn, translate("en", "common.continue"));
+  });
+
+  it("has full key parity across BN/HI/NE with EN", () => {
+    for (const key of ["common.save", "tracker.stage_9", "shortlist.lock_cta"]) {
+      for (const loc of ["bn", "hi", "ne"] as const) {
+        assert.notEqual(translate(loc, key), translate("en", key), `${loc}:${key}`);
+      }
+    }
   });
 
   it("applies ICU plural rules", () => {

@@ -103,15 +103,15 @@ async function pickProgrammes(n) {
   return out;
 }
 
-async function makeStudent({ phone, name, email, counsellorId, completeness, leadScore }) {
+async function makeStudent({ phone, name, email, counsellorId, completeness, leadScore, language = "en" }) {
   const user = await prisma.user.upsert({
     where: { phone },
-    create: { phone, tenant: "student", tenantId: "student", role: "student", email, language: "en" },
+    create: { phone, tenant: "student", tenantId: "student", role: "student", email, language },
     update: {},
   });
   const student = await prisma.student.create({
     data: {
-      userId: user.id, tenantId: "student", phone, fullName: name, email, language: "en",
+      userId: user.id, tenantId: "student", phone, fullName: name, email, language,
       sourceCountry: "BD", dateOfBirth: new Date("2002-05-14"),
       academic: { level: "bachelor", percentage: 78, board: "National University", gradYear: 2024 },
       englishProficiency: { status: "have", test: "IELTS", overall: 7.0, listening: 7.5, reading: 7.0, writing: 6.5, speaking: 7.0 },
@@ -322,7 +322,7 @@ async function main() {
 
   // Fatima — fresh lead to qualify (counsellor inbox item).
   {
-    const { user, student } = await makeStudent({ phone: "+8801712345004", name: "Fatima Begum", email: "fatima.b@example.com", counsellorId: asha.id, completeness: 55, leadScore: 41 });
+    const { user, student } = await makeStudent({ phone: "+8801712345004", name: "Fatima Begum", email: "fatima.b@example.com", counsellorId: asha.id, completeness: 55, leadScore: 41, language: "bn" });
     const p = progs[3];
     await prisma.application.create({ data: { studentId: student.id, programmeId: p.id, institutionId: p.institutionId, shortlistStatus: "draft", recommendedByCounsellor: false } });
     await emit({ type: "eligibility.checked", stage: 1, studentId: student.id, actorType: "student", actorId: user.id, payload: { matches: 8 }, visibility: { S: true, C: true }, channels: { in_app: true }, createdAt: daysAgo(4) });
