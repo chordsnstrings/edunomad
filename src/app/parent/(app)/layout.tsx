@@ -3,12 +3,16 @@ import { LogOut, Users } from "lucide-react";
 import { requireParent } from "@/lib/parent";
 import { parentLogoutAction } from "./actions";
 import { AppLock } from "@/components/app/AppLock";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { getUserLocale } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function ParentLayout({ children }: { children: React.ReactNode }) {
   await requireParent();
+  const locale = await getUserLocale();
   return (
+    <LocaleProvider locale={locale}>
     <div className="min-h-screen bg-white">
       <AppLock />
       <header className="sticky top-0 z-40 border-b border-line bg-white">
@@ -26,5 +30,6 @@ export default async function ParentLayout({ children }: { children: React.React
       </header>
       <main id="main" className="mx-auto max-w-md px-4 py-6">{children}</main>
     </div>
+    </LocaleProvider>
   );
 }

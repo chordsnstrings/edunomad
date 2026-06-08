@@ -176,6 +176,10 @@ const en: Record<string, string> = {
   "app.counsellor.book_call": "Book call",
   "app.predeparture.message_cta": "Message your counsellor to arrange these",
   "onboarding.step_of": "Step {step} of {total}",
+  "parent.nav.counsellor": "Counsellor",
+  "parent.nav.payments": "Payments",
+  "parent.nav.faq": "FAQ",
+  "parent.nav.settings": "Settings",
   "demo.plural": "{count, plural, one {# programme} other {# programmes}}"
 };
 

@@ -176,6 +176,10 @@ const ne: Record<string, string> = {
   "app.counsellor.book_call": "कल बुक गर्नुहोस्",
   "app.predeparture.message_cta": "यी मिलाउन आफ्नो काउन्सेलरलाई सन्देश पठाउनुहोस्",
   "onboarding.step_of": "चरण {step} / {total}",
+  "parent.nav.counsellor": "काउन्सेलर",
+  "parent.nav.payments": "भुक्तानी",
+  "parent.nav.faq": "बारम्बार प्रश्न",
+  "parent.nav.settings": "सेटिङहरू",
   "demo.plural": "{count, plural, one {# कार्यक्रम} other {# कार्यक्रम}}",
 };
 
