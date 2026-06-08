@@ -13,12 +13,15 @@ import {
 } from "lucide-react";
 import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
+import { getTranslator } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Pre-departure", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function PreDeparturePage() {
   const { student } = await requireStudent();
+  const t = getTranslator(student.language as Locale);
   const [visa, invoices] = await Promise.all([
     prisma.visaFile.findFirst({
       where: { studentId: student.id },
@@ -64,7 +67,7 @@ export default async function PreDeparturePage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">
-      <h1 className="text-xl font-semibold text-navy">Pre-departure &amp; arrival</h1>
+      <h1 className="text-xl font-semibold text-navy">{t("app.nav.predeparture")}</h1>
       <p className="mt-1 text-sm text-muted">
         {visaApproved
           ? "Your visa is approved. Here's everything to settle before you fly — and what to do when you land."
@@ -72,7 +75,7 @@ export default async function PreDeparturePage() {
       </p>
 
       <section className="mt-5">
-        <h2 className="mb-2 text-sm font-semibold text-navy">Your progress</h2>
+        <h2 className="mb-2 text-sm font-semibold text-navy">{t("app.predeparture.progress")}</h2>
         <ul className="space-y-2">
           {tracked.map((t) => (
             <li key={t.label} className="flex gap-3 rounded-xl border border-line bg-white p-3.5">
@@ -91,7 +94,7 @@ export default async function PreDeparturePage() {
       </section>
 
       <section className="mt-6">
-        <h2 className="mb-2 text-sm font-semibold text-navy">To arrange before you fly</h2>
+        <h2 className="mb-2 text-sm font-semibold text-navy">{t("app.predeparture.to_arrange")}</h2>
         <ul className="space-y-2">
           {arrange.map((a) => (
             <li key={a.label} className="flex gap-3 rounded-xl border border-line bg-white p-3.5">
@@ -107,13 +110,13 @@ export default async function PreDeparturePage() {
           href="/app/messages"
           className="mt-3 block rounded-xl border border-navy bg-navy px-4 py-3 text-center text-sm font-semibold text-white hover:bg-navy-700"
         >
-          Message your counsellor to arrange these
+          {t("app.predeparture.message_cta")}
         </Link>
       </section>
 
       <section className="mt-6 rounded-2xl border border-line bg-white p-4">
         <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
-          <FileText className="h-4 w-4 text-gold-600" /> Documents to carry
+          <FileText className="h-4 w-4 text-gold-600" /> {t("app.predeparture.carry")}
         </h2>
         <ul className="mt-2 space-y-1.5">
           {carry.map((c) => (
@@ -127,7 +130,7 @@ export default async function PreDeparturePage() {
 
       <section className="mt-4 rounded-2xl border border-line bg-white p-4">
         <h2 className="flex items-center gap-2 text-sm font-semibold text-navy">
-          <MapPin className="h-4 w-4 text-gold-600" /> On arrival in Canada
+          <MapPin className="h-4 w-4 text-gold-600" /> {t("app.predeparture.on_arrival")}
         </h2>
         <ol className="mt-2 space-y-2">
           {onArrival.map((step, i) => (

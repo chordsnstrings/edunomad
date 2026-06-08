@@ -5,6 +5,8 @@ import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { requestCallAction } from "./actions";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { getTranslator } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Home", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -13,6 +15,7 @@ const LANG: Record<string, string> = { en: "English", bn: "Bangla", hi: "Hindi",
 
 export default async function AppHome({ searchParams }: { searchParams: Promise<{ requested?: string }> }) {
   const { student } = await requireStudent();
+  const t = getTranslator(student.language as Locale);
   const { requested } = await searchParams;
   const counsellor = student.assignedCounsellorId
     ? await prisma.counsellorProfile.findUnique({ where: { userId: student.assignedCounsellorId } })
@@ -30,11 +33,11 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
 
   return (
     <div className="mx-auto min-h-screen max-w-md px-4 py-6">
-      <h1 className="text-xl font-semibold text-navy">Your counsellor</h1>
+      <h1 className="text-xl font-semibold text-navy">{t("app.counsellor.title")}</h1>
 
       {requested && (
         <p className="mt-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
-          Call requested — your counsellor will confirm a time shortly.
+          {t("app.counsellor.call_requested")}
         </p>
       )}
 
@@ -57,14 +60,14 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
               href="/app/messages"
               className="inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700"
             >
-              <MessageCircle className="h-4 w-4" /> Send message
+              <MessageCircle className="h-4 w-4" /> {t("app.counsellor.send_message")}
             </Link>
             <form action={requestCallAction}>
               <button
                 type="submit"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-navy px-4 py-2.5 text-sm font-semibold text-navy hover:bg-subtle"
               >
-                <Phone className="h-4 w-4" /> Book call
+                <Phone className="h-4 w-4" /> {t("app.counsellor.book_call")}
               </button>
             </form>
           </div>
@@ -72,8 +75,8 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
       ) : (
         <div className="mt-4 rounded-2xl border border-line bg-white">
           <EmptyState
-            title="Our team will be in touch shortly"
-            body="We're matching you with the right counsellor. You'll get a message as soon as you're assigned."
+            title={t("app.counsellor.matching_title")}
+            body={t("app.counsellor.matching")}
           />
         </div>
       )}
@@ -86,8 +89,8 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
           <div className="flex items-center gap-3">
             <Plane className="h-5 w-5 shrink-0 text-gold-600" />
             <div>
-              <p className="text-sm font-semibold text-navy">Your visa is approved</p>
-              <p className="text-xs text-muted">Open your pre-departure &amp; arrival checklist</p>
+              <p className="text-sm font-semibold text-navy">{t("app.visa_approved.title")}</p>
+              <p className="text-xs text-muted">{t("app.visa_approved.subtitle")}</p>
             </div>
           </div>
           <span aria-hidden className="text-navy">→</span>
@@ -96,17 +99,17 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
 
       <div className="mt-6 grid grid-cols-2 gap-3">
         <Link href="/app/documents" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
-          Documents
+          {t("app.nav.documents")}
         </Link>
         <Link href="/app/offers" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
-          Offers
+          {t("app.nav.offers")}
         </Link>
       </div>
       <Link href="/app/predeparture" className="mt-3 block rounded-xl border border-line bg-white p-4 text-center text-sm font-semibold text-navy hover:border-navy">
-        Pre-departure &amp; arrival
+        {t("app.nav.predeparture")}
       </Link>
       <Link href="/app/parent" className="mt-3 block rounded-xl border border-line bg-white p-4 text-center text-sm font-semibold text-navy hover:border-navy">
-        Invite a parent / sponsor
+        {t("app.nav.invite_parent")}
       </Link>
     </div>
   );

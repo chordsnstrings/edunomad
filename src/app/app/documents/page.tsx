@@ -5,6 +5,8 @@ import { requireStudent } from "@/lib/require-student";
 import { getChecklistForStudent, getLatestDocuments } from "@/lib/documents";
 import { STAGE_LABELS } from "@/lib/reference/document-checklist";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { getTranslator } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Documents", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -28,6 +30,7 @@ const BADGE_LABEL: Record<string, string> = {
 
 export default async function DocumentsPage() {
   const { student } = await requireStudent();
+  const t = getTranslator(student.language as Locale);
   const checklist = await getChecklistForStudent(student);
   const latest = await getLatestDocuments(student.id);
   const lang = student.language as "en" | "bn" | "hi" | "ne";
@@ -35,8 +38,8 @@ export default async function DocumentsPage() {
   if (checklist.length === 0) {
     return (
       <div className="mx-auto max-w-md px-4 py-6">
-        <h1 className="mb-4 text-xl font-semibold text-navy">Documents</h1>
-        <EmptyState title="Your checklist is being prepared" body="Once your shortlist is set, we'll generate a personalised document checklist here." />
+        <h1 className="mb-4 text-xl font-semibold text-navy">{t("app.nav.documents")}</h1>
+        <EmptyState title="Your checklist is being prepared" body={t("empty.no_documents")} />
       </div>
     );
   }
@@ -45,7 +48,7 @@ export default async function DocumentsPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">
-      <h1 className="mb-3 text-xl font-semibold text-navy">Documents</h1>
+      <h1 className="mb-3 text-xl font-semibold text-navy">{t("app.nav.documents")}</h1>
       <div className="mb-4 flex gap-2">
         <Link href="/app/documents/photo" className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-navy hover:bg-subtle">Visa photo tool</Link>
         <Link href="/app/documents/sponsor" className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-navy hover:bg-subtle">Sponsor declaration</Link>

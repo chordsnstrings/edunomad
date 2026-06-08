@@ -3,12 +3,15 @@ import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { getShortlist } from "@/lib/shortlist";
 import { ShortlistManager } from "@/components/app/ShortlistManager";
+import { getTranslator } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Shortlist", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function ShortlistPage({ searchParams }: { searchParams: Promise<{ blocked?: string; locked?: string }> }) {
   const { student } = await requireStudent();
+  const t = getTranslator(student.language as Locale);
   const { blocked, locked: lockedParam } = await searchParams;
   const apps = await getShortlist(student.id);
 
@@ -34,7 +37,7 @@ export default async function ShortlistPage({ searchParams }: { searchParams: Pr
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">
-      <h1 className="mb-4 text-xl font-semibold text-navy">Your shortlist</h1>
+      <h1 className="mb-4 text-xl font-semibold text-navy">{t("shortlist.title")}</h1>
       <ShortlistManager
         items={items}
         locked={locked}

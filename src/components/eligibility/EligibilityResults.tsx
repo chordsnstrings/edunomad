@@ -5,36 +5,31 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { EligibilityResult } from "@/lib/eligibility";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { useT } from "@/i18n/LocaleProvider";
 
 type TabId = "match" | "safe" | "reach";
-const TABS: { id: TabId; label: string }[] = [
-  { id: "match", label: "Match" },
-  { id: "safe", label: "Safe" },
-  { id: "reach", label: "Reach" },
-];
+const TABS: TabId[] = ["match", "safe", "reach"];
 const COUNTRY: Record<string, string> = { CA: "Canada", UK: "UK", AU: "Australia", MY: "Malaysia" };
 const money = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
 
 export function EligibilityResults({ result }: { result: EligibilityResult }) {
+  const t = useT();
   const [tab, setTab] = useState<TabId>("match");
   const cards = result[tab];
 
   return (
     <div>
       <div className="mb-4 grid grid-cols-3 gap-2">
-        {TABS.map((t) => (
+        {TABS.map((id) => (
           <button
-            key={t.id}
+            key={id}
             type="button"
-            onClick={() => setTab(t.id)}
+            onClick={() => setTab(id)}
             className={`rounded-lg border px-3 py-2 text-sm font-semibold ${
-              tab === t.id ? "border-navy bg-navy text-white" : "border-line text-navy hover:bg-subtle"
+              tab === id ? "border-navy bg-navy text-white" : "border-line text-navy hover:bg-subtle"
             }`}
           >
-            {t.label}
-            <span className={`ml-1.5 text-xs ${tab === t.id ? "text-white/80" : "text-muted"}`}>
-              {result[t.id].length}
-            </span>
+            {t("eligibility.tabs." + id, { count: result[id].length })}
           </button>
         ))}
       </div>

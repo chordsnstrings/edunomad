@@ -7,6 +7,7 @@ import { Analytics } from "@/components/site/Analytics";
 import { ToastProvider } from "@/components/ui/Toast";
 import { PwaController } from "@/components/pwa/PwaController";
 import { SyncManager } from "@/components/pwa/SyncManager";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,10 +49,12 @@ export default async function RootLayout({
         >
           Skip to content
         </a>
-        <ToastProvider>
-          {children}
-          <SyncManager />
-        </ToastProvider>
+        <LocaleProvider locale="en">
+          <ToastProvider>
+            {children}
+            <SyncManager />
+          </ToastProvider>
+        </LocaleProvider>
         <PwaController />
         <Analytics settings={settings} />
       </body>

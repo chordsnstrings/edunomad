@@ -4,6 +4,8 @@ import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { OfferActions } from "@/components/app/OfferActions";
+import { getTranslator } from "@/i18n";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Offers", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -18,6 +20,7 @@ const LABEL: Record<string, string> = {
 
 export default async function OffersPage() {
   const { student } = await requireStudent();
+  const t = getTranslator(student.language as Locale);
   const apps = await prisma.application.findMany({ where: { studentId: student.id, decisionStatus: { not: null } }, orderBy: { decisionAt: "desc" } });
 
   const rows = await Promise.all(
@@ -29,9 +32,9 @@ export default async function OffersPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">
-      <h1 className="mb-4 text-xl font-semibold text-navy">Offers</h1>
+      <h1 className="mb-4 text-xl font-semibold text-navy">{t("app.nav.offers")}</h1>
       {rows.length === 0 ? (
-        <EmptyState title="No decisions yet" body="Your university decisions and offers will appear here." />
+        <EmptyState title="No decisions yet" body={t("empty.no_offers")} />
       ) : (
         <ul className="space-y-3">
           {rows.map(({ app, name, institution, conditions }) => {
@@ -51,7 +54,7 @@ export default async function OffersPage() {
 
                 {conditions.length > 0 && (
                   <div className="mt-2">
-                    <p className="text-xs font-semibold text-navy">Conditions</p>
+                    <p className="text-xs font-semibold text-navy">{t("app.offers.conditions")}</p>
                     <ul className="mt-1 space-y-1">
                       {conditions.map((c, i) => (
                         <li key={i} className="flex items-start gap-2 text-xs text-ink"><Check className="mt-0.5 h-3.5 w-3.5 text-muted" /> {c}</li>

@@ -4,12 +4,17 @@ import { runEligibility, type StudentProfile } from "@/lib/eligibility";
 import { emit } from "@/lib/events";
 import { EligibilityResults } from "@/components/eligibility/EligibilityResults";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { getTranslator } from "@/i18n";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
+import type { Locale } from "@/i18n/config";
 
 export const metadata: Metadata = { title: "Your matches", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function EligibilityPage() {
   const { student, session } = await requireStudent();
+  const locale = student.language as Locale;
+  const t = getTranslator(locale);
   const profile: StudentProfile = {
     academic: student.academic as StudentProfile["academic"],
     englishProficiency: student.englishProficiency as StudentProfile["englishProficiency"],
@@ -30,13 +35,16 @@ export default async function EligibilityPage() {
   });
 
   return (
+    <LocaleProvider locale={locale}>
     <div className="mx-auto min-h-screen max-w-md px-4 py-6">
-      <h1 className="text-xl font-semibold text-navy">Your matches</h1>
+      <h1 className="text-xl font-semibold text-navy">{t("eligibility.result.title")}</h1>
       {result.total > 0 ? (
         <>
           <p className="mt-1 text-sm text-muted">
-            {result.total} programmes across {result.countries.length}{" "}
-            {result.countries.length === 1 ? "country" : "countries"}.
+            {t("eligibility.result.summary", {
+              count: result.total,
+              country_count: result.countries.length,
+            })}
           </p>
           <div className="mt-6">
             <EligibilityResults result={result} />
@@ -44,12 +52,10 @@ export default async function EligibilityPage() {
         </>
       ) : (
         <div className="mt-6">
-          <EmptyState
-            title="No matches yet"
-            body="Widen your budget or destinations, or finish your profile — then we'll find programmes that fit."
-          />
+          <EmptyState title="No matches yet" body={t("empty.no_universities_match")} />
         </div>
       )}
     </div>
+    </LocaleProvider>
   );
 }

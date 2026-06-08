@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Lock, Trash2, X, AlertTriangle, Sparkles } from "lucide-react";
 import { lockShortlistAction } from "@/app/app/shortlist/actions";
+import { useT } from "@/i18n/LocaleProvider";
 
 type Item = {
   id: string;
@@ -31,6 +32,7 @@ export function ShortlistManager({
   justLocked?: boolean;
 }) {
   const router = useRouter();
+  const t = useT();
   const [showBlockers, setShowBlockers] = useState(!!blocked);
 
   async function remove(id: string) {
@@ -59,7 +61,7 @@ export function ShortlistManager({
       {items.length === 0 ? (
         <div className="rounded-xl border border-line bg-white p-6 text-center text-sm text-muted">
           Nothing shortlisted yet.{" "}
-          <Link href="/eligibility" className="font-semibold text-navy hover:underline">Browse matches</Link>.
+          <Link href="/eligibility" className="font-semibold text-navy hover:underline">{t("app.matches.browse")}</Link>.
         </div>
       ) : (
         <ul className="space-y-3">
@@ -101,12 +103,12 @@ export function ShortlistManager({
           </div>
         ) : lockBlockers.length > 0 ? (
           <button type="button" onClick={() => setShowBlockers(true)} className="flex w-full items-center justify-center gap-2 rounded-lg bg-navy/40 py-3 text-sm font-semibold text-white">
-            <Lock className="h-4 w-4" /> Lock shortlist
+            <Lock className="h-4 w-4" /> {t("shortlist.lock_cta")}
           </button>
         ) : (
           <form action={lockShortlistAction}>
             <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-lg bg-navy py-3 text-sm font-semibold text-white hover:bg-navy-700">
-              <Lock className="h-4 w-4" /> Lock shortlist
+              <Lock className="h-4 w-4" /> {t("shortlist.lock_cta")}
             </button>
           </form>
         )}
