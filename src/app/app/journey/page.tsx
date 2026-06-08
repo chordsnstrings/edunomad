@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { renderEventTemplate } from "@/lib/event-templates";
@@ -38,6 +39,12 @@ export default async function JourneyPage() {
     <div className="mx-auto max-w-md px-4 py-6">
       <h1 className="mb-4 text-xl font-semibold text-navy">Your journey</h1>
       <JourneyTimeline stages={STAGES} byStage={byStage} current={current} />
+      <Link
+        href="/app/predeparture"
+        className="mt-4 block rounded-xl border border-line bg-white px-4 py-3 text-center text-sm font-semibold text-navy hover:border-navy"
+      >
+        Pre-departure &amp; arrival checklist →
+      </Link>
     </div>
   );
 }

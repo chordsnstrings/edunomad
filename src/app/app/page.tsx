@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone, Plane } from "lucide-react";
 import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { requestCallAction } from "./actions";
@@ -17,6 +17,12 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
   const counsellor = student.assignedCounsellorId
     ? await prisma.counsellorProfile.findUnique({ where: { userId: student.assignedCounsellorId } })
     : null;
+  const visa = await prisma.visaFile.findFirst({
+    where: { studentId: student.id },
+    orderBy: { createdAt: "desc" },
+    select: { decisionStatus: true },
+  });
+  const visaApproved = visa?.decisionStatus === "approved";
 
   const tenureYears = counsellor
     ? Math.max(1, Math.round((Date.now() - +new Date(counsellor.tenureStartedAt)) / (365 * 24 * 3600 * 1000)))
@@ -72,6 +78,22 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
         </div>
       )}
 
+      {visaApproved && (
+        <Link
+          href="/app/predeparture"
+          className="mt-4 flex items-center justify-between gap-3 rounded-2xl border border-gold-300 bg-gold-50 px-4 py-3.5 hover:border-gold-600"
+        >
+          <div className="flex items-center gap-3">
+            <Plane className="h-5 w-5 shrink-0 text-gold-600" />
+            <div>
+              <p className="text-sm font-semibold text-navy">Your visa is approved</p>
+              <p className="text-xs text-muted">Open your pre-departure &amp; arrival checklist</p>
+            </div>
+          </div>
+          <span aria-hidden className="text-navy">→</span>
+        </Link>
+      )}
+
       <div className="mt-6 grid grid-cols-2 gap-3">
         <Link href="/app/documents" className="rounded-xl border border-line bg-white p-4 text-sm font-semibold text-navy hover:border-navy">
           Documents
@@ -80,6 +102,9 @@ export default async function AppHome({ searchParams }: { searchParams: Promise<
           Offers
         </Link>
       </div>
+      <Link href="/app/predeparture" className="mt-3 block rounded-xl border border-line bg-white p-4 text-center text-sm font-semibold text-navy hover:border-navy">
+        Pre-departure &amp; arrival
+      </Link>
       <Link href="/app/parent" className="mt-3 block rounded-xl border border-line bg-white p-4 text-center text-sm font-semibold text-navy hover:border-navy">
         Invite a parent / sponsor
       </Link>
