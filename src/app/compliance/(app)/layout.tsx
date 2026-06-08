@@ -21,7 +21,7 @@ export default async function ComplianceLayout({ children }: { children: React.R
         logoutAction={complianceLogoutAction}
         maxW="max-w-4xl"
       />
-      <main className="mx-auto max-w-4xl px-4 py-6">{children}</main>
+      <main id="main" className="mx-auto max-w-4xl px-4 py-6">{children}</main>
     </div>
   );
 }

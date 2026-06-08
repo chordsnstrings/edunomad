@@ -31,7 +31,7 @@ export default async function OperationsLayout({ children }: { children: React.R
         logoutAction={opsLogoutAction}
         maxW="max-w-4xl"
       />
-      <main className="mx-auto max-w-4xl px-4 py-6">{children}</main>
+      <main id="main" className="mx-auto max-w-4xl px-4 py-6">{children}</main>
     </div>
   );
 }

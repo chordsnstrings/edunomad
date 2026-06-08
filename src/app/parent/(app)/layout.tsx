@@ -24,7 +24,7 @@ export default async function ParentLayout({ children }: { children: React.React
           </form>
         </div>
       </header>
-      <main className="mx-auto max-w-md px-4 py-6">{children}</main>
+      <main id="main" className="mx-auto max-w-md px-4 py-6">{children}</main>
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default async function CounsellorLayout({ children }: { children: React.R
         logoutAction={staffLogoutAction}
         maxW="max-w-3xl"
       />
-      <main className="mx-auto max-w-3xl px-4 py-6">{children}</main>
+      <main id="main" className="mx-auto max-w-3xl px-4 py-6">{children}</main>
     </div>
   );
 }
