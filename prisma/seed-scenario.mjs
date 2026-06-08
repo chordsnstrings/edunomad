@@ -243,6 +243,16 @@ async function main() {
   });
   await prisma.complianceSignOff.create({ data: { visaFileId: visa.id, complianceUserId: compliance.id, registrationNumber: "R712345", versionHash: visa.versionHash, createdAt: daysAgo(35) } });
 
+  // Commission on the offered application — received, ready to pay out (W4 finance).
+  {
+    const inst = progs[0].institution;
+    const ratePct = inst.commissionRateMinPct;
+    const usd = Math.round((progs[0].tuitionPerYearUsd * ratePct) / 100);
+    await prisma.commission.create({
+      data: { applicationId: offeredApp.id, institutionId: inst.id, studentId: sid, ratePct, amount: Math.round(usd / 0.73), currency: "CAD", amountUsd: usd, status: "received", expectedAt: daysAgo(60), receivedAt: daysAgo(20), reference: "UNI-INV-0001" },
+    });
+  }
+
   // Event spine for Rahim (chronological → seq order).
   const E = [];
   E.push(["profile.completed", 1, "student", rahimUser.id, { completeness: 100 }, { S: true, C: true }, CH_IMP, 118, null]);
@@ -282,6 +292,11 @@ async function main() {
     const p = progs[1];
     const a = await prisma.application.create({ data: { studentId: student.id, programmeId: p.id, institutionId: p.institutionId, shortlistStatus: "locked", recommendedByCounsellor: true, submissionStatus: "offer_unconditional", submissionMethod: "portal", referenceId: "APP-2001", submittedAt: daysAgo(30), decisionStatus: "offer", decisionAt: daysAgo(14), offerUrl: "https://example.edu/offer/APP-2001.pdf", opsApproved: true } });
     await prisma.visaFile.create({ data: { applicationId: a.id, studentId: student.id, destinationCountry: "CA", checklistState: { passport: "ok", loa: "ok", gic: "ok", tuition: "ok", sop: "ok", funds: "ok" }, completenessPct: 100, prepStartedAt: daysAgo(10), readyForSignoffAt: daysAgo(2), decisionStatus: "pending" } });
+    {
+      const ratePct = p.institution.commissionRateMinPct;
+      const usd = Math.round((p.tuitionPerYearUsd * ratePct) / 100);
+      await prisma.commission.create({ data: { applicationId: a.id, institutionId: p.institutionId, studentId: student.id, ratePct, amount: Math.round(usd / 0.73), currency: "CAD", amountUsd: usd, status: "expected", expectedAt: daysAgo(14) } });
+    }
     for (const d of ["passport", "academic_transcript", "ielts", "financial_statement"]) {
       await prisma.document.create({ data: { studentId: student.id, documentType: d, storageKey: `scenario/${student.id}/${d}.pdf`, mimeType: "application/pdf", sizeBytes: 410000, status: "approved", uploadedBy: user.id, reviewedBy: opsTeam.id, reviewedAt: daysAgo(5) } });
     }

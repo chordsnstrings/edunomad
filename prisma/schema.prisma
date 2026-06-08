@@ -953,3 +953,62 @@ model PushSubscription {
 
   @@index([userId])
 }
+
+enum CommissionStatus {
+  expected // accrued when an offer is accepted / student enrols
+  invoiced // EduNomad has billed the institution
+  received // funds received from the institution
+  reconciled // matched into a payout
+  written_off
+}
+
+/// W4 — university commission earned by EduNomad on an application (§4 core entity).
+model Commission {
+  id            String           @id @default(uuid())
+  tenantId      String           @default("edunomad")
+  applicationId String           @unique
+  institutionId String
+  studentId     String?
+  ratePct       Float
+  amount        Int // gross commission in `currency` (whole units)
+  currency      String           @default("CAD")
+  amountUsd     Int // normalised to USD for reporting
+  status        CommissionStatus @default(expected)
+  expectedAt    DateTime?
+  receivedAt    DateTime?
+  reference     String?
+  payoutId      String?
+  notes         String?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([institutionId])
+  @@index([status])
+  @@index([payoutId])
+}
+
+enum PayoutStatus {
+  scheduled
+  processing
+  paid
+  failed
+}
+
+/// W4 — a settlement batch grouping reconciled commissions (§4: Commission → Payouts).
+model Payout {
+  id               String       @id @default(uuid())
+  tenantId         String       @default("edunomad")
+  reference        String       @unique
+  amountUsd        Int
+  currency         String       @default("USD")
+  status           PayoutStatus @default(scheduled)
+  periodStart      DateTime?
+  periodEnd        DateTime?
+  approvedByUserId String?
+  processedAt      DateTime?
+  notes            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([status])
+}
