@@ -35,20 +35,41 @@ export type FeedItem = {
  * optionally scoped to one student, cursor-paginated by seq, each with a
  * localized rendered string and a per-user read indicator.
  */
+/**
+ * Roles that may only ever see their OWN records. If we cannot resolve which
+ * student they are, the feed must be empty — never unscoped.
+ */
+const SELF_SCOPED_CODES = new Set(["S", "P"]);
+
+const EMPTY_FEED = { items: [] as FeedItem[], nextCursor: null };
+
 export async function getActivityFeed(opts: {
   roleShort: string;
   userId?: string;
+  /** Scope to a single student (student's own feed, or a parent's invited student). */
   studentId?: string;
+  /** Scope to a set of students (a counsellor's assigned book / a manager's team). */
+  studentIds?: string[];
   locale: Locale;
   cursor?: string | null;
   limit?: number;
 }): Promise<{ items: FeedItem[]; nextCursor: string | null }> {
   const limit = Math.min(50, Math.max(1, opts.limit ?? 20));
 
+  // Fail closed. Previously a falsy studentId simply dropped the filter, so a
+  // freshly signed-up user (role student, no Student row yet) received every
+  // student's events.
+  if (SELF_SCOPED_CODES.has(opts.roleShort) && !opts.studentId) return EMPTY_FEED;
+
   const where: Record<string, unknown> = {
     visibility: { path: [opts.roleShort], equals: true },
   };
-  if (opts.studentId) where.studentId = opts.studentId;
+  if (opts.studentId) {
+    where.studentId = opts.studentId;
+  } else if (opts.studentIds) {
+    if (opts.studentIds.length === 0) return EMPTY_FEED;
+    where.studentId = { in: opts.studentIds };
+  }
   if (opts.cursor) where.seq = { lt: BigInt(opts.cursor) };
 
   const rows = await prisma.event.findMany({

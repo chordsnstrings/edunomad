@@ -56,4 +56,36 @@ describe("G018 — activity feed + visibility filtering", () => {
     assert.equal(roleToVisibilityCode("compliance"), "COMP");
     assert.equal(roleToVisibilityCode("super_admin"), "ADMIN");
   });
+
+  // Regression: an unscoped self-scoped feed used to return EVERY student's
+  // events, so a freshly signed-up user (role student, no Student row yet) could
+  // read other students' offers, documents and counsellor assignments.
+  it("returns nothing for a student/parent whose student cannot be resolved", async () => {
+    const e = await emit({ type: "offer.received", stage: 6, actorType: "system", studentId: STU, visibility: { S: true, P: true } });
+    created.push(e.id);
+
+    for (const roleShort of ["S", "P"]) {
+      const feed = await getActivityFeed({ roleShort, locale: "en" });
+      assert.equal(feed.items.length, 0, `${roleShort} must not see an unscoped feed`);
+      assert.equal(feed.nextCursor, null);
+    }
+
+    // …but the correctly scoped student still sees their own event.
+    const own = await getActivityFeed({ roleShort: "S", studentId: STU, locale: "en" });
+    assert.ok(own.items.some((i) => i.id === e.id));
+  });
+
+  it("scopes a feed to an explicit set of students, and denies an empty set", async () => {
+    const mine = await emit({ type: "shortlist.locked", stage: 3, actorType: "student", studentId: STU, visibility: { C: true } });
+    const other = await emit({ type: "shortlist.locked", stage: 3, actorType: "student", studentId: "feed-test-other", visibility: { C: true } });
+    created.push(mine.id, other.id);
+
+    const scoped = await getActivityFeed({ roleShort: "C", studentIds: [STU], locale: "en" });
+    const ids = scoped.items.map((i) => i.id);
+    assert.ok(ids.includes(mine.id));
+    assert.ok(!ids.includes(other.id), "must not see a student outside the scope");
+
+    const none = await getActivityFeed({ roleShort: "C", studentIds: [], locale: "en" });
+    assert.equal(none.items.length, 0, "an empty scope must deny, not return everything");
+  });
 });
