@@ -1,11 +1,11 @@
-import { getSession } from "@/lib/auth";
+import { getAdminSession } from "@/lib/require-admin";
 import { getCurrentSession } from "@/lib/current-user";
 import { exportAuditCsv } from "@/lib/audit";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const admin = await getSession();
+  const admin = await getAdminSession();
   const user = admin ? null : await getCurrentSession();
   if (!admin && user?.role !== "compliance") return new Response("Forbidden", { status: 403 });
   const csv = await exportAuditCsv();

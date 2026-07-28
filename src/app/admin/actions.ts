@@ -18,6 +18,7 @@ import {
 } from "@/lib/twofactor";
 import { settingsSchema, countrySchema } from "@/lib/validation";
 import { SINGLETON_ID } from "@/lib/settings";
+import { requireAdmin } from "@/lib/require-admin";
 
 export type FormState = {
   ok?: boolean;
@@ -27,9 +28,9 @@ export type FormState = {
 };
 
 async function ensureAdmin() {
-  const session = await getSession();
-  if (!session) redirect("/admin/login");
-  return session;
+  // Enforces 2FA as well — server actions are directly invokable, so the
+  // dashboard layout's gate is not sufficient on its own.
+  return requireAdmin();
 }
 
 function firstErrors(

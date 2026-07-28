@@ -3,12 +3,11 @@
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getSession } from "@/lib/auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { logAudit } from "@/lib/audit";
 
 export async function eraseStudentAction(formData: FormData) {
-  const s = await getSession();
-  if (!s) redirect("/admin/login");
+  const s = await requireAdmin();
   const studentId = String(formData.get("studentId"));
   // Never erase while a visa file is in flight (regulatory retention).
   const inFlight = await prisma.visaFile.findFirst({ where: { studentId, decisionStatus: "pending" } });

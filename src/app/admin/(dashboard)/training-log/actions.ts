@@ -2,10 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getSession } from "@/lib/auth";
+import { requireAdmin } from "@/lib/require-admin";
 
 export async function addTrainingAction(formData: FormData) {
-  if (!(await getSession())) redirect("/admin/login");
+  await requireAdmin();
   await prisma.trainingLog.create({ data: { staffName: String(formData.get("staffName") ?? ""), topic: String(formData.get("topic") ?? "") } });
   redirect("/admin/training-log");
 }

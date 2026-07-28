@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { getSession } from "@/lib/auth";
+import { getAdminSession } from "@/lib/require-admin";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 // DSAR subject-access export of a student's data (G168). Document binary is not
 // included — only metadata (binary stays in object storage, signed-URL only).
 export async function GET(req: NextRequest) {
-  if (!(await getSession())) return new Response("Forbidden", { status: 403 });
+  if (!(await getAdminSession())) return new Response("Forbidden", { status: 403 });
   const studentId = req.nextUrl.searchParams.get("studentId");
   if (!studentId) return Response.json({ error: "missing" }, { status: 400 });
   const student = await prisma.student.findUnique({ where: { id: studentId } });

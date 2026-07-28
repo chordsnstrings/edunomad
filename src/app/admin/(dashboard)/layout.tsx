@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ExternalLink, LogOut } from "lucide-react";
-import { getSession } from "@/lib/auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { getSettings } from "@/lib/settings";
 import { Logo } from "@/components/ui/Logo";
 import { AdminNav } from "@/components/admin/AdminNav";
@@ -14,10 +14,8 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
-  if (!session) redirect("/admin/login");
-  // Block the dashboard until 2FA is enrolled (mandatory roles) and verified.
-  if (!session.tfa) redirect("/admin/2fa");
+  // Signed in AND 2FA satisfied (shared with every admin action/route).
+  const session = await requireAdmin();
   const settings = await getSettings();
 
   return (

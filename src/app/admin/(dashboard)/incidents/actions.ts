@@ -3,14 +3,13 @@
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { getSession } from "@/lib/auth";
+import { requireAdmin } from "@/lib/require-admin";
 import { RUNBOOKS } from "@/lib/incident";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
 
 async function admin() {
-  const s = await getSession();
-  if (!s) redirect("/admin/login");
+  const s = await requireAdmin();
   return s;
 }
 
