@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getSession } from "./auth";
+import { logAudit } from "./audit";
 import type { SessionPayload } from "./session";
 
 /**
@@ -14,7 +15,17 @@ import type { SessionPayload } from "./session";
 export async function requireAdmin(): Promise<SessionPayload> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
-  if (!session.tfa) redirect("/admin/2fa");
+  if (!session.tfa) {
+    // A real permission denial: authenticated, but not yet 2FA-satisfied.
+    await logAudit({
+      actorUserId: session.sub,
+      action: "permission.denied",
+      targetType: "Route",
+      result: "denied",
+      reason: "admin action attempted before 2FA",
+    });
+    redirect("/admin/2fa");
+  }
   return session;
 }
 

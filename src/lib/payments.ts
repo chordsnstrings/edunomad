@@ -12,6 +12,13 @@ export async function processGateway(method: string, _amountLocal: number): Prom
 }
 
 export async function payInvoice(invoiceId: string, method: string, actorUserId: string) {
+  // Reject an unknown method before claiming anything: Payment.method is a
+  // Postgres enum, so an invalid value throws at insert — which, after the claim
+  // below, would strand the invoice marked paid with no payment recorded.
+  if (!(PAYMENT_METHODS as readonly string[]).includes(method)) {
+    return { ok: false as const, error: "failed" };
+  }
+
   const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } });
   if (!invoice || invoice.status === "paid") return { ok: false as const, error: "unavailable" };
 
