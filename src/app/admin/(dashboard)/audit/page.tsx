@@ -8,7 +8,10 @@ import { verifyEventChain } from "@/lib/events";
 export const metadata: Metadata = { title: "Audit log", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-export default async function AuditPage({ searchParams }: { searchParams: Promise<{ page?: string; result?: string; view?: string }> }) {
+/** Links verified on page load. The full chain is available on demand (?verify=full). */
+const QUICK_VERIFY_WINDOW = 500;
+
+export default async function AuditPage({ searchParams }: { searchParams: Promise<{ page?: string; result?: string; view?: string; verify?: string }> }) {
   const sp = await searchParams;
   const page = Math.max(1, Number(sp.page ?? 1));
   const perPage = 50;
@@ -16,11 +19,15 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
   if (sp.result) where.result = sp.result;
   if (sp.view === "cross_tenant") where.reason = { contains: "cross-tenant" };
 
+  // Both chains are append-only and retained for six years, so recomputing them
+  // from genesis on every render gets slower without bound. Verify a recent
+  // window by default; "?verify=full" runs the authoritative check.
+  const verifyOpts = sp.verify === "full" ? {} : { limit: QUICK_VERIFY_WINDOW };
   const [rows, total, auditChain, eventChain] = await Promise.all([
     prisma.auditLog.findMany({ where, orderBy: { seq: "desc" }, skip: (page - 1) * perPage, take: perPage }),
     prisma.auditLog.count({ where }),
-    verifyAuditChain(),
-    verifyEventChain(),
+    verifyAuditChain(verifyOpts),
+    verifyEventChain(verifyOpts),
   ]);
   const pages = Math.ceil(total / perPage);
 
@@ -36,12 +43,20 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         ))}
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2">
-        {[["audit chain", auditChain.ok, auditChain.count], ["event chain", eventChain.ok, eventChain.count]].map(([label, ok, count]) => (
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        {[["audit chain", auditChain.ok, auditChain.count, auditChain.full], ["event chain", eventChain.ok, eventChain.count, eventChain.full]].map(([label, ok, count, full]) => (
           <span key={String(label)} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium ${ok ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"}`}>
             {ok ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />} {String(label)} {ok ? "intact" : "BROKEN"} ({String(count)})
+            {!full && <span className="font-normal opacity-75">· last {QUICK_VERIFY_WINDOW}</span>}
           </span>
         ))}
+        {auditChain.full && eventChain.full ? (
+          <span className="text-xs text-muted">Full chains verified from genesis.</span>
+        ) : (
+          <Link href="/admin/audit?verify=full" className="rounded-lg border border-line px-3 py-1.5 text-sm text-navy hover:bg-subtle">
+            Verify full chain
+          </Link>
+        )}
       </div>
 
       <div className="mb-3 flex gap-2 text-sm">

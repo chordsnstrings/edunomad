@@ -102,19 +102,54 @@ export type AuditVerifyResult = {
   ok: boolean;
   count: number;
   brokenAt?: { id: string; seq: string };
+  /** True when the whole chain was recomputed from genesis, not just a window. */
+  full: boolean;
 };
 
-export async function verifyAuditChain(): Promise<AuditVerifyResult> {
-  const rows = await prisma.auditLog.findMany({ orderBy: { seq: "asc" } });
-  let prevHash = GENESIS_HASH;
+/**
+ * Recompute the audit hash chain.
+ *
+ * `limit` verifies only the most recent N entries, anchored on the stored
+ * chainHash of the entry immediately before the window — enough to detect
+ * tampering inside that window at constant cost. Without it the whole chain is
+ * recomputed from genesis, which is the authoritative check but grows without
+ * bound (6-year retention), so it must not run on every page render.
+ */
+export async function verifyAuditChain(
+  opts: { limit?: number } = {},
+): Promise<AuditVerifyResult> {
+  const total = await prisma.auditLog.count();
+  const limit = opts.limit;
+
+  if (!limit || limit >= total) {
+    const rows = await prisma.auditLog.findMany({ orderBy: { seq: "asc" } });
+    let prevHash = GENESIS_HASH;
+    for (const r of rows) {
+      const expected = computeChainHash(auditContent(r), prevHash);
+      if (expected !== r.chainHash) {
+        return { ok: false, count: rows.length, brokenAt: { id: r.id, seq: String(r.seq) }, full: true };
+      }
+      prevHash = r.chainHash;
+    }
+    return { ok: true, count: rows.length, full: true };
+  }
+
+  const recent = await prisma.auditLog.findMany({ orderBy: { seq: "desc" }, take: limit });
+  const rows = recent.reverse();
+  const anchor = await prisma.auditLog.findFirst({
+    where: { seq: { lt: rows[0].seq } },
+    orderBy: { seq: "desc" },
+    select: { chainHash: true },
+  });
+  let prevHash = anchor?.chainHash ?? GENESIS_HASH;
   for (const r of rows) {
     const expected = computeChainHash(auditContent(r), prevHash);
     if (expected !== r.chainHash) {
-      return { ok: false, count: rows.length, brokenAt: { id: r.id, seq: String(r.seq) } };
+      return { ok: false, count: total, brokenAt: { id: r.id, seq: String(r.seq) }, full: false };
     }
     prevHash = r.chainHash;
   }
-  return { ok: true, count: rows.length };
+  return { ok: true, count: total, full: false };
 }
 
 /** Paginated audit-log query (for Compliance + Super Admin views). */

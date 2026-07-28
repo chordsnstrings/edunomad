@@ -115,20 +115,54 @@ export type ChainVerifyResult = {
   ok: boolean;
   count: number;
   brokenAt?: { id: string; seq: string };
+  /** True when the whole chain was recomputed from genesis, not just a window. */
+  full: boolean;
 };
 
-/** Recompute the whole event chain and report the first broken link, if any. */
-export async function verifyEventChain(): Promise<ChainVerifyResult> {
-  const events = await prisma.event.findMany({ orderBy: { seq: "asc" } });
-  let prevHash = GENESIS_HASH;
+/**
+ * Recompute the event hash chain and report the first broken link, if any.
+ *
+ * `limit` verifies only the most recent N events, anchored on the stored
+ * chainHash of the event immediately before the window — constant cost, and
+ * still detects tampering inside the window. Without it the entire chain is
+ * recomputed from genesis; that is the authoritative check, but the event log is
+ * append-only with 6-year retention, so it must not run on every page render.
+ */
+export async function verifyEventChain(
+  opts: { limit?: number } = {},
+): Promise<ChainVerifyResult> {
+  const total = await prisma.event.count();
+  const limit = opts.limit;
+
+  if (!limit || limit >= total) {
+    const events = await prisma.event.findMany({ orderBy: { seq: "asc" } });
+    let prevHash = GENESIS_HASH;
+    for (const e of events) {
+      const expected = computeChainHash(eventContent(e), prevHash);
+      if (expected !== e.chainHash) {
+        return { ok: false, count: events.length, brokenAt: { id: e.id, seq: String(e.seq) }, full: true };
+      }
+      prevHash = e.chainHash;
+    }
+    return { ok: true, count: events.length, full: true };
+  }
+
+  const recent = await prisma.event.findMany({ orderBy: { seq: "desc" }, take: limit });
+  const events = recent.reverse();
+  const anchor = await prisma.event.findFirst({
+    where: { seq: { lt: events[0].seq } },
+    orderBy: { seq: "desc" },
+    select: { chainHash: true },
+  });
+  let prevHash = anchor?.chainHash ?? GENESIS_HASH;
   for (const e of events) {
     const expected = computeChainHash(eventContent(e), prevHash);
     if (expected !== e.chainHash) {
-      return { ok: false, count: events.length, brokenAt: { id: e.id, seq: String(e.seq) } };
+      return { ok: false, count: total, brokenAt: { id: e.id, seq: String(e.seq) }, full: false };
     }
     prevHash = e.chainHash;
   }
-  return { ok: true, count: events.length };
+  return { ok: true, count: total, full: false };
 }
 
 /** Mark an event as read by a user (mutable state, outside the chain). */

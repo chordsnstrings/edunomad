@@ -62,4 +62,26 @@ describe("G005 — event spine + hash chain", () => {
     });
     assert.notEqual(read, null);
   });
+
+  // The admin audit page used to rehash the entire (6-year-retained, append-only)
+  // log on every render. A windowed verification anchors on the stored hash of the
+  // event before the window, so it stays correct at constant cost.
+  it("verifies a recent window and reports whether the check was full", async () => {
+    for (let i = 0; i < 3; i++) {
+      created.push((await emit({ type: "message.sent", stage: 2, actorType: "counsellor" })).id);
+    }
+
+    const windowed = await verifyEventChain({ limit: 2 });
+    assert.equal(windowed.ok, true);
+    assert.equal(windowed.full, false, "a partial window must not claim a full verification");
+
+    const full = await verifyEventChain();
+    assert.equal(full.ok, true);
+    assert.equal(full.full, true);
+    assert.equal(full.count, windowed.count, "both report the total chain length");
+
+    // A window wider than the chain is a full verification.
+    const wide = await verifyEventChain({ limit: full.count + 100 });
+    assert.equal(wide.full, true);
+  });
 });
