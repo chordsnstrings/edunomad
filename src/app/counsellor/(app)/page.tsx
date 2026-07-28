@@ -15,21 +15,28 @@ export default async function InboxPage() {
 
   const students = await prisma.student.findMany({ where, orderBy: { createdAt: "desc" }, take: 200 });
 
-  const leads: Lead[] = await Promise.all(
-    students.map(async (s) => {
-      const last = await prisma.communication.findFirst({ where: { studentId: s.id }, orderBy: { createdAt: "desc" }, select: { createdAt: true } });
-      const commCount = await prisma.communication.count({ where: { studentId: s.id } });
-      return {
-        id: s.id,
-        name: s.fullName ?? s.phone,
-        source: s.sourceCountry,
-        leadScore: s.leadScore,
-        createdAt: s.createdAt.toISOString(),
-        lastActivityAt: (last?.createdAt ?? s.createdAt).toISOString(),
-        isNew: commCount === 0,
-      };
-    }),
-  );
+  // One grouped aggregate for the whole page instead of 2 queries per student
+  // (200 students used to mean 400 round-trips).
+  const commStats = await prisma.communication.groupBy({
+    by: ["studentId"],
+    where: { studentId: { in: students.map((s) => s.id) } },
+    _max: { createdAt: true },
+    _count: { _all: true },
+  });
+  const statsBy = new Map(commStats.map((c) => [c.studentId, c]));
+
+  const leads: Lead[] = students.map((s) => {
+    const stat = statsBy.get(s.id);
+    return {
+      id: s.id,
+      name: s.fullName ?? s.phone,
+      source: s.sourceCountry,
+      leadScore: s.leadScore,
+      createdAt: s.createdAt.toISOString(),
+      lastActivityAt: (stat?._max.createdAt ?? s.createdAt).toISOString(),
+      isNew: (stat?._count._all ?? 0) === 0,
+    };
+  });
 
   return <CounsellorInbox leads={leads} />;
 }

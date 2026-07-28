@@ -14,14 +14,36 @@ export default async function QueuePage() {
   const studentIds = [...new Set(lockedApps.map((a) => a.studentId))];
   const students = await prisma.student.findMany({ where: { id: { in: studentIds } } });
 
-  const cases = await Promise.all(
-    students.map(async (s) => {
-      const locked = lockedApps.filter((a) => a.studentId === s.id).length;
-      const docs = await prisma.document.count({ where: { studentId: s.id } });
-      const lockEvent = await prisma.event.findFirst({ where: { studentId: s.id, type: "shortlist.locked" }, orderBy: { seq: "desc" }, select: { createdAt: true } });
-      return { id: s.id, name: s.fullName ?? s.phone, source: s.sourceCountry, locked, docs, at: (lockEvent?.createdAt ?? s.updatedAt).toISOString() };
+  // Two grouped queries for the whole queue instead of 2 per student.
+  const [docCounts, lockEvents] = await Promise.all([
+    prisma.document.groupBy({
+      by: ["studentId"],
+      where: { studentId: { in: studentIds } },
+      _count: { _all: true },
     }),
-  );
+    prisma.event.findMany({
+      where: { studentId: { in: studentIds }, type: "shortlist.locked" },
+      orderBy: { seq: "desc" },
+      select: { studentId: true, createdAt: true },
+    }),
+  ]);
+  const docsBy = new Map(docCounts.map((d) => [d.studentId, d._count._all]));
+  const lockedAtBy = new Map<string, Date>();
+  for (const e of lockEvents) {
+    // findMany is ordered seq desc, so the first row per student is the latest.
+    if (e.studentId && !lockedAtBy.has(e.studentId)) lockedAtBy.set(e.studentId, e.createdAt);
+  }
+  const lockedCountBy = new Map<string, number>();
+  for (const a of lockedApps) lockedCountBy.set(a.studentId, (lockedCountBy.get(a.studentId) ?? 0) + 1);
+
+  const cases = students.map((s) => ({
+    id: s.id,
+    name: s.fullName ?? s.phone,
+    source: s.sourceCountry,
+    locked: lockedCountBy.get(s.id) ?? 0,
+    docs: docsBy.get(s.id) ?? 0,
+    at: (lockedAtBy.get(s.id) ?? s.updatedAt).toISOString(),
+  }));
   cases.sort((a, b) => +new Date(a.at) - +new Date(b.at)); // FIFO — oldest first
 
   return (

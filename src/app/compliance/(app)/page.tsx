@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { studentNames } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export const metadata: Metadata = { title: "Sign-off queue", robots: { index: false } };
@@ -11,12 +12,8 @@ export const dynamic = "force-dynamic";
 export default async function SignoffQueue() {
   await requireStaff(["compliance"]);
   const files = await prisma.visaFile.findMany({ where: { readyForSignoffAt: { not: null }, signedOffAt: null }, orderBy: { readyForSignoffAt: "asc" }, take: 100 });
-  const rows = await Promise.all(
-    files.map(async (f) => {
-      const student = await prisma.student.findUnique({ where: { id: f.studentId }, select: { fullName: true, phone: true } });
-      return { f, who: student?.fullName ?? student?.phone ?? "" };
-    }),
-  );
+  const names = await studentNames(files.map((f) => f.studentId));
+  const rows = files.map((f) => ({ f, who: names.get(f.studentId) ?? "" }));
 
   return (
     <div>

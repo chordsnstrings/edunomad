@@ -23,12 +23,17 @@ export default async function OffersPage() {
   const t = getTranslator(student.language as Locale);
   const apps = await prisma.application.findMany({ where: { studentId: student.id, decisionStatus: { not: null } }, orderBy: { decisionAt: "desc" } });
 
-  const rows = await Promise.all(
-    apps.map(async (a) => {
-      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
-      return { app: a, name: prog?.name ?? "Programme", institution: prog?.institution.name ?? "", conditions: (a.conditions as string[] | null) ?? [] };
-    }),
-  );
+  // One query for every offered programme instead of one per row.
+  const programmes = await prisma.programme.findMany({
+    where: { id: { in: apps.map((a) => a.programmeId) } },
+    include: { institution: { select: { name: true } } },
+  });
+  const progBy = new Map(programmes.map((p) => [p.id, p]));
+
+  const rows = apps.map((a) => {
+    const prog = progBy.get(a.programmeId);
+    return { app: a, name: prog?.name ?? "Programme", institution: prog?.institution.name ?? "", conditions: (a.conditions as string[] | null) ?? [] };
+  });
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">

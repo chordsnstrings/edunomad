@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { studentNames } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { auditPassAction } from "./actions";
 
@@ -13,12 +14,8 @@ export default async function VisaAuditPage() {
   if (session.role !== "operations_manager") redirect("/operations");
 
   const files = await prisma.visaFile.findMany({ where: { readyForSignoffAt: { not: null }, signedOffAt: null }, orderBy: { readyForSignoffAt: "asc" }, take: 100 });
-  const rows = await Promise.all(
-    files.map(async (f) => {
-      const student = await prisma.student.findUnique({ where: { id: f.studentId }, select: { fullName: true, phone: true } });
-      return { f, who: student?.fullName ?? student?.phone ?? "" };
-    }),
-  );
+  const names = await studentNames(files.map((f) => f.studentId));
+  const rows = files.map((f) => ({ f, who: names.get(f.studentId) ?? "" }));
 
   return (
     <div>

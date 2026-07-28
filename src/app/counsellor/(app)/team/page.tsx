@@ -16,30 +16,59 @@ export default async function TeamPage() {
   const team = await prisma.counsellorProfile.findMany({ where: { managerId: session.userId, active: true } });
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000);
 
-  const rows = await Promise.all(
-    team.map(async (c) => {
-      const students = await prisma.student.findMany({ where: { assignedCounsellorId: c.userId }, select: { id: true, createdAt: true } });
-      const ids = students.map((s) => s.id);
-      let hot = 0, warm = 0, cold = 0;
-      let breaches = 0;
-      for (const s of students) {
-        const lc = await prisma.communication.findFirst({ where: { studentId: s.id, type: "call" }, orderBy: { createdAt: "desc" }, select: { metadata: true } });
-        const o = (lc?.metadata as { outcomeTag?: string } | null)?.outcomeTag;
-        if (o === "hot") hot++;
-        else if (o === "warm") warm++;
-        else if (o === "cold") cold++;
-        if (Date.now() - +s.createdAt > 4 * 3600 * 1000) {
-          const commCount = await prisma.communication.count({ where: { studentId: s.id } });
-          if (commCount === 0) breaches++;
-        }
-      }
-      const locked = ids.length
-        ? await prisma.event.count({ where: { type: "shortlist.locked", studentId: { in: ids }, createdAt: { gte: sevenDaysAgo } } })
-        : 0;
-      const conversion = students.length ? Math.round((locked / students.length) * 100) : 0;
-      return { name: c.fullName, pipeline: students.length, hot, warm, cold, conversion, breaches };
+  // Whole-team metrics in four queries. Previously this ran up to two queries per
+  // student per counsellor (a 5x25 team meant ~250 round-trips per page load).
+  const teamIds = team.map((c) => c.userId);
+  const students = await prisma.student.findMany({
+    where: { assignedCounsellorId: { in: teamIds } },
+    select: { id: true, createdAt: true, assignedCounsellorId: true },
+  });
+  const allStudentIds = students.map((s) => s.id);
+
+  const [calls, commCounts, lockEvents] = await Promise.all([
+    prisma.communication.findMany({
+      where: { studentId: { in: allStudentIds }, type: "call" },
+      orderBy: { createdAt: "desc" },
+      select: { studentId: true, metadata: true },
     }),
-  );
+    prisma.communication.groupBy({
+      by: ["studentId"],
+      where: { studentId: { in: allStudentIds } },
+      _count: { _all: true },
+    }),
+    prisma.event.findMany({
+      where: { type: "shortlist.locked", studentId: { in: allStudentIds }, createdAt: { gte: sevenDaysAgo } },
+      select: { studentId: true },
+    }),
+  ]);
+
+  // Newest-first, so the first row per student is their latest call outcome.
+  const latestOutcome = new Map<string, string | undefined>();
+  for (const c of calls) {
+    if (latestOutcome.has(c.studentId)) continue;
+    latestOutcome.set(c.studentId, (c.metadata as { outcomeTag?: string } | null)?.outcomeTag);
+  }
+  const commCountBy = new Map(commCounts.map((c) => [c.studentId, c._count._all]));
+  const lockedBy = new Map<string, number>();
+  for (const e of lockEvents) {
+    if (e.studentId) lockedBy.set(e.studentId, (lockedBy.get(e.studentId) ?? 0) + 1);
+  }
+
+  const rows = team.map((c) => {
+    const mine = students.filter((s) => s.assignedCounsellorId === c.userId);
+    let hot = 0, warm = 0, cold = 0, breaches = 0, locked = 0;
+    for (const s of mine) {
+      const o = latestOutcome.get(s.id);
+      if (o === "hot") hot++;
+      else if (o === "warm") warm++;
+      else if (o === "cold") cold++;
+      // SLA: assigned over 4h ago and still never contacted.
+      if (Date.now() - +s.createdAt > 4 * 3600 * 1000 && (commCountBy.get(s.id) ?? 0) === 0) breaches++;
+      locked += lockedBy.get(s.id) ?? 0;
+    }
+    const conversion = mine.length ? Math.round((locked / mine.length) * 100) : 0;
+    return { name: c.fullName, pipeline: mine.length, hot, warm, cold, conversion, breaches };
+  });
 
   return (
     <div>

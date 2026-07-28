@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { programmesById } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export const metadata: Metadata = { title: "SLA tracker", robots: { index: false } };
@@ -15,13 +16,17 @@ export default async function SlaPage() {
     orderBy: { submittedAt: "asc" },
     take: 200,
   });
-  const rows = await Promise.all(
-    apps.map(async (a) => {
-      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
-      const days = a.submittedAt ? Math.floor((Date.now() - +a.submittedAt) / 86_400_000) : 0;
-      return { id: a.id, institution: prog?.institution.name ?? "", status: a.submissionStatus, days, breach: days > SLA_DAYS };
-    }),
-  );
+  const progs = await programmesById(apps.map((a) => a.programmeId));
+  const rows = apps.map((a) => {
+    const days = a.submittedAt ? Math.floor((Date.now() - +a.submittedAt) / 86_400_000) : 0;
+    return {
+      id: a.id,
+      institution: progs.get(a.programmeId)?.institution.name ?? "",
+      status: a.submissionStatus,
+      days,
+      breach: days > SLA_DAYS,
+    };
+  });
 
   return (
     <div>

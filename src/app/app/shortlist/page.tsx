@@ -15,19 +15,24 @@ export default async function ShortlistPage({ searchParams }: { searchParams: Pr
   const { blocked, locked: lockedParam } = await searchParams;
   const apps = await getShortlist(student.id);
 
-  const items = await Promise.all(
-    apps.map(async (a) => {
-      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
-      return {
-        id: a.id,
-        programmeName: prog?.name ?? "Programme",
-        institutionName: prog?.institution.name ?? "",
-        rationale: a.rationale ?? "",
-        recommendedByCounsellor: a.recommendedByCounsellor,
-        locked: a.shortlistStatus === "locked",
-      };
-    }),
-  );
+  // One query for every shortlisted programme instead of one per row.
+  const programmes = await prisma.programme.findMany({
+    where: { id: { in: apps.map((a) => a.programmeId) } },
+    include: { institution: { select: { name: true } } },
+  });
+  const progBy = new Map(programmes.map((p) => [p.id, p]));
+
+  const items = apps.map((a) => {
+    const prog = progBy.get(a.programmeId);
+    return {
+      id: a.id,
+      programmeName: prog?.name ?? "Programme",
+      institutionName: prog?.institution.name ?? "",
+      rationale: a.rationale ?? "",
+      recommendedByCounsellor: a.recommendedByCounsellor,
+      locked: a.shortlistStatus === "locked",
+    };
+  });
   const locked = items.some((i) => i.locked);
 
   const lockBlockers: { label: string; href: string }[] = [];

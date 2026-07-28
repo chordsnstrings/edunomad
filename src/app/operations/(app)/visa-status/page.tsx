@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { studentNames } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 
 export const metadata: Metadata = { title: "Visa status", robots: { index: false } };
@@ -14,13 +15,12 @@ export default async function VisaStatusPage() {
   // In production a scheduled job polls each regulator (e.g. IRCC) daily; here the
   // tracker reflects recorded decisions.
   const files = await prisma.visaFile.findMany({ where: { submittedAt: { not: null } }, orderBy: { submittedAt: "asc" }, take: 200 });
-  const rows = await Promise.all(
-    files.map(async (f) => {
-      const student = await prisma.student.findUnique({ where: { id: f.studentId }, select: { fullName: true, phone: true } });
-      const days = f.submittedAt ? Math.floor((Date.now() - +f.submittedAt) / 86_400_000) : 0;
-      return { f, who: student?.fullName ?? student?.phone ?? "", days };
-    }),
-  );
+  const names = await studentNames(files.map((f) => f.studentId));
+  const rows = files.map((f) => ({
+    f,
+    who: names.get(f.studentId) ?? "",
+    days: f.submittedAt ? Math.floor((Date.now() - +f.submittedAt) / 86_400_000) : 0,
+  }));
 
   return (
     <div>

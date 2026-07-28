@@ -16,18 +16,29 @@ export async function counsellorStats(userId: string, since: Date): Promise<Coun
   const ids = students.map((s) => s.id);
   if (ids.length === 0) return { pipeline: 0, newAssigned: 0, calls: 0, locks: 0, escalations: 0, hot: 0, conversion: 0 };
 
-  const [calls, locks, escalations] = await Promise.all([
+  // All five aggregates in parallel. `recentCalls` replaces what used to be one
+  // findFirst per student (a 25-student book cost 25 extra round-trips, and these
+  // dashboards call this once per counsellor).
+  const [calls, locks, escalations, totalLocks, recentCalls] = await Promise.all([
     prisma.communication.count({ where: { studentId: { in: ids }, type: "call", createdAt: { gte: since } } }),
     prisma.event.count({ where: { type: "shortlist.locked", studentId: { in: ids }, createdAt: { gte: since } } }),
     prisma.event.count({ where: { type: "escalation.raised", studentId: { in: ids }, createdAt: { gte: since } } }),
+    prisma.event.count({ where: { type: "shortlist.locked", studentId: { in: ids } } }),
+    prisma.communication.findMany({
+      where: { studentId: { in: ids }, type: "call" },
+      orderBy: { createdAt: "desc" },
+      select: { studentId: true, metadata: true },
+    }),
   ]);
 
+  // Ordered newest-first, so the first row seen for a student is their latest call.
+  const seen = new Set<string>();
   let hot = 0;
-  for (const s of students) {
-    const lc = await prisma.communication.findFirst({ where: { studentId: s.id, type: "call" }, orderBy: { createdAt: "desc" }, select: { metadata: true } });
-    if ((lc?.metadata as { outcomeTag?: string } | null)?.outcomeTag === "hot") hot++;
+  for (const c of recentCalls) {
+    if (seen.has(c.studentId)) continue;
+    seen.add(c.studentId);
+    if ((c.metadata as { outcomeTag?: string } | null)?.outcomeTag === "hot") hot++;
   }
-  const totalLocks = await prisma.event.count({ where: { type: "shortlist.locked", studentId: { in: ids } } });
 
   return {
     pipeline: students.length,

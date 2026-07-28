@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { programmesById, studentNames } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { approveAction } from "./actions";
 
@@ -13,13 +14,19 @@ export default async function ApprovalsPage() {
   if (session.role !== "operations_manager") redirect("/operations");
 
   const apps = await prisma.application.findMany({ where: { submissionStatus: "packaged", opsApproved: false }, take: 100 });
-  const rows = await Promise.all(
-    apps.map(async (a) => {
-      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
-      const student = await prisma.student.findUnique({ where: { id: a.studentId }, select: { fullName: true, phone: true } });
-      return { app: a, name: prog?.name ?? "", institution: prog?.institution.name ?? "", who: student?.fullName ?? student?.phone ?? "" };
-    }),
-  );
+  const [progs, names] = await Promise.all([
+    programmesById(apps.map((a) => a.programmeId)),
+    studentNames(apps.map((a) => a.studentId)),
+  ]);
+  const rows = apps.map((a) => {
+    const prog = progs.get(a.programmeId);
+    return {
+      app: a,
+      name: prog?.name ?? "",
+      institution: prog?.institution.name ?? "",
+      who: names.get(a.studentId) ?? "",
+    };
+  });
 
   return (
     <div>

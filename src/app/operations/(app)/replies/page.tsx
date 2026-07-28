@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { studentNames } from "@/lib/lookups";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { classifyAction } from "./actions";
 
@@ -13,19 +14,26 @@ export default async function RepliesPage() {
   await requireStaff(["operations_team", "operations_manager"]);
   const emails = await prisma.inboundEmail.findMany({ where: { classified: false }, orderBy: { receivedAt: "desc" }, take: 100 });
 
-  const rows = await Promise.all(
-    emails.map(async (e) => {
-      let who = e.applicationId ? "matched application" : "unmatched";
-      if (e.applicationId) {
-        const app = await prisma.application.findUnique({ where: { id: e.applicationId } });
-        if (app) {
-          const student = await prisma.student.findUnique({ where: { id: app.studentId }, select: { fullName: true, phone: true } });
-          who = student?.fullName ?? student?.phone ?? "student";
-        }
-      }
-      return { ...e, who };
-    }),
-  );
+  // Resolve email -> application -> student in two batched queries rather than
+  // two queries per email.
+  const appIds = emails.map((e) => e.applicationId).filter((id): id is string => !!id);
+  const apps = appIds.length
+    ? await prisma.application.findMany({
+        where: { id: { in: [...new Set(appIds)] } },
+        select: { id: true, studentId: true },
+      })
+    : [];
+  const studentIdByApp = new Map(apps.map((a) => [a.id, a.studentId]));
+  const names = await studentNames(apps.map((a) => a.studentId));
+
+  const rows = emails.map((e) => {
+    let who = e.applicationId ? "matched application" : "unmatched";
+    if (e.applicationId) {
+      const sid = studentIdByApp.get(e.applicationId);
+      if (sid) who = names.get(sid) || "student";
+    }
+    return { ...e, who };
+  });
 
   return (
     <div>

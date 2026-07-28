@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, Sparkles, Plus, Lock } from "lucide-react";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
+import { programmesById } from "@/lib/lookups";
 import { getShortlist } from "@/lib/shortlist";
 import { runEligibility, type StudentProfile } from "@/lib/eligibility";
 import { recommendProgrammeAction, suggestRemovalAction } from "./actions";
@@ -33,20 +34,19 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   const apps = await getShortlist(id);
   const shortlistedIds = new Set(apps.map((a) => a.programmeId));
-  const items = await Promise.all(
-    apps.map(async (a) => {
-      const prog = await prisma.programme.findUnique({ where: { id: a.programmeId }, include: { institution: true } });
-      return {
-        id: a.id,
-        name: prog?.name ?? "Programme",
-        institution: prog?.institution.name ?? "",
-        bucket: bucketByProg[a.programmeId] ?? "—",
-        recommendedByCounsellor: a.recommendedByCounsellor,
-        rationale: a.rationale,
-        locked: a.shortlistStatus === "locked",
-      };
-    }),
-  );
+  const progs = await programmesById(apps.map((a) => a.programmeId));
+  const items = apps.map((a) => {
+    const prog = progs.get(a.programmeId);
+    return {
+      id: a.id,
+      name: prog?.name ?? "Programme",
+      institution: prog?.institution.name ?? "",
+      bucket: bucketByProg[a.programmeId] ?? "—",
+      recommendedByCounsellor: a.recommendedByCounsellor,
+      rationale: a.rationale,
+      locked: a.shortlistStatus === "locked",
+    };
+  });
   const addable = [...result.match, ...result.safe, ...result.reach].filter((c) => !shortlistedIds.has(c.id)).slice(0, 10);
 
   return (

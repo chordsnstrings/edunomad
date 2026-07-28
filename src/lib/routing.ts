@@ -55,16 +55,23 @@ export async function assignCounsellor(studentId: string): Promise<{ counsellorU
   if (!student) return { counsellorUserId: null };
 
   const profiles = await prisma.counsellorProfile.findMany({ where: { active: true } });
-  const candidates: Candidate[] = await Promise.all(
-    profiles.map(async (p) => ({
-      userId: p.userId,
-      languages: p.languages,
-      destinations: p.destinations,
-      capacity: p.capacity,
-      currentLoad: await prisma.student.count({ where: { assignedCounsellorId: p.userId } }),
-      tenureStartedAt: p.tenureStartedAt,
-    })),
-  );
+  // One grouped count for every counsellor's current load, instead of one count
+  // query per counsellor on each assignment.
+  const loads = await prisma.student.groupBy({
+    by: ["assignedCounsellorId"],
+    where: { assignedCounsellorId: { in: profiles.map((p) => p.userId) } },
+    _count: { _all: true },
+  });
+  const loadBy = new Map(loads.map((l) => [l.assignedCounsellorId, l._count._all]));
+
+  const candidates: Candidate[] = profiles.map((p) => ({
+    userId: p.userId,
+    languages: p.languages,
+    destinations: p.destinations,
+    capacity: p.capacity,
+    currentLoad: loadBy.get(p.userId) ?? 0,
+    tenureStartedAt: p.tenureStartedAt,
+  }));
 
   const best = routeStudent(
     { language: student.language, destinations: student.destinations as string[] | null, leadScore: student.leadScore },
