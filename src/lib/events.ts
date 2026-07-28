@@ -48,12 +48,11 @@ function eventContent(e: {
   };
 }
 
-/**
- * Append an event to the hash-chained log. Computes
- * chain_hash = sha256(content || prev_chain_hash) under an advisory lock so
- * the chain is gapless and deterministic.
- */
-export async function emit(input: EmitInput): Promise<Event> {
+/** A Prisma client scoped to an open transaction. */
+export type Tx = Prisma.TransactionClient;
+
+/** The chain append itself, always running inside some transaction. */
+async function appendEvent(tx: Tx, input: EmitInput): Promise<Event> {
   const id = randomUUID();
   const createdAt = new Date();
   const visibility = input.visibility ?? {};
@@ -63,52 +62,84 @@ export async function emit(input: EmitInput): Promise<Event> {
   const applicationId = input.applicationId ?? null;
   const actorId = input.actorId ?? null;
 
-  const event = await prisma.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(${EVENT_LOCK})`;
-    const prev = await tx.event.findFirst({
-      orderBy: { seq: "desc" },
-      select: { chainHash: true },
-    });
-    const prevHash = prev?.chainHash ?? GENESIS_HASH;
-    const chainHash = computeChainHash(
-      eventContent({
-        id,
-        type: input.type,
-        stage: input.stage,
-        studentId,
-        applicationId,
-        actorType: input.actorType,
-        actorId,
-        visibility,
-        channels,
-        payload,
-        createdAt,
-      }),
-      prevHash,
-    );
-    return tx.event.create({
-      data: {
-        id,
-        type: input.type,
-        stage: input.stage,
-        studentId,
-        applicationId,
-        actorType: input.actorType,
-        actorId,
-        visibility: visibility as Prisma.InputJsonValue,
-        channels: channels as Prisma.InputJsonValue,
-        payload: payload as Prisma.InputJsonValue,
-        createdAt,
-        chainHash,
-      },
-    });
+  // Transaction-scoped advisory lock: serialises chain appends and is released
+  // on commit/rollback, so it is safe to take inside a caller's transaction too.
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(${EVENT_LOCK})`;
+  const prev = await tx.event.findFirst({
+    orderBy: { seq: "desc" },
+    select: { chainHash: true },
   });
+  const prevHash = prev?.chainHash ?? GENESIS_HASH;
+  const chainHash = computeChainHash(
+    eventContent({
+      id,
+      type: input.type,
+      stage: input.stage,
+      studentId,
+      applicationId,
+      actorType: input.actorType,
+      actorId,
+      visibility,
+      channels,
+      payload,
+      createdAt,
+    }),
+    prevHash,
+  );
+  return tx.event.create({
+    data: {
+      id,
+      type: input.type,
+      stage: input.stage,
+      studentId,
+      applicationId,
+      actorType: input.actorType,
+      actorId,
+      visibility: visibility as Prisma.InputJsonValue,
+      channels: channels as Prisma.InputJsonValue,
+      payload: payload as Prisma.InputJsonValue,
+      createdAt,
+      chainHash,
+    },
+  });
+}
+
+/**
+ * Append an event to the hash-chained log. Computes
+ * chain_hash = sha256(content || prev_chain_hash) under an advisory lock so
+ * the chain is gapless and deterministic.
+ *
+ * Pass `tx` to append inside a caller's transaction. Status is stored on the
+ * entity as well as derived from events (CLAUDE.md §1.6), so the state write and
+ * its event MUST commit together — otherwise a failure between them leaves a
+ * document approved, an application submitted or a visa file signed off with no
+ * corresponding entry in the log the audit trail is built from. `withEvents`
+ * below is the ergonomic way to do that.
+ */
+export async function emit(input: EmitInput, tx?: Tx): Promise<Event> {
+  const event = tx
+    ? await appendEvent(tx, input)
+    : await prisma.$transaction((t) => appendEvent(t, input));
 
   // Privacy-respecting analytics (G178): forward catalog events to the product
   // funnel. Fire-and-forget post-commit — never adds latency, never throws.
   void trackEventFunnel(input.type, { stage: input.stage }).catch(() => {});
 
   return event;
+}
+
+/**
+ * Run state writes and their event(s) in one transaction:
+ *
+ *   await withEvents(async (tx) => {
+ *     await tx.document.update({ ... });
+ *     await emit({ ... }, tx);
+ *   });
+ *
+ * Either everything commits or nothing does.
+ */
+export async function withEvents<T>(fn: (tx: Tx) => Promise<T>): Promise<T> {
+  return prisma.$transaction(fn);
 }
 
 export type ChainVerifyResult = {

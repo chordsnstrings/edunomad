@@ -1,5 +1,5 @@
 import { prisma } from "./db";
-import { emit } from "./events";
+import { emit, withEvents } from "./events";
 
 export const PAYMENT_METHODS = ["bkash", "nagad", "ssl", "card", "bank_transfer"] as const;
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
@@ -34,14 +34,21 @@ export async function payInvoice(invoiceId: string, method: string, actorUserId:
   if (claimed.count !== 1) return { ok: false as const, error: "unavailable" };
 
   const gw = await processGateway(method, invoice.amountLocal);
-  await prisma.payment.create({
-    data: { invoiceId, amountLocal: invoice.amountLocal, currency: invoice.currency, method: method as PaymentMethod, externalRef: gw.ref, status: gw.ok ? "succeeded" : "failed", approvedByUserId: actorUserId, processedAt: new Date() },
-  });
   if (!gw.ok) {
+    await prisma.payment.create({
+      data: { invoiceId, amountLocal: invoice.amountLocal, currency: invoice.currency, method: method as PaymentMethod, externalRef: gw.ref, status: "failed", approvedByUserId: actorUserId, processedAt: new Date() },
+    });
     // Release the claim so the student can retry with another method.
     await prisma.invoice.update({ where: { id: invoiceId }, data: { status: invoice.status } });
+    return { ok: false as const, error: "failed" } as const;
   }
-  if (gw.ok) {
+
+  // Payment row and its event commit together: a crash between them would take
+  // the student's money with nothing in the log (and no notification).
+  await withEvents(async (tx) => {
+    await tx.payment.create({
+      data: { invoiceId, amountLocal: invoice.amountLocal, currency: invoice.currency, method: method as PaymentMethod, externalRef: gw.ref, status: "succeeded", approvedByUserId: actorUserId, processedAt: new Date() },
+    });
     await emit({
       type: "payment.received",
       stage: 7,
@@ -51,7 +58,7 @@ export async function payInvoice(invoiceId: string, method: string, actorUserId:
       visibility: { S: true, P: true, C: true, F: true },
       channels: { in_app: true, push: true, whatsapp: true, email: true },
       payload: { amount: invoice.amountLocal, currency: invoice.currency, method, purpose: invoice.purpose },
-    });
-  }
+    }, tx);
+  });
   return { ok: gw.ok, error: gw.ok ? undefined : "failed" } as const;
 }

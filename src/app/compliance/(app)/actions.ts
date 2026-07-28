@@ -9,8 +9,11 @@ import { destroyUserSession, SESSION_COOKIE } from "@/lib/sessions";
 import { sendOtp, verifyOtpForReauth } from "@/lib/otp";
 import { visaVersionHash } from "@/lib/visa";
 import { getLatestDocuments } from "@/lib/documents";
-import { emit } from "@/lib/events";
+import { emit, withEvents } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+
+/** Sentinel: the file was already signed, so the transaction rolls back. */
+class AlreadySignedError extends Error {}
 
 // SOLE sign-off authority is the Compliance role (CLAUDE.md §1.12). Deny by default.
 async function compliance() {
@@ -66,18 +69,33 @@ export async function signOffAction(formData: FormData) {
     formIds: [...latest.values()].map((d) => `${d.documentType}:v${d.version}:${d.storageKey}`),
     updatedAt: signedAt,
   });
-  await prisma.visaFile.update({ where: { id: fileId }, data: { signedOffAt: signedAt, signedOffBy: s.userId, registrationNumber: rcic.registrationNumber, versionHash, returnedForChanges: false } });
-  await prisma.complianceSignOff.create({ data: { visaFileId: fileId, complianceUserId: s.userId, registrationNumber: rcic.registrationNumber, versionHash } });
-  await emit({
-    type: "visa.signed_off",
-    stage: 8,
-    studentId: vf.studentId,
-    applicationId: vf.applicationId,
-    actorType: "compliance",
-    actorId: s.userId,
-    visibility: { S: true, C: true, O: true, OM: true, COMP: true },
-    channels: { in_app: true, push: true },
-    payload: { registrationNumber: rcic.registrationNumber },
+  // The stamp, the immutable sign-off record and the chain entry are one legal
+  // act: they must commit together or not at all. Sign-once is enforced in the
+  // same transaction so two concurrent submissions cannot both sign.
+  await withEvents(async (tx) => {
+    const signed = await tx.visaFile.updateMany({
+      where: { id: fileId, signedOffAt: null },
+      data: { signedOffAt: signedAt, signedOffBy: s.userId, registrationNumber: rcic.registrationNumber, versionHash, returnedForChanges: false },
+    });
+    if (signed.count !== 1) throw new AlreadySignedError();
+    await tx.complianceSignOff.create({ data: { visaFileId: fileId, complianceUserId: s.userId, registrationNumber: rcic.registrationNumber, versionHash } });
+    await emit(
+      {
+        type: "visa.signed_off",
+        stage: 8,
+        studentId: vf.studentId,
+        applicationId: vf.applicationId,
+        actorType: "compliance",
+        actorId: s.userId,
+        visibility: { S: true, C: true, O: true, OM: true, COMP: true },
+        channels: { in_app: true, push: true },
+        payload: { registrationNumber: rcic.registrationNumber },
+      },
+      tx,
+    );
+  }).catch((e) => {
+    if (e instanceof AlreadySignedError) redirect(`/compliance/files/${fileId}?already=1`);
+    throw e;
   });
   await logAudit({ actorUserId: s.userId, action: "visa_file.signed_off", targetType: "VisaFile", targetId: fileId, result: "success", reason: `RCIC ${rcic.registrationNumber} · hash ${versionHash}` });
   redirect(`/compliance/files/${fileId}?signed=1`);

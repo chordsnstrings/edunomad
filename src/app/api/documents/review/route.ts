@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
-import { emit } from "@/lib/events";
+import { emit, withEvents } from "@/lib/events";
 import { whatsappSend } from "@/lib/whatsapp";
 import { Prisma } from "@prisma/client";
 
@@ -26,26 +26,32 @@ export async function POST(req: NextRequest) {
   if (!doc) return Response.json({ error: "not_found" }, { status: 404 });
 
   const status = decision === "approve" ? "approved" : "rework_requested";
-  await prisma.document.update({
-    where: { id: documentId },
-    data: {
-      status,
-      reworkReason: decision === "rework" ? reworkReason ?? null : null,
-      reviewedBy: session.userId,
-      reviewedAt: new Date(),
-      qaResults: { ...(doc.qaResults as object | null), rubric: items ?? {}, decision } as unknown as Prisma.InputJsonValue,
-    },
-  });
-
-  await emit({
-    type: decision === "approve" ? "document.approved" : "document.rework_requested",
-    stage: 4,
-    studentId: doc.studentId,
-    actorType: "ops",
-    actorId: session.userId,
-    visibility: { S: true, C: true, O: true },
-    channels: { in_app: true, ...(decision === "rework" ? { whatsapp: true } : {}) },
-    payload: { documentType: doc.documentType, reworkReason: reworkReason ?? null },
+  // The status write and its event must commit together: a failure between them
+  // would leave the document approved with nothing in the log to show who did it.
+  await withEvents(async (tx) => {
+    await tx.document.update({
+      where: { id: documentId },
+      data: {
+        status,
+        reworkReason: decision === "rework" ? reworkReason ?? null : null,
+        reviewedBy: session.userId,
+        reviewedAt: new Date(),
+        qaResults: { ...(doc.qaResults as object | null), rubric: items ?? {}, decision } as unknown as Prisma.InputJsonValue,
+      },
+    });
+    await emit(
+      {
+        type: decision === "approve" ? "document.approved" : "document.rework_requested",
+        stage: 4,
+        studentId: doc.studentId,
+        actorType: "ops",
+        actorId: session.userId,
+        visibility: { S: true, C: true, O: true },
+        channels: { in_app: true, ...(decision === "rework" ? { whatsapp: true } : {}) },
+        payload: { documentType: doc.documentType, reworkReason: reworkReason ?? null },
+      },
+      tx,
+    );
   });
 
   // G054 — one-tap rework WhatsApp (template auto-filled with doc type + reason).
