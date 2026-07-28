@@ -101,7 +101,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               <form action={recommendProgrammeAction} className="mt-2 flex gap-2">
                 <input type="hidden" name="studentId" value={id} />
                 <input type="hidden" name="programmeId" value={c.id} />
-                <input name="rationale" placeholder="Why recommend? (optional)" className="flex-1 rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-navy" />
+                <input name="rationale" placeholder="Why recommend? (optional)" aria-label="Why recommend? (optional)" className="flex-1 rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-navy" />
                 <button className="inline-flex items-center gap-1 rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white hover:bg-navy-700">
                   <Plus className="h-3.5 w-3.5" /> Recommend
                 </button>

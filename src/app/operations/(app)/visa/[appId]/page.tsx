@@ -82,7 +82,7 @@ export default async function VisaBuilderPage({ params }: { params: Promise<{ ap
             {vf.vfsAppointmentAt ? <p className="text-sm text-muted">{vf.vfsAppointmentAt.toLocaleString()}</p> : (
               <form action={bookVfsAction} className="flex gap-2">
                 <input type="hidden" name="appId" value={appId} />
-                <input type="datetime-local" name="datetime" className="rounded-lg border border-line px-3 py-1.5 text-sm" />
+                <input aria-label="Datetime" type="datetime-local" name="datetime" className="rounded-lg border border-line px-3 py-1.5 text-sm" />
                 <button className="rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white">Book</button>
               </form>
             )}
@@ -94,7 +94,7 @@ export default async function VisaBuilderPage({ params }: { params: Promise<{ ap
             {!vf.submittedAt ? (
               <form action={submitVisaAction} className="flex gap-2">
                 <input type="hidden" name="appId" value={appId} />
-                <input name="ref" placeholder="Official reference" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
+                <input name="ref" placeholder="Official reference" aria-label="Official reference" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
                 <button className="rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white">Submit</button>
               </form>
             ) : <p className="text-sm text-muted">Submitted {vf.submittedAt.toLocaleDateString()}</p>}
@@ -106,8 +106,8 @@ export default async function VisaBuilderPage({ params }: { params: Promise<{ ap
               ) : (
                 <form action={decisionAction} className="flex flex-wrap gap-2">
                   <input type="hidden" name="appId" value={appId} />
-                  <select name="decision" className="rounded-lg border border-line px-2 py-1.5 text-sm"><option value="approved">approved</option><option value="refused">refused</option><option value="info_requested">info_requested</option></select>
-                  <input name="reason" placeholder="Reason (if refused)" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
+                  <select aria-label="Decision" name="decision" className="rounded-lg border border-line px-2 py-1.5 text-sm"><option value="approved">approved</option><option value="refused">refused</option><option value="info_requested">info_requested</option></select>
+                  <input name="reason" placeholder="Reason (if refused)" aria-label="Reason (if refused)" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
                   <button className="rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white">Record</button>
                 </form>
               )}

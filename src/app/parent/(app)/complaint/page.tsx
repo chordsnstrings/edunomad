@@ -18,7 +18,7 @@ export default async function ComplaintPage() {
       <h1 className="mt-3 text-xl font-semibold text-navy">{t("parent.complaint.title")}</h1>
       <p className="mb-4 text-sm text-muted">{t("parent.complaint.note")}</p>
       <form action={fileComplaintAction} className="space-y-2">
-        <textarea name="body" rows={5} required placeholder={t("parent.complaint.placeholder")} className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
+        <textarea name="body" rows={5} required placeholder={t("parent.complaint.placeholder")} aria-label={t("parent.complaint.placeholder")} className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
         <button className="rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700">{t("parent.complaint.submit")}</button>
       </form>
     </div>

@@ -16,9 +16,9 @@ export default async function ExitsPage() {
     <div>
       <h1 className="mb-4 text-xl font-semibold text-navy">Exit interviews</h1>
       <form action={addExitAction} className="mb-5 space-y-2 rounded-xl border border-line bg-white p-4">
-        <input name="name" placeholder="Counsellor name" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-        <input name="reason" placeholder="Reason for leaving" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-        <textarea name="notes" rows={2} placeholder="Notes" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="name" placeholder="Counsellor name" aria-label="Counsellor name" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="reason" placeholder="Reason for leaving" aria-label="Reason for leaving" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <textarea name="notes" rows={2} placeholder="Notes" aria-label="Notes" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Log exit interview</button>
       </form>
       <ul className="space-y-2">

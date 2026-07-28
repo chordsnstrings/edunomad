@@ -35,7 +35,7 @@ export function NotesEditor({ studentId, initial }: { studentId: string; initial
         onChange={(e) => setBody(e.target.value)}
         onBlur={save}
         rows={5}
-        placeholder="Call notes, next steps, context…"
+        placeholder="Call notes, next steps, context…" aria-label="Call notes, next steps, context…"
         className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy"
       />
     </div>

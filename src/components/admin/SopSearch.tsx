@@ -22,7 +22,7 @@ export function SopSearch() {
     <div>
       <div className="relative mb-3">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search SOPs…" className="w-full rounded-lg border border-line py-2.5 pl-9 pr-3 text-sm outline-none focus:border-navy" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search SOPs…" aria-label="Search SOPs…" className="w-full rounded-lg border border-line py-2.5 pl-9 pr-3 text-sm outline-none focus:border-navy" />
       </div>
       <ul className="space-y-2">
         {results.map((r) => (

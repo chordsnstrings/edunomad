@@ -30,7 +30,7 @@ export default async function QaReviewPage({ params }: { params: Promise<{ commI
             <span className="text-ink">{item}</span>
           </label>
         ))}
-        <textarea name="notes" rows={2} placeholder="Notes / coaching points" className="mt-2 w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <textarea name="notes" rows={2} placeholder="Notes / coaching points" aria-label="Notes / coaching points" className="mt-2 w-full rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="mt-2 rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-700">Save review</button>
       </form>
     </div>

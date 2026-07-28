@@ -24,7 +24,7 @@ export function SopBlockEditor({ id, title: initialTitle, blocks: initialBlocks,
     <form action={saveSopBlocksAction} className="space-y-3">
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="blocks" value={JSON.stringify(blocks)} />
-      <input name="title" value={title} onChange={(e) => setTitle(e.target.value)} disabled={disabled} className="w-full rounded-lg border border-line px-3 py-2.5 text-lg font-semibold text-navy" />
+      <input aria-label="Title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} disabled={disabled} className="w-full rounded-lg border border-line px-3 py-2.5 text-lg font-semibold text-navy" />
 
       {blocks.map((b, i) => (
         <div key={i} className="rounded-xl border border-line bg-white p-3">
@@ -39,39 +39,39 @@ export function SopBlockEditor({ id, title: initialTitle, blocks: initialBlocks,
             )}
           </div>
           {["heading", "paragraph", "script", "template"].includes(b.type) && (
-            <textarea disabled={disabled} className={field} rows={b.type === "paragraph" || b.type === "script" ? 3 : 1} value={String(b.text ?? "")} onChange={(e) => set(i, { text: e.target.value })} placeholder="Text…" />
+            <textarea disabled={disabled} className={field} rows={b.type === "paragraph" || b.type === "script" ? 3 : 1} value={String(b.text ?? "")} onChange={(e) => set(i, { text: e.target.value })} placeholder="Text…" aria-label="Text…" />
           )}
-          {b.type === "script" && <input disabled={disabled} className={`${field} mt-2`} value={String(b.trigger ?? "")} onChange={(e) => set(i, { trigger: e.target.value })} placeholder="Trigger condition" />}
-          {b.type === "template" && <input disabled={disabled} className={`${field} mt-2`} value={lines(b.variables).replace(/\n/g, ", ")} onChange={(e) => set(i, { variables: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="Variables (comma-separated)" />}
+          {b.type === "script" && <input disabled={disabled} className={`${field} mt-2`} value={String(b.trigger ?? "")} onChange={(e) => set(i, { trigger: e.target.value })} placeholder="Trigger condition" aria-label="Trigger condition" />}
+          {b.type === "template" && <input disabled={disabled} className={`${field} mt-2`} value={lines(b.variables).replace(/\n/g, ", ")} onChange={(e) => set(i, { variables: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="Variables (comma-separated)" aria-label="Variables (comma-separated)" />}
           {(b.type === "list" || b.type === "checklist") && (
-            <textarea disabled={disabled} className={field} rows={3} value={lines(b.items)} onChange={(e) => set(i, { items: toLines(e.target.value) })} placeholder="One item per line" />
+            <textarea disabled={disabled} className={field} rows={3} value={lines(b.items)} onChange={(e) => set(i, { items: toLines(e.target.value) })} placeholder="One item per line" aria-label="One item per line" />
           )}
           {b.type === "checklist" && <label className="mt-1 flex items-center gap-2 text-xs text-muted"><input type="checkbox" checked={!!b.gate} disabled={disabled} onChange={(e) => set(i, { gate: e.target.checked })} /> Enforced gate (must be green to proceed)</label>}
           {b.type === "kpi" && (
             <div className="flex gap-2">
-              <input disabled={disabled} className={field} value={String(b.metric ?? "")} onChange={(e) => set(i, { metric: e.target.value })} placeholder="Metric key" />
-              <input disabled={disabled} type="number" className="w-28 rounded-lg border border-line px-3 py-2 text-sm" value={Number(b.target ?? 0)} onChange={(e) => set(i, { target: Number(e.target.value) })} placeholder="Target" />
+              <input disabled={disabled} className={field} value={String(b.metric ?? "")} onChange={(e) => set(i, { metric: e.target.value })} placeholder="Metric key" aria-label="Metric key" />
+              <input disabled={disabled} type="number" className="w-28 rounded-lg border border-line px-3 py-2 text-sm" value={Number(b.target ?? 0)} onChange={(e) => set(i, { target: Number(e.target.value) })} placeholder="Target" aria-label="Target" />
             </div>
           )}
           {b.type === "compliance_warning" && (
             <div className="space-y-2">
-              <input disabled={disabled} className={field} value={lines(b.keywords).replace(/\n/g, ", ")} onChange={(e) => set(i, { keywords: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="Keywords (comma-separated)" />
-              <input disabled={disabled} className={field} value={String(b.message ?? "")} onChange={(e) => set(i, { message: e.target.value })} placeholder="Warning message" />
+              <input disabled={disabled} className={field} value={lines(b.keywords).replace(/\n/g, ", ")} onChange={(e) => set(i, { keywords: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })} placeholder="Keywords (comma-separated)" aria-label="Keywords (comma-separated)" />
+              <input disabled={disabled} className={field} value={String(b.message ?? "")} onChange={(e) => set(i, { message: e.target.value })} placeholder="Warning message" aria-label="Warning message" />
             </div>
           )}
           {b.type === "trigger_rule" && (
             <div className="space-y-2">
-              <input disabled={disabled} className={field} value={String(b.when ?? "")} onChange={(e) => set(i, { when: e.target.value })} placeholder="when (e.g. counsellor_opens_lead_detail)" />
-              <input disabled={disabled} className={field} value={String(b.condition ?? "")} onChange={(e) => set(i, { condition: e.target.value })} placeholder="if (condition)" />
-              <input disabled={disabled} className={field} value={String(b.surface ?? "")} onChange={(e) => set(i, { surface: e.target.value })} placeholder="surface (e.g. lead_detail.right_rail)" />
+              <input disabled={disabled} className={field} value={String(b.when ?? "")} onChange={(e) => set(i, { when: e.target.value })} placeholder="when (e.g. counsellor_opens_lead_detail)" aria-label="when (e.g. counsellor_opens_lead_detail)" />
+              <input disabled={disabled} className={field} value={String(b.condition ?? "")} onChange={(e) => set(i, { condition: e.target.value })} placeholder="if (condition)" aria-label="if (condition)" />
+              <input disabled={disabled} className={field} value={String(b.surface ?? "")} onChange={(e) => set(i, { surface: e.target.value })} placeholder="surface (e.g. lead_detail.right_rail)" aria-label="surface (e.g. lead_detail.right_rail)" />
             </div>
           )}
-          {b.type === "decision_tree" && <input disabled={disabled} className={field} value={String(b.question ?? "")} onChange={(e) => set(i, { question: e.target.value })} placeholder="Decision question" />}
-          {b.type === "table" && <textarea disabled={disabled} className={field} rows={3} value={(b.rows as string[][] | undefined)?.map((r) => r.join(" | ")).join("\n") ?? ""} onChange={(e) => set(i, { rows: e.target.value.split("\n").map((r) => r.split("|").map((c) => c.trim())) })} placeholder="One row per line, cells separated by |" />}
+          {b.type === "decision_tree" && <input disabled={disabled} className={field} value={String(b.question ?? "")} onChange={(e) => set(i, { question: e.target.value })} placeholder="Decision question" aria-label="Decision question" />}
+          {b.type === "table" && <textarea disabled={disabled} className={field} rows={3} value={(b.rows as string[][] | undefined)?.map((r) => r.join(" | ")).join("\n") ?? ""} onChange={(e) => set(i, { rows: e.target.value.split("\n").map((r) => r.split("|").map((c) => c.trim())) })} placeholder="One row per line, cells separated by |" aria-label="One row per line, cells separated by |" />}
           {b.type === "reference" && (
             <div className="flex gap-2">
-              <input disabled={disabled} className={field} value={String(b.articleSlug ?? "")} onChange={(e) => set(i, { articleSlug: e.target.value })} placeholder="Target SOP slug" />
-              <input disabled={disabled} className={field} value={String(b.label ?? "")} onChange={(e) => set(i, { label: e.target.value })} placeholder="Link label" />
+              <input disabled={disabled} className={field} value={String(b.articleSlug ?? "")} onChange={(e) => set(i, { articleSlug: e.target.value })} placeholder="Target SOP slug" aria-label="Target SOP slug" />
+              <input disabled={disabled} className={field} value={String(b.label ?? "")} onChange={(e) => set(i, { label: e.target.value })} placeholder="Link label" aria-label="Link label" />
             </div>
           )}
         </div>

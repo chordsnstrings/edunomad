@@ -50,7 +50,7 @@ export default async function RepliesPage() {
               <p className="mt-2 line-clamp-3 text-sm text-ink">{e.body}</p>
               <form action={classifyAction} className="mt-3 flex flex-wrap items-center gap-2">
                 <input type="hidden" name="emailId" value={e.id} />
-                <select name="classification" className="rounded-lg border border-line px-2 py-1.5 text-sm">
+                <select aria-label="Classification" name="classification" className="rounded-lg border border-line px-2 py-1.5 text-sm">
                   {OPTIONS.map((o) => <option key={o} value={o}>{o.replace(/_/g, " ")}</option>)}
                 </select>
                 <button className="rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white hover:bg-navy-700">Classify</button>

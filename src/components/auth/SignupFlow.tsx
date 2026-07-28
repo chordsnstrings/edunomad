@@ -94,7 +94,7 @@ export function SignupFlow() {
             type="tel"
             inputMode="tel"
             autoComplete="tel"
-            placeholder="+8801XXXXXXXXX"
+            placeholder="+8801XXXXXXXXX" aria-label={t("auth.signup.phone_label")}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full rounded-lg border border-line px-3 py-2.5 outline-none focus:border-navy"
@@ -115,7 +115,7 @@ export function SignupFlow() {
             inputMode="numeric"
             autoComplete="one-time-code"
             maxLength={6}
-            placeholder="123456"
+            placeholder="123456" aria-label={t("auth.otp.title")}
             value={code}
             onChange={(e) => setCode(e.target.value)}
             className="w-full rounded-lg border border-line px-3 py-2.5 text-center text-lg tracking-[0.3em] outline-none focus:border-navy"

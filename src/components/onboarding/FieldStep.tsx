@@ -23,7 +23,7 @@ export function FieldStep({ initial }: { initial?: { fieldCategory?: string; fie
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search fields…"
+              placeholder="Search fields…" aria-label="Search fields…"
               className="w-full rounded-lg border border-line py-2.5 pl-9 pr-3 outline-none focus:border-navy"
             />
           </div>

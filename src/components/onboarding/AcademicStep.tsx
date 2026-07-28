@@ -76,7 +76,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
           value={institution}
           onChange={(e) => setInstitution(e.target.value)}
           onBlur={() => persist()}
-          placeholder="e.g. Dhaka Board, University of Dhaka"
+          placeholder="e.g. Dhaka Board, University of Dhaka" aria-label="e.g. Dhaka Board, University of Dhaka"
         />
       </div>
 
@@ -100,7 +100,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
             value={score}
             onChange={(e) => setScore(e.target.value)}
             onBlur={() => persist()}
-            placeholder={scoreType === "gpa" ? "0–10" : "0–100"}
+            placeholder={scoreType === "gpa" ? "0–10" : "0–100"} aria-label={scoreType === "gpa" ? "0–10" : "0–100"}
           />
         </div>
       </div>
@@ -113,7 +113,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
           value={year}
           onChange={(e) => setYear(e.target.value)}
           onBlur={() => persist()}
-          placeholder={String(CURRENT_YEAR)}
+          placeholder={String(CURRENT_YEAR)} aria-label={String(CURRENT_YEAR)}
         />
       </div>
 

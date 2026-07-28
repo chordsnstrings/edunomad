@@ -18,7 +18,7 @@ export default async function HiringPage() {
     <div>
       <h1 className="mb-4 text-xl font-semibold text-navy">Hiring pipeline</h1>
       <form action={addCandidateAction} className="mb-5 flex gap-2">
-        <input name="name" placeholder="Candidate name" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="name" placeholder="Candidate name" aria-label="Candidate name" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Add</button>
       </form>
       <ul className="space-y-2">
@@ -27,7 +27,7 @@ export default async function HiringPage() {
             <span className="font-medium text-navy">{c.name}</span>
             <form action={advanceCandidateAction} className="flex gap-2">
               <input type="hidden" name="id" value={c.id} />
-              <select name="stage" defaultValue={c.stage} className="rounded-lg border border-line px-2 py-1.5 text-sm">
+              <select aria-label="Stage" name="stage" defaultValue={c.stage} className="rounded-lg border border-line px-2 py-1.5 text-sm">
                 {STAGES.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
               <button className="rounded-lg border border-navy px-3 py-1.5 text-sm font-semibold text-navy">Update</button>

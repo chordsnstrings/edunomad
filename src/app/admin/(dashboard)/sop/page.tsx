@@ -17,8 +17,8 @@ export default async function SopListPage() {
       <p className="mb-5 text-sm text-muted">Author, version, review and publish standard operating procedures.</p>
 
       <form action={createSopAction} className="mb-6 flex flex-wrap gap-2 rounded-xl border border-line bg-white p-4">
-        <input name="title" placeholder="New SOP title" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
-        <input name="category" placeholder="Category (optional)" className="rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="title" placeholder="New SOP title" aria-label="New SOP title" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="category" placeholder="Category (optional)" aria-label="Category (optional)" className="rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Create</button>
       </form>
 

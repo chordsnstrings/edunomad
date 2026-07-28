@@ -21,9 +21,9 @@ export default async function RefundsPage() {
 
       <form action={requestRefundAction} className="mb-5 space-y-2 rounded-xl border border-line bg-white p-4">
         <p className="text-sm font-semibold text-navy">Raise a refund request</p>
-        <input name="studentId" placeholder="Student ID" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-        <input name="amount" inputMode="numeric" placeholder="Amount (BDT)" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-        <input name="reason" placeholder="Reason" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="studentId" placeholder="Student ID" aria-label="Student ID" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="amount" inputMode="numeric" placeholder="Amount (BDT)" aria-label="Amount (BDT)" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="reason" placeholder="Reason" aria-label="Reason" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">Submit request</button>
       </form>
 

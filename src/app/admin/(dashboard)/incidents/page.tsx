@@ -16,8 +16,8 @@ export default async function IncidentsPage() {
       <h1 className="mb-1 text-2xl font-semibold text-navy">Incident response</h1>
       <p className="mb-5 text-sm text-muted">Declaring an incident loads the severity runbook.</p>
       <form action={createIncidentAction} className="mb-6 flex flex-wrap gap-2 rounded-xl border border-line bg-white p-4">
-        <input name="title" placeholder="What happened?" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
-        <select name="severity" className="rounded-lg border border-line px-2 py-2 text-sm">{SEVERITIES.map((s) => <option key={s} value={s}>{s.toUpperCase()}</option>)}</select>
+        <input name="title" placeholder="What happened?" aria-label="What happened?" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+        <select aria-label="Severity" name="severity" className="rounded-lg border border-line px-2 py-2 text-sm">{SEVERITIES.map((s) => <option key={s} value={s}>{s.toUpperCase()}</option>)}</select>
         <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Declare incident</button>
       </form>
       <ul className="space-y-2">

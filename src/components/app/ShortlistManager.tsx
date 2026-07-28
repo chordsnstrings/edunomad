@@ -88,7 +88,7 @@ export function ShortlistManager({
                 onBlur={(e) => saveRationale(it.id, e.target.value)}
                 disabled={locked}
                 rows={2}
-                placeholder="Why this programme? (your reasons)"
+                placeholder="Why this programme? (your reasons)" aria-label="Why this programme? (your reasons)"
                 className="mt-2 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy disabled:bg-subtle"
               />
             </li>

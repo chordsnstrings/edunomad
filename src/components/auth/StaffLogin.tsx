@@ -54,13 +54,13 @@ export function StaffLogin({ redirectTo = "/counsellor", title = "Counsellor sig
       </div>
       {phase === "phone" ? (
         <div className="space-y-3">
-          <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+8801XXXXXXXXX" className="w-full rounded-lg border border-line px-3 py-2.5 outline-none focus:border-navy" />
+          <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+8801XXXXXXXXX" aria-label="Phone number" className="w-full rounded-lg border border-line px-3 py-2.5 outline-none focus:border-navy" />
           {error && <p className="text-sm font-medium text-red-600">{error}</p>}
           <button type="button" onClick={send} disabled={busy} className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">{busy ? "Sending…" : "Send code"}</button>
         </div>
       ) : (
         <div className="space-y-3">
-          <input inputMode="numeric" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} placeholder="123456" className="w-full rounded-lg border border-line px-3 py-2.5 text-center text-lg tracking-[0.3em] outline-none focus:border-navy" />
+          <input inputMode="numeric" maxLength={6} value={code} onChange={(e) => setCode(e.target.value)} placeholder="123456" aria-label="6-digit code" className="w-full rounded-lg border border-line px-3 py-2.5 text-center text-lg tracking-[0.3em] outline-none focus:border-navy" />
           {devCode && <p className="text-center text-xs text-muted">Dev code: {devCode}</p>}
           {error && <p className="text-sm font-medium text-red-600">{error}</p>}
           <button type="button" onClick={verify} disabled={busy} className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">{busy ? "Verifying…" : "Sign in"}</button>

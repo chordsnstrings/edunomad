@@ -19,10 +19,10 @@ export default async function PipsPage() {
     <div>
       <h1 className="mb-4 text-xl font-semibold text-navy">Performance improvement plans</h1>
       <form action={createPipAction} className="mb-5 space-y-2 rounded-xl border border-line bg-white p-4">
-        <select name="counsellorUserId" className="w-full rounded-lg border border-line px-3 py-2 text-sm">
+        <select aria-label="Counsellor User" name="counsellorUserId" className="w-full rounded-lg border border-line px-3 py-2 text-sm">
           {team.map((c) => <option key={c.userId} value={c.userId}>{c.fullName}</option>)}
         </select>
-        <textarea name="reason" rows={2} placeholder="Reason / focus areas" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+        <textarea name="reason" rows={2} placeholder="Reason / focus areas" aria-label="Reason / focus areas" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Start PIP (4 weekly checkpoints)</button>
       </form>
       <ul className="space-y-2">

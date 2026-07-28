@@ -23,8 +23,8 @@ export default async function ParentInvitePage({ searchParams }: { searchParams:
       {error && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">Enter a valid phone and a 4–6 digit PIN.</p>}
 
       <form action={inviteParentAction} className="space-y-2 rounded-xl border border-line bg-white p-4">
-        <input name="phone" type="tel" placeholder="Parent's phone (+8801…)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
-        <input name="pin" inputMode="numeric" placeholder="Create a PIN (4–6 digits)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
+        <input name="phone" type="tel" placeholder="Parent's phone (+8801…)" aria-label="Parent's phone (+8801…)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
+        <input name="pin" inputMode="numeric" placeholder="Create a PIN (4–6 digits)" aria-label="Create a PIN (4–6 digits)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
         <button className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700">Send invite</button>
       </form>
 

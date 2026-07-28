@@ -91,7 +91,7 @@ export function DocumentUpload({ documentType }: { documentType: string }) {
             </div>
           )}
           {isGic && (
-            <input value={amount} onChange={(e) => setAmount(e.target.value)} inputMode="numeric" placeholder="GIC amount (CAD)" className="mt-3 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy" />
+            <input value={amount} onChange={(e) => setAmount(e.target.value)} inputMode="numeric" placeholder="GIC amount (CAD)" aria-label="GIC amount (CAD)" className="mt-3 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy" />
           )}
           <button onClick={upload} disabled={busy} className="mt-4 w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700 disabled:opacity-60">
             {busy ? `Uploading… ${progress}%` : "Upload"}

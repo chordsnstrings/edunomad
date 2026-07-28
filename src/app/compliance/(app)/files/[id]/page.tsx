@@ -79,9 +79,9 @@ export default async function FileView({ params, searchParams }: { params: Promi
             <summary className="cursor-pointer text-sm font-semibold text-red-700">Notify regulator (misrepresentation discovered)</summary>
             <form action={notifyRegulatorAction} className="mt-2 space-y-2">
               <input type="hidden" name="fileId" value={id} />
-              <input name="regulator" defaultValue="RCIC" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-              <input name="subject" placeholder="Subject" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-              <textarea name="body" rows={3} placeholder="Details" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <input aria-label="Regulator" name="regulator" defaultValue="RCIC" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <input name="subject" placeholder="Subject" aria-label="Subject" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+              <textarea name="body" rows={3} placeholder="Details" aria-label="Details" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
               <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Send notification</button>
             </form>
           </details>
@@ -97,7 +97,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
             </form>
             <form action={signOffAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
-              <input name="code" inputMode="numeric" maxLength={6} placeholder="6-digit code" className="w-32 rounded-lg border border-line px-3 py-2 text-sm" />
+              <input name="code" inputMode="numeric" maxLength={6} placeholder="6-digit code" aria-label="6-digit code" className="w-32 rounded-lg border border-line px-3 py-2 text-sm" />
               <button disabled={!rcic} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50">Sign off &amp; stamp{rcic ? ` (${rcic.registrationNumber})` : ""}</button>
             </form>
           </section>
@@ -106,7 +106,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
             <h2 className="mb-2 text-sm font-semibold text-navy">Return for changes</h2>
             <form action={returnForChangesAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
-              <input name="reason" placeholder="What needs fixing" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+              <input name="reason" placeholder="What needs fixing" aria-label="What needs fixing" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
               <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Return</button>
             </form>
           </section>
@@ -116,7 +116,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
             <p className="mb-2 text-xs text-muted">Compliance has absolute refusal authority. No business pressure overrides this.</p>
             <form action={refuseToSignAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
-              <input name="reason" placeholder="Reason for refusal" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+              <input name="reason" placeholder="Reason for refusal" aria-label="Reason for refusal" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
               <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Refuse</button>
             </form>
           </section>

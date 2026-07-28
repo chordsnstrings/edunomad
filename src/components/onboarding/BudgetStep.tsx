@@ -28,11 +28,11 @@ export function BudgetStep({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="mb-1.5 block text-sm font-medium text-navy">Min / year (USD)</label>
-          <input className={field} inputMode="numeric" value={min} onChange={(e) => setMin(e.target.value)} onBlur={persist} placeholder="10000" />
+          <input className={field} inputMode="numeric" value={min} onChange={(e) => setMin(e.target.value)} onBlur={persist} placeholder="10000" aria-label="10000" />
         </div>
         <div>
           <label className="mb-1.5 block text-sm font-medium text-navy">Max / year (USD)</label>
-          <input className={field} inputMode="numeric" value={max} onChange={(e) => setMax(e.target.value)} onBlur={persist} placeholder="25000" />
+          <input className={field} inputMode="numeric" value={max} onChange={(e) => setMax(e.target.value)} onBlur={persist} placeholder="25000" aria-label="25000" />
         </div>
       </div>
       <p className="rounded-lg bg-subtle p-3 text-xs leading-relaxed text-muted">
@@ -47,7 +47,7 @@ export function BudgetStep({
           value={funding}
           onChange={(e) => setFunding(e.target.value)}
           onBlur={persist}
-          placeholder="e.g. family savings, education loan, sponsor"
+          placeholder="e.g. family savings, education loan, sponsor" aria-label="e.g. family savings, education loan, sponsor"
         />
       </div>
       <SaveBadge status={status} />

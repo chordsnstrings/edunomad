@@ -91,15 +91,15 @@ export default async function Page({ params, searchParams }: { params: Promise<{
               ) : (
                 <form action={storeCredentialAction} className="mt-2 space-y-2">
                   <input type="hidden" name="institutionId" value={inst.id} /><input type="hidden" name="appId" value={appId} /><input type="hidden" name="caseId" value={id} />
-                  <input name="portalUrl" placeholder="Portal URL" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-                  <input name="username" placeholder="Username" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-                  <input name="password" placeholder="Password" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+                  <input name="portalUrl" placeholder="Portal URL" aria-label="Portal URL" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+                  <input name="username" placeholder="Username" aria-label="Username" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+                  <input name="password" placeholder="Password" aria-label="Password" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
                   <button className="rounded-lg border border-navy px-3 py-1.5 text-sm font-semibold text-navy">Store credentials (encrypted)</button>
                 </form>
               )}
               <form action={submitAction} className="mt-3 flex gap-2">
                 <input type="hidden" name="appId" value={appId} /><input type="hidden" name="caseId" value={id} /><input type="hidden" name="method" value="portal" />
-                <input name="proof" placeholder="Proof (portal reference / screenshot id)" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+                <input name="proof" placeholder="Proof (portal reference / screenshot id)" aria-label="Proof (portal reference / screenshot id)" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
                 <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Mark submitted</button>
               </form>
             </div>
@@ -121,8 +121,8 @@ export default async function Page({ params, searchParams }: { params: Promise<{
           <h2 className="mb-2 text-sm font-semibold text-navy">Offer — letter &amp; conditions</h2>
           <form action={saveOfferAction} className="space-y-2 rounded-xl border border-line bg-white p-4">
             <input type="hidden" name="appId" value={appId} /><input type="hidden" name="caseId" value={id} />
-            <input name="offerUrl" defaultValue={app.offerUrl ?? ""} placeholder="Offer letter URL" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-            <textarea name="conditions" defaultValue={((app.conditions as string[] | null) ?? []).join("\n")} rows={4} placeholder="One condition per line (for conditional offers)" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+            <input name="offerUrl" defaultValue={app.offerUrl ?? ""} placeholder="Offer letter URL" aria-label="Offer letter URL" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+            <textarea name="conditions" defaultValue={((app.conditions as string[] | null) ?? []).join("\n")} rows={4} placeholder="One condition per line (for conditional offers)" aria-label="One condition per line (for conditional offers)" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
             <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Save offer details</button>
           </form>
         </section>

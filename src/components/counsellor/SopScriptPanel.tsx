@@ -32,7 +32,7 @@ export function SopScriptPanel({ firstCall = true }: { firstCall?: boolean }) {
             setQ(e.target.value);
             if (e.target.value) setTab("objections");
           }}
-          placeholder="Search objections…"
+          placeholder="Search objections…" aria-label="Search objections…"
           className="w-full rounded-lg border border-line py-2 pl-9 pr-3 text-sm outline-none focus:border-navy"
         />
       </div>

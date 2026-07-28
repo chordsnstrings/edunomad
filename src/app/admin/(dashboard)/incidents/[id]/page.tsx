@@ -37,8 +37,8 @@ export default async function IncidentDetail({ params }: { params: Promise<{ id:
         {inc.reviewScheduledAt && <p className="mb-2 text-sm text-muted">Scheduled: {inc.reviewScheduledAt.toLocaleString()}</p>}
         <form action={scheduleReviewAction} className="space-y-2">
           <input type="hidden" name="id" value={id} />
-          <input type="datetime-local" name="when" className="rounded-lg border border-line px-3 py-2 text-sm" />
-          <textarea name="notes" rows={3} defaultValue={inc.reviewNotes ?? ""} placeholder="Review notes / learnings / action items" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
+          <input aria-label="When" type="datetime-local" name="when" className="rounded-lg border border-line px-3 py-2 text-sm" />
+          <textarea name="notes" rows={3} defaultValue={inc.reviewNotes ?? ""} placeholder="Review notes / learnings / action items" aria-label="Review notes / learnings / action items" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
           <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Save review</button>
         </form>
       </section>

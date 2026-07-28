@@ -47,7 +47,7 @@ export default async function MessagesPage() {
         <input
           name="content"
           required
-          placeholder="Type a message…"
+          placeholder="Type a message…" aria-label="Type a message…"
           className="flex-1 rounded-full border border-line px-4 py-2.5 outline-none focus:border-navy"
         />
         <button type="submit" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700">

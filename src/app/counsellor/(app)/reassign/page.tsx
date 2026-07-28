@@ -30,10 +30,10 @@ export default async function ReassignPage({ searchParams }: { searchParams: Pro
             <p className="text-sm font-semibold text-navy">{s.fullName ?? s.phone} <span className="text-xs text-muted">· score {s.leadScore}</span></p>
             <form action={reassignWithHandoffAction} className="mt-2 flex flex-wrap gap-2">
               <input type="hidden" name="studentId" value={s.id} />
-              <select name="counsellorUserId" defaultValue={s.assignedCounsellorId ?? ""} className="rounded-lg border border-line px-2 py-1.5 text-sm">
+              <select aria-label="Counsellor User" name="counsellorUserId" defaultValue={s.assignedCounsellorId ?? ""} className="rounded-lg border border-line px-2 py-1.5 text-sm">
                 {team.map((c) => <option key={c.userId} value={c.userId}>{c.fullName}</option>)}
               </select>
-              <input name="handoff" placeholder="Handoff note (context)" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
+              <input name="handoff" placeholder="Handoff note (context)" aria-label="Handoff note (context)" className="flex-1 rounded-lg border border-line px-3 py-1.5 text-sm" />
               <button className="rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white">Reassign</button>
             </form>
           </li>

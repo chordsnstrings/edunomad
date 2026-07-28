@@ -15,11 +15,11 @@ export default async function DsarPage({ searchParams }: { searchParams: Promise
 
       <div className="space-y-4 rounded-xl border border-line bg-white p-4">
         <form action="/api/dsar/export" method="get" className="flex gap-2">
-          <input name="studentId" placeholder="Student ID" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+          <input name="studentId" placeholder="Student ID" aria-label="Student ID" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
           <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Export data</button>
         </form>
         <form action={eraseStudentAction} className="flex gap-2">
-          <input name="studentId" placeholder="Student ID" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+          <input name="studentId" placeholder="Student ID" aria-label="Student ID" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
           <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Erase PII</button>
         </form>
       </div>

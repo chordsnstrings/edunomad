@@ -70,7 +70,7 @@ export function AppLockSettings() {
         <button onClick={clear} className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">Turn off app lock</button>
       ) : (
         <div className="flex gap-2">
-          <input value={pin} onChange={(e) => setPin(e.target.value)} inputMode="numeric" placeholder="Set a 4–6 digit PIN" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+          <input value={pin} onChange={(e) => setPin(e.target.value)} inputMode="numeric" placeholder="Set a 4–6 digit PIN" aria-label="Set a 4–6 digit PIN" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
           <button onClick={save} className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Set PIN</button>
         </div>
       )}

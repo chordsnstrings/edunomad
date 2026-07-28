@@ -16,8 +16,8 @@ export default async function TrainingPage() {
     <div>
       <h1 className="mb-4 text-xl font-semibold text-navy">Training sessions</h1>
       <form action={scheduleTrainingAction} className="mb-5 flex flex-wrap gap-2">
-        <input name="topic" placeholder="Topic" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
-        <input type="datetime-local" name="scheduledAt" className="rounded-lg border border-line px-3 py-2 text-sm" />
+        <input name="topic" placeholder="Topic" aria-label="Topic" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
+        <input aria-label="Scheduled At" type="datetime-local" name="scheduledAt" className="rounded-lg border border-line px-3 py-2 text-sm" />
         <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white">Schedule</button>
       </form>
       <ul className="space-y-2">

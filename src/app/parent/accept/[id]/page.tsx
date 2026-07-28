@@ -31,8 +31,8 @@ export default async function AcceptPage({ params, searchParams }: { params: Pro
             </form>
             <form action={acceptInviteAction} className="mt-3 space-y-2">
               <input type="hidden" name="id" value={id} />
-              <input name="pin" inputMode="numeric" placeholder="PIN" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm" />
-              <input name="code" inputMode="numeric" maxLength={6} placeholder="6-digit code" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm" />
+              <input name="pin" inputMode="numeric" placeholder="PIN" aria-label="PIN" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm" />
+              <input name="code" inputMode="numeric" maxLength={6} placeholder="6-digit code" aria-label="6-digit code" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm" />
               <button className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700">Accept &amp; continue</button>
             </form>
           </>

@@ -66,7 +66,7 @@ export function EnglishStep({ initial }: { initial?: Record<string, unknown> | n
           </select>
           <input
             className="flex-1 rounded-lg border border-line px-3 py-2 outline-none focus:border-navy"
-            placeholder="Score"
+            placeholder="Score" aria-label="Score"
             value={score}
             onChange={(ev) => setScore(ev.target.value)}
             onBlur={() => persist()}

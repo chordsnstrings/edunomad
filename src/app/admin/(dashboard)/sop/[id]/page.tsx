@@ -53,7 +53,7 @@ export default async function SopEditorPage({ params, searchParams }: { params: 
               <input type="hidden" name="id" value={id} />
               <input type="hidden" name="lang" value={l} />
               <span className="text-sm font-medium uppercase text-navy">{l}</span>
-              <select name="status" defaultValue={ts[l] ?? "pending"} className="rounded-lg border border-line px-2 py-1 text-sm">
+              <select aria-label="Status" name="status" defaultValue={ts[l] ?? "pending"} className="rounded-lg border border-line px-2 py-1 text-sm">
                 <option value="pending">pending</option><option value="in_progress">in progress</option><option value="done">done</option>
               </select>
               <button className="rounded-lg border border-line px-2 py-1 text-xs font-semibold text-navy">Set</button>

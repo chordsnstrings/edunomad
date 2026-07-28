@@ -49,7 +49,7 @@ export function QaRubric({ documentId, items }: { documentId: string; items: str
       </ul>
 
       <div className="sticky bottom-0 mt-4 space-y-2 bg-subtle py-3">
-        <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Rework reason (if requesting rework)" className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy" />
+        <input value={reason} onChange={(e) => setReason(e.target.value)} placeholder="Rework reason (if requesting rework)" aria-label="Rework reason (if requesting rework)" className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-navy" />
         <div className="flex gap-2">
           <button onClick={() => submit("approve")} disabled={busy || !passedAll} className="flex-1 rounded-lg bg-green-600 py-2.5 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50">
             Approve
