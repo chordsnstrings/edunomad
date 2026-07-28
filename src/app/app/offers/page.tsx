@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { OfferActions } from "@/components/app/OfferActions";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Offers", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -20,7 +20,7 @@ const LABEL: Record<string, string> = {
 
 export default async function OffersPage() {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const t = getTranslator(await getUserLocale());
   const apps = await prisma.application.findMany({ where: { studentId: student.id, decisionStatus: { not: null } }, orderBy: { decisionAt: "desc" } });
 
   // One query for every offered programme instead of one per row.

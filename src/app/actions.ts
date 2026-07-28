@@ -1,6 +1,9 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { getCurrentSession } from "@/lib/current-user";
+import { prisma } from "@/lib/db";
+import type { Language } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { COUNTRY_COOKIE } from "@/lib/geo";
 import { LOCALE_COOKIE } from "@/i18n/locale";
@@ -30,5 +33,18 @@ export async function setLocale(locale: string) {
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
   });
+
+  // Persist a signed-in student's choice, so the language follows them to other
+  // devices. student.language is otherwise write-once at signup and outranks the
+  // cookie, which left students permanently stuck in the language they first
+  // picked — in a product whose whole premise is four languages.
+  const session = await getCurrentSession();
+  if (session?.role === "student") {
+    await prisma.student.updateMany({
+      where: { userId: session.userId },
+      data: { language: locale as Language },
+    });
+  }
+
   revalidatePath("/", "layout");
 }

@@ -14,14 +14,14 @@ import {
 import { requireStudent } from "@/lib/require-student";
 import { prisma } from "@/lib/db";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Pre-departure", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function PreDeparturePage() {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const t = getTranslator(await getUserLocale());
   const [visa, invoices] = await Promise.all([
     prisma.visaFile.findFirst({
       where: { studentId: student.id },

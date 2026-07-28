@@ -4,14 +4,14 @@ import { prisma } from "@/lib/db";
 import { getShortlist } from "@/lib/shortlist";
 import { ShortlistManager } from "@/components/app/ShortlistManager";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Shortlist", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function ShortlistPage({ searchParams }: { searchParams: Promise<{ blocked?: string; locked?: string }> }) {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const t = getTranslator(await getUserLocale());
   const { blocked, locked: lockedParam } = await searchParams;
   const apps = await getShortlist(student.id);
 

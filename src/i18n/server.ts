@@ -1,6 +1,8 @@
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent } from "@/lib/student";
-import { detectLocale } from "./locale";
+import { cookies } from "next/headers";
+import { detectLocale, LOCALE_COOKIE } from "./locale";
+import { isLocale } from "./config";
 import { getTranslator } from "./index";
 import type { Locale } from "./config";
 
@@ -9,6 +11,13 @@ import type { Locale } from "./config";
  * language (student.language), else the request's cookie / Accept-Language.
  */
 export async function getUserLocale(): Promise<Locale> {
+  // An explicit choice (the locale cookie, set by the language switcher) wins:
+  // it is a deliberate action, and setLocale also persists it to the student
+  // record. Otherwise fall back to the stored language, then the request.
+  const store = await cookies();
+  const chosen = store.get(LOCALE_COOKIE)?.value;
+  if (isLocale(chosen)) return chosen;
+
   try {
     const session = await getCurrentSession();
     if (session) {

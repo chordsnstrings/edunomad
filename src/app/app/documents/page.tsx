@@ -6,7 +6,7 @@ import { getChecklistForStudent, getLatestDocuments } from "@/lib/documents";
 import { STAGE_LABELS } from "@/lib/reference/document-checklist";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Documents", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -30,10 +30,11 @@ const BADGE_LABEL: Record<string, string> = {
 
 export default async function DocumentsPage() {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const locale = await getUserLocale();
+  const t = getTranslator(locale);
   const checklist = await getChecklistForStudent(student);
   const latest = await getLatestDocuments(student.id);
-  const lang = student.language as "en" | "bn" | "hi" | "ne";
+  const lang = locale as "en" | "bn" | "hi" | "ne";
 
   if (checklist.length === 0) {
     return (

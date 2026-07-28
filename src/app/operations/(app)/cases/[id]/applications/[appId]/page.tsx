@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Mail, Globe, Cpu, Check } from "lucide-react";
+import { ArrowLeft, Mail, Globe, Cpu } from "lucide-react";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { getLatestDocuments } from "@/lib/documents";

@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 import { requestCallAction } from "./actions";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Home", robots: { index: false } };
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ const LANG: Record<string, string> = { en: "English", bn: "Bangla", hi: "Hindi",
 
 export default async function AppHome({ searchParams }: { searchParams: Promise<{ requested?: string }> }) {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const t = getTranslator(await getUserLocale());
   const { requested } = await searchParams;
   const counsellor = student.assignedCounsellorId
     ? await prisma.counsellorProfile.findUnique({ where: { userId: student.assignedCounsellorId } })

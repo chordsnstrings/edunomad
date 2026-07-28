@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LogOut, Users } from "lucide-react";
 import { requireParent } from "@/lib/parent";
 import { parentLogoutAction } from "./actions";

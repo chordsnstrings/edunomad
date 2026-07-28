@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getUserLocale } from "@/i18n/server";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -10,11 +11,11 @@ export const metadata: Metadata = { title: "Upload document", robots: { index: f
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ type: string }> }) {
-  const { student } = await requireStudent();
+  await requireStudent();
   const { type } = await params;
   const doc = CA_CHECKLIST.find((d) => d.documentType === type);
   if (!doc) notFound();
-  const lang = student.language as "en" | "bn" | "hi" | "ne";
+  const lang = (await getUserLocale()) as "en" | "bn" | "hi" | "ne";
 
   return (
     <div className="mx-auto max-w-md px-4 py-6">

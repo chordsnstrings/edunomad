@@ -8,6 +8,7 @@ import { getCurrentSession } from "@/lib/current-user";
 import { destroyUserSession, SESSION_COOKIE } from "@/lib/sessions";
 import { sendOtp, verifyOtpForReauth } from "@/lib/otp";
 import { visaVersionHash } from "@/lib/visa";
+import { getLatestDocuments } from "@/lib/documents";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
 
@@ -49,9 +50,23 @@ export async function signOffAction(formData: FormData) {
   if (!rcic) redirect(`/compliance/files/${fileId}?error=no_registration`);
   const vf = await prisma.visaFile.findUnique({ where: { id: fileId } });
   if (!vf) redirect("/compliance");
+  // Sign once. Without this, re-posting the action created a second
+  // ComplianceSignOff row for the same file.
+  if (vf.signedOffAt) redirect(`/compliance/files/${fileId}?already=1`);
 
-  const versionHash = visaVersionHash({ completenessPct: vf.completenessPct, formIds: [], updatedAt: vf.updatedAt });
-  await prisma.visaFile.update({ where: { id: fileId }, data: { signedOffAt: new Date(), signedOffBy: s.userId, registrationNumber: rcic.registrationNumber, versionHash, returnedForChanges: false } });
+  // Bind the stamp to the packet that was actually signed. It previously hashed
+  // `formIds: []` — referencing no document at all — over `vf.updatedAt` read
+  // *before* the update below, so the value could not even be recomputed from the
+  // stored row. Include each document's type, version and storage key, and stamp
+  // a timestamp we control and persist.
+  const latest = await getLatestDocuments(vf.studentId);
+  const signedAt = new Date();
+  const versionHash = visaVersionHash({
+    completenessPct: vf.completenessPct,
+    formIds: [...latest.values()].map((d) => `${d.documentType}:v${d.version}:${d.storageKey}`),
+    updatedAt: signedAt,
+  });
+  await prisma.visaFile.update({ where: { id: fileId }, data: { signedOffAt: signedAt, signedOffBy: s.userId, registrationNumber: rcic.registrationNumber, versionHash, returnedForChanges: false } });
   await prisma.complianceSignOff.create({ data: { visaFileId: fileId, complianceUserId: s.userId, registrationNumber: rcic.registrationNumber, versionHash } });
   await emit({
     type: "visa.signed_off",

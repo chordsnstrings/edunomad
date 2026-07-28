@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, Sparkles, Plus, Lock } from "lucide-react";
+import { ArrowLeft, Sparkles, Plus } from "lucide-react";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { programmesById } from "@/lib/lookups";

@@ -5,14 +5,15 @@ import { prisma } from "@/lib/db";
 import { renderEventTemplate } from "@/lib/event-templates";
 import { JourneyTimeline } from "@/components/app/JourneyTimeline";
 import { getTranslator } from "@/i18n";
-import type { Locale } from "@/i18n/config";
+import { getUserLocale } from "@/i18n/server";
 
 export const metadata: Metadata = { title: "Journey", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function JourneyPage() {
   const { student } = await requireStudent();
-  const t = getTranslator(student.language as Locale);
+  const locale = await getUserLocale();
+  const t = getTranslator(locale);
   const STAGES = Array.from({ length: 9 }, (_, i) => t(`tracker.stage_${i + 1}`));
   const events = await prisma.event.findMany({ where: { studentId: student.id }, orderBy: { seq: "asc" } });
 
@@ -20,7 +21,7 @@ export default async function JourneyPage() {
   for (const e of events) {
     (byStage[e.stage] ||= []).push({
       id: e.id,
-      text: renderEventTemplate({ type: e.type, payload: e.payload as Record<string, unknown> | null }, student.language as Locale),
+      text: renderEventTemplate({ type: e.type, payload: e.payload as Record<string, unknown> | null }, locale),
       at: e.createdAt.toISOString(),
     });
   }
