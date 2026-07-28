@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { verifySharedSecret } from "@/lib/shared-secret";
 import { prisma } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
@@ -9,10 +10,8 @@ const RETENTION_YEARS = 6;
 // records beyond the 6-year window are flagged for cold-storage archival.
 // An external scheduler invokes this; secured by CRON_SECRET.
 export async function POST(req: NextRequest) {
-  const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("x-cron-secret") !== secret) {
-    return Response.json({ error: "unauthorized" }, { status: 401 });
-  }
+  const denied = verifySharedSecret(req, "CRON_SECRET", "x-cron-secret");
+  if (denied) return denied;
   const cutoff = new Date(Date.now() - RETENTION_YEARS * 365 * 24 * 3600 * 1000);
   const [events, audit, archivedStudents] = await Promise.all([
     prisma.event.count({ where: { createdAt: { lt: cutoff } } }),

@@ -1,4 +1,5 @@
 import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
+import { authSecret } from "./auth-secret";
 import { prisma } from "./db";
 import { sendSms } from "./sms";
 import { createUserSession } from "./sessions";
@@ -11,7 +12,7 @@ const SEND_WINDOW_MS = 60 * 60 * 1000;
 
 function hashCode(phone: string, code: string) {
   return createHash("sha256")
-    .update(`${phone}:${code}:${process.env.AUTH_SECRET ?? "dev-insecure-secret"}`)
+    .update(`${phone}:${code}:${authSecret()}`)
     .digest("hex");
 }
 

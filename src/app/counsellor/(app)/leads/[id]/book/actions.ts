@@ -2,15 +2,17 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { getCurrentSession } from "@/lib/current-user";
+import { requireStaff } from "@/lib/require-staff";
 import { createBooking } from "@/lib/booking";
 import { emit } from "@/lib/events";
 import { whatsappSend } from "@/lib/whatsapp";
 import { sendEmail } from "@/lib/email";
 
 export async function createBookingAction(formData: FormData) {
-  const session = await getCurrentSession();
-  if (!session) redirect("/counsellor/login");
+  // Authorisation, not just authentication: this action books a call, writes to
+  // the event chain and sends the student a WhatsApp + email. Previously any
+  // signed-in user could invoke it for any studentId.
+  const session = await requireStaff(["counsellor", "counsellor_manager"]);
   const studentId = String(formData.get("studentId") ?? "");
   const startsAt = String(formData.get("startsAt") ?? "");
   const durationMin = Number(formData.get("durationMin") ?? 45);
@@ -18,6 +20,10 @@ export async function createBookingAction(formData: FormData) {
 
   const student = await prisma.student.findUnique({ where: { id: studentId } });
   if (!student) redirect("/counsellor");
+  // Counsellors may only act on their own assigned students (CLAUDE.md §6).
+  if (session.role === "counsellor" && student.assignedCounsellorId !== session.userId) {
+    redirect("/counsellor");
+  }
 
   const booking = await createBooking(studentId, session.userId, startsAt, durationMin);
   const when = new Date(startsAt);

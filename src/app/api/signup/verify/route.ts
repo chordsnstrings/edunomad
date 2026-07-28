@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/db";
 import { verifyOtp } from "@/lib/otp";
+import { otpVerifyLimit, tooManyResponse } from "@/lib/ratelimit";
 import { SESSION_COOKIE } from "@/lib/sessions";
 import { detectLocale } from "@/i18n/locale";
 import type { SourceCountry } from "@prisma/client";
@@ -16,6 +17,11 @@ export async function POST(req: NextRequest) {
   const phone = String(body.phone ?? "").trim();
   const code = String(body.code ?? "").trim();
   if (!phone || !code) return Response.json({ error: "missing_fields" }, { status: 400 });
+
+  // Same limit as /api/auth/otp/verify (CLAUDE.md §11). Without it this route was
+  // an unthrottled oracle for brute-forcing the 6-digit code.
+  const limit = otpVerifyLimit(phone);
+  if (!limit.ok) return tooManyResponse(limit);
 
   const result = await verifyOtp(phone, code);
   if (!result.ok) {

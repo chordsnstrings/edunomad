@@ -1,11 +1,12 @@
 import { createHash } from "node:crypto";
+import { authSecret } from "./auth-secret";
 import { redirect } from "next/navigation";
 import { prisma } from "./db";
 import { getCurrentSession } from "./current-user";
 import type { SessionInfo } from "./sessions";
 
 export function pinHash(pin: string) {
-  return createHash("sha256").update(`${pin}:${process.env.AUTH_SECRET ?? "dev-insecure-secret"}`).digest("hex");
+  return createHash("sha256").update(`${pin}:${authSecret()}`).digest("hex");
 }
 
 /** The single student a parent is invited to (most recent accepted invite). */

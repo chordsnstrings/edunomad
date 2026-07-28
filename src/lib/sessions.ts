@@ -1,4 +1,5 @@
 import { randomBytes, createHash } from "node:crypto";
+import { authSecret } from "./auth-secret";
 import type { Tenant, UserRole } from "@prisma/client";
 import { prisma } from "./db";
 
@@ -9,7 +10,7 @@ export const SESSION_COOKIE = "en_session";
 
 function hashToken(token: string) {
   return createHash("sha256")
-    .update(`${token}:${process.env.AUTH_SECRET ?? "dev-insecure-secret"}`)
+    .update(`${token}:${authSecret()}`)
     .digest("hex");
 }
 

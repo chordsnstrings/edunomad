@@ -1,4 +1,5 @@
 import { createHash, randomBytes } from "node:crypto";
+import { authSecret } from "./auth-secret";
 import { prisma } from "./db";
 import { generateSecret, verifyTotp, otpauthUri } from "./totp";
 import { logAudit } from "./audit";
@@ -10,7 +11,7 @@ export function mustEnrollTwoFactor(role: string): boolean {
 
 function hashRecovery(code: string) {
   return createHash("sha256")
-    .update(`${code.trim()}:${process.env.AUTH_SECRET ?? "dev-insecure-secret"}`)
+    .update(`${code.trim()}:${authSecret()}`)
     .digest("hex");
 }
 

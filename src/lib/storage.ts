@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { authSecret } from "./auth-secret";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
@@ -17,7 +18,7 @@ export function isS3Configured() {
 }
 
 function secret() {
-  return process.env.AUTH_SECRET || "dev-insecure-secret-do-not-use";
+  return authSecret("dev-insecure-secret-do-not-use");
 }
 
 export function signStorageToken(key: string, method: "GET" | "PUT", exp: number) {

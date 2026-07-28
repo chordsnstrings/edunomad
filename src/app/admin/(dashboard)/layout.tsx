@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { ExternalLink, LogOut } from "lucide-react";
 import { requireAdmin } from "@/lib/require-admin";
 import { getSettings } from "@/lib/settings";

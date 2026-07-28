@@ -1,9 +1,10 @@
 import { createCipheriv, createDecipheriv, randomBytes, scryptSync } from "node:crypto";
+import { authSecret } from "./auth-secret";
 
 // AES-256-GCM symmetric encryption for stored secrets (portal credentials).
 // Key derived from AUTH_SECRET; rotate by re-encrypting on secret change.
 function vaultKey(): Buffer {
-  return scryptSync(process.env.AUTH_SECRET || "dev-insecure-secret", "edunomad-vault", 32);
+  return scryptSync(authSecret(), "edunomad-vault", 32);
 }
 
 export function encryptSecret(plain: string): string {
