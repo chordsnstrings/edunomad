@@ -3,6 +3,7 @@ import { Footer } from "@/components/site/Footer";
 import { FloatingActions } from "@/components/site/FloatingActions";
 import { SourceAttribution } from "@/components/site/SourceAttribution";
 import { JsonLd } from "@/components/ui/JsonLd";
+import { Analytics } from "@/components/site/Analytics";
 import { getStaticSiteContext } from "@/lib/context";
 import { VisitorContactProvider } from "@/components/site/VisitorContact";
 import {
@@ -10,6 +11,11 @@ import {
   websiteJsonLd,
   serviceJsonLd,
 } from "@/lib/seo";
+
+// Public pages are prerendered; re-generate hourly so admin-edited settings
+// (brand, contact numbers, analytics IDs) propagate without a redeploy. Saving
+// settings also revalidates explicitly — see admin/actions.ts.
+export const revalidate = 3600;
 
 /**
  * Public site shell. Deliberately reads NO cookies/headers, so every page beneath
@@ -47,6 +53,7 @@ export default async function SiteLayout({
       <main id="main" className="flex-1">
         {children}
       </main>
+      <Analytics settings={settings} />
       <Footer settings={settings} contact={defaultContact} />
       <FloatingActions settings={settings} contact={defaultContact} />
     </VisitorContactProvider>

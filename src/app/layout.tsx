@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getSettings } from "@/lib/settings";
 import { buildMetadata } from "@/lib/seo";
-import { Analytics } from "@/components/site/Analytics";
 import { ToastProvider } from "@/components/ui/Toast";
 import { PwaController } from "@/components/pwa/PwaController";
 import { SyncManager } from "@/components/pwa/SyncManager";
@@ -33,7 +32,6 @@ export async function generateViewport(): Promise<Viewport> {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const settings = await getSettings();
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white">
@@ -56,7 +54,9 @@ export default async function RootLayout({
           </ToastProvider>
         </LocaleProvider>
         <PwaController />
-        <Analytics settings={settings} />
+        {/* Marketing analytics deliberately live in the public (site) layout, not
+            here: on authenticated routes the URL carries student, application and
+            visa-file identifiers, which must not be sent to Google/Meta. */}
       </body>
     </html>
   );
