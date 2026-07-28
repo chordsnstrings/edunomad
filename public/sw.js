@@ -1,7 +1,22 @@
 // EduNomad service worker — app-shell precache + network-first navigations.
 // Deeper offline behaviour (SOP, draft sync) is layered on in G016.
-const CACHE = "edunomad-shell-v1";
+//
+// v2: navigation caching is restricted to PUBLIC pages. v1 cached every
+// navigation except /admin and /api, which meant signed-in HTML for /app,
+// /parent and the staff consoles (student names, offers, visa status) was
+// written to the shared origin cache and replayed on any network failure — to
+// whoever was using the device next. Bumping the cache name also purges any v1
+// entries that already contain personal data, via the activate handler below.
+const CACHE = "edunomad-shell-v2";
 const SHELL = ["/", "/privacy", "/terms", "/manifest.webmanifest", "/icon.svg"];
+
+// Only these may be cached for offline navigation. Everything else is per-user.
+const PUBLIC_NAVIGATION =
+  /^\/(?:$|guides(?:\/|$)|(?:bn|hi|ne)\/guides(?:\/|$)|programmes\/|privacy$|terms$|editorial-standards$)/;
+
+function isPublicNavigation(pathname) {
+  return pathname === "/" || PUBLIC_NAVIGATION.test(pathname);
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -47,11 +62,18 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
+    // Per-user pages are never cached and never served from cache: a stale
+    // authenticated page could otherwise be shown to a different user.
+    if (!isPublicNavigation(url.pathname)) return;
+
     event.respondWith(
       fetch(request)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+          // Only store successful, non-redirected responses.
+          if (res.ok && res.type === "basic") {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(request, copy)).catch(() => {});
+          }
           return res;
         })
         .catch(() => caches.match(request).then((m) => m || caches.match("/"))),

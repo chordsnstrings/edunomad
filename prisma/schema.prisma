@@ -31,18 +31,18 @@ model SiteSettings {
   foundingYear     Int     @default(2024)
 
   // ── Default / global contact (fallback when no country match) ──
-  defaultCountryCode String @default("BD") // ISO-3166 alpha-2
-  defaultPhone       String @default("+880 1700 000000")
-  defaultWhatsapp    String @default("+880 1700 000000")
-  email              String @default("hello@edunomad.app")
-  supportEmail       String @default("support@edunomad.app")
-  addressLine        String @default("Level 5, Gulshan Avenue")
-  city               String @default("Dhaka")
-  stateRegion        String @default("Dhaka")
-  postalCode         String @default("1212")
-  country            String @default("Bangladesh")
+  defaultCountryCode String  @default("BD") // ISO-3166 alpha-2
+  defaultPhone       String  @default("+880 1700 000000")
+  defaultWhatsapp    String  @default("+880 1700 000000")
+  email              String  @default("hello@edunomad.app")
+  supportEmail       String  @default("support@edunomad.app")
+  addressLine        String  @default("Level 5, Gulshan Avenue")
+  city               String  @default("Dhaka")
+  stateRegion        String  @default("Dhaka")
+  postalCode         String  @default("1212")
+  country            String  @default("Bangladesh")
   mapUrl             String?
-  businessHours      String @default("Sun–Thu, 10:00–18:00")
+  businessHours      String  @default("Sun–Thu, 10:00–18:00")
 
   // ── Social ──────────────────────────────────────────────
   facebookUrl          String?
@@ -423,15 +423,15 @@ model SopView {
 
 /// W2 — a student's Statement of Purpose (polished via Claude, version-controlled).
 model Sop {
-  id              String     @id @default(uuid())
-  studentId       String     @unique
-  content         String     @default("")
-  version         Int        @default(1)
-  status          SopStatus  @default(draft)
+  id              String    @id @default(uuid())
+  studentId       String    @unique
+  content         String    @default("")
+  version         Int       @default(1)
+  status          SopStatus @default(draft)
   plagiarismScore Float?
   suggestions     Json?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model SopVersion {
@@ -532,6 +532,8 @@ model VisaFile {
   updatedAt          DateTime           @updatedAt
 
   @@index([studentId])
+  @@index([decisionStatus])
+  @@index([readyForSignoffAt, signedOffAt])
 }
 
 /// W3 — immutable record of each Compliance sign-off.
@@ -596,6 +598,8 @@ model Application {
 
   @@unique([studentId, programmeId])
   @@index([studentId])
+  @@index([submissionStatus])
+  @@index([shortlistStatus])
 }
 
 /// W2 — which documents are packaged into which application.
@@ -647,6 +651,9 @@ model Refund {
   financeApprovedBy String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@index([stage])
+  @@index([studentId])
 }
 
 /// W5 — counsellor hiring pipeline candidate (G125).
@@ -751,6 +758,7 @@ model Invoice {
   payments    Payment[]
 
   @@index([studentId])
+  @@index([status])
 }
 
 /// W4 — a payment against an invoice (platform gateways only — §1.11).
@@ -768,6 +776,7 @@ model Payment {
   invoice          Invoice       @relation(fields: [invoiceId], references: [id])
 
   @@index([invoiceId])
+  @@index([status, createdAt])
 }
 
 enum ParentInviteStatus {
@@ -870,6 +879,10 @@ model Event {
   @@index([studentId, createdAt])
   @@index([applicationId, createdAt])
   @@index([seq])
+  // KPI/status queries filter the largest, never-pruned table by type (usually
+  // with a date range); without these they seq-scan the whole event log.
+  @@index([type, createdAt])
+  @@index([studentId, type])
 }
 
 /// Mutable per-user read state — deliberately NOT part of the hash chain.
