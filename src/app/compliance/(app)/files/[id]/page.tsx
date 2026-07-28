@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "Visa file", robots: { index: false }
 export const dynamic = "force-dynamic";
 
 export default async function FileView({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ signed?: string; reauth?: string; codesent?: string; error?: string }> }) {
-  const session = await requireStaff(["compliance"]);
+  const session = await requireStaff(["compliance"], "/compliance/login");
   const { id } = await params;
   const sp = await searchParams;
   const vf = await prisma.visaFile.findUnique({ where: { id } });

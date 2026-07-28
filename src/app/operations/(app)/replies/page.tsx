@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 const OPTIONS = ["acknowledged", "under_review", "info_requested", "offer_conditional", "offer_unconditional", "rejected"];
 
 export default async function RepliesPage() {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const emails = await prisma.inboundEmail.findMany({ where: { classified: false }, orderBy: { receivedAt: "desc" }, take: 100 });
 
   // Resolve email -> application -> student in two batched queries rather than

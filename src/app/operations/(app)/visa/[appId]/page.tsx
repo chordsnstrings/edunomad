@@ -23,7 +23,7 @@ function Row({ label, done, children }: { label: string; done: boolean; children
 }
 
 export default async function VisaBuilderPage({ params }: { params: Promise<{ appId: string }> }) {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const { appId } = await params;
   const vf = await prisma.visaFile.findUnique({ where: { applicationId: appId } });
   if (!vf) notFound();

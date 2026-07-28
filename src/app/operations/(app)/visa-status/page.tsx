@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 const COLOR: Record<string, string> = { approved: "text-green-700", refused: "text-red-600", info_requested: "text-amber-700", pending: "text-muted" };
 
 export default async function VisaStatusPage() {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   // In production a scheduled job polls each regulator (e.g. IRCC) daily; here the
   // tracker reflects recorded decisions.
   const files = await prisma.visaFile.findMany({ where: { submittedAt: { not: null } }, orderBy: { submittedAt: "asc" }, take: 200 });

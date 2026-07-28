@@ -6,7 +6,7 @@ import { StaffHeader } from "@/components/staff/StaffHeader";
 export const dynamic = "force-dynamic";
 
 export default async function ComplianceLayout({ children }: { children: React.ReactNode }) {
-  await requireStaff(["compliance"]);
+  await requireStaff(["compliance"], "/compliance/login");
   const nav = [
     { href: "/compliance", label: "Sign-off" },
     { href: "/compliance/bulletins", label: "Bulletins" },

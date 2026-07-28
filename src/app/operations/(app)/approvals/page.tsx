@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Approvals", robots: { index: false }
 export const dynamic = "force-dynamic";
 
 export default async function ApprovalsPage() {
-  const session = await requireStaff(["operations_team", "operations_manager"]);
+  const session = await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   if (session.role !== "operations_manager") redirect("/operations");
 
   const apps = await prisma.application.findMany({ where: { submissionStatus: "packaged", opsApproved: false }, take: 100 });

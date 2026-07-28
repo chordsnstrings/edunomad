@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Operations queue", robots: { index: 
 export const dynamic = "force-dynamic";
 
 export default async function QueuePage() {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const lockedApps = await prisma.application.findMany({ where: { shortlistStatus: "locked" }, select: { studentId: true } });
   const studentIds = [...new Set(lockedApps.map((a) => a.studentId))];
   const students = await prisma.student.findMany({ where: { id: { in: studentIds } } });

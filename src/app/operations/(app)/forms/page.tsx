@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 const COUNTRY: Record<string, string> = { CA: "Canada", UK: "United Kingdom", AU: "Australia", MY: "Malaysia" };
 
 export default async function FormsPage() {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   return (
     <div>
       <h1 className="mb-1 text-xl font-semibold text-navy">Forms repository</h1>

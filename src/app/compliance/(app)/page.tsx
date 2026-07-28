@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Sign-off queue", robots: { index: fa
 export const dynamic = "force-dynamic";
 
 export default async function SignoffQueue() {
-  await requireStaff(["compliance"]);
+  await requireStaff(["compliance"], "/compliance/login");
   const files = await prisma.visaFile.findMany({ where: { readyForSignoffAt: { not: null }, signedOffAt: null }, orderBy: { readyForSignoffAt: "asc" }, take: 100 });
   const names = await studentNames(files.map((f) => f.studentId));
   const rows = files.map((f) => ({ f, who: names.get(f.studentId) ?? "" }));

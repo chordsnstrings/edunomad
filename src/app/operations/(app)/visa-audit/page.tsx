@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Pre-compliance audit", robots: { ind
 export const dynamic = "force-dynamic";
 
 export default async function VisaAuditPage() {
-  const session = await requireStaff(["operations_team", "operations_manager"]);
+  const session = await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   if (session.role !== "operations_manager") redirect("/operations");
 
   const files = await prisma.visaFile.findMany({ where: { readyForSignoffAt: { not: null }, signedOffAt: null }, orderBy: { readyForSignoffAt: "asc" }, take: 100 });

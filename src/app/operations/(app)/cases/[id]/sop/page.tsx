@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "SOP polish", robots: { index: false 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const { id } = await params;
   const student = await prisma.student.findUnique({ where: { id } });
   if (!student) notFound();

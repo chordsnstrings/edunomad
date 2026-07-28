@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "Submit application", robots: { index
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params, searchParams }: { params: Promise<{ id: string; appId: string }>; searchParams: Promise<{ submitted?: string; noproof?: string }> }) {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const { id, appId } = await params;
   const { submitted, noproof } = await searchParams;
   const app = await prisma.application.findUnique({ where: { id: appId } });

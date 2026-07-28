@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "Bulletins", robots: { index: false }
 export const dynamic = "force-dynamic";
 
 export default async function BulletinsPage() {
-  await requireStaff(["compliance"]);
+  await requireStaff(["compliance"], "/compliance/login");
   const bulletins = await prisma.bulletin.findMany({ orderBy: { publishedAt: "desc" }, take: 50 });
   const updates = await prisma.regulatoryUpdate.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
 

@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "File audit log", robots: { index: fa
 export const dynamic = "force-dynamic";
 
 export default async function FileAuditPage({ params }: { params: Promise<{ id: string }> }) {
-  await requireStaff(["compliance"]);
+  await requireStaff(["compliance"], "/compliance/login");
   const { id } = await params;
   const vf = await prisma.visaFile.findUnique({ where: { id } });
   if (!vf) notFound();

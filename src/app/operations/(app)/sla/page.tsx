@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const SLA_DAYS = 21;
 
 export default async function SlaPage() {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const apps = await prisma.application.findMany({
     where: { submittedAt: { not: null }, submissionStatus: { in: ["submitted", "acknowledged", "under_review", "info_requested"] } },
     orderBy: { submittedAt: "asc" },

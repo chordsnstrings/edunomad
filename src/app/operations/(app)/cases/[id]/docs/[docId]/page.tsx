@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Document QA", robots: { index: false
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: Promise<{ id: string; docId: string }> }) {
-  await requireStaff(["operations_team", "operations_manager"]);
+  await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const { id, docId } = await params;
   const doc = await prisma.document.findUnique({ where: { id: docId } });
   if (!doc || doc.studentId !== id) notFound();

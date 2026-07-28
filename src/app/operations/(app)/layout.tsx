@@ -6,7 +6,7 @@ import { StaffHeader } from "@/components/staff/StaffHeader";
 export const dynamic = "force-dynamic";
 
 export default async function OperationsLayout({ children }: { children: React.ReactNode }) {
-  const session = await requireStaff(["operations_team", "operations_manager"]);
+  const session = await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const isManager = session.role === "operations_manager";
   const nav = [
     { href: "/operations", label: "Queue" },
