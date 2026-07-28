@@ -62,32 +62,41 @@ export async function setCommissionStatus(
 
 /** Group received commissions into a settlement payout batch. */
 export async function createPayout(commissionIds: string[], approvedByUserId: string) {
-  const commissions = await prisma.commission.findMany({
-    where: { id: { in: commissionIds }, status: "received", payoutId: null },
+  // Select, create and claim atomically. Read-then-write across three separate
+  // round-trips let two concurrent "Create payout" clicks both see the same
+  // unclaimed commissions and each mint a full-value Payout for them.
+  return prisma.$transaction(async (tx) => {
+    const commissions = await tx.commission.findMany({
+      where: { id: { in: commissionIds }, status: "received", payoutId: null },
+    });
+    if (commissions.length === 0) return null;
+    const amountUsd = commissions.reduce((s, c) => s + c.amountUsd, 0);
+    const payout = await tx.payout.create({
+      data: {
+        reference: `PO-${new Date().getFullYear()}-${randomUUID().slice(0, 8).toUpperCase()}`,
+        amountUsd,
+        currency: "USD",
+        status: "scheduled",
+        approvedByUserId,
+        periodStart: new Date(Math.min(...commissions.map((c) => c.createdAt.getTime()))),
+        periodEnd: new Date(),
+      },
+    });
+    // payoutId: null in the predicate so a commission claimed by a concurrent
+    // batch is not re-claimed here.
+    const claimed = await tx.commission.updateMany({
+      where: { id: { in: commissions.map((c) => c.id) }, payoutId: null },
+      data: { payoutId: payout.id, status: "reconciled" },
+    });
+    if (claimed.count === 0) throw new Error("commissions already claimed by another payout");
+    return payout;
   });
-  if (commissions.length === 0) return null;
-  const amountUsd = commissions.reduce((s, c) => s + c.amountUsd, 0);
-  const payout = await prisma.payout.create({
-    data: {
-      reference: `PO-${new Date().getFullYear()}-${randomUUID().slice(0, 8).toUpperCase()}`,
-      amountUsd,
-      currency: "USD",
-      status: "scheduled",
-      approvedByUserId,
-      periodStart: new Date(Math.min(...commissions.map((c) => c.createdAt.getTime()))),
-      periodEnd: new Date(),
-    },
-  });
-  await prisma.commission.updateMany({
-    where: { id: { in: commissions.map((c) => c.id) } },
-    data: { payoutId: payout.id, status: "reconciled" },
-  });
-  return payout;
 }
 
+/** Idempotent: paying an already-paid payout is a no-op rather than a re-stamp. */
 export async function markPayoutPaid(id: string) {
-  return prisma.payout.update({
-    where: { id },
+  return prisma.payout.updateMany({
+    where: { id, status: { not: "paid" } },
     data: { status: "paid", processedAt: new Date() },
   });
 }

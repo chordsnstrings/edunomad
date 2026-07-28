@@ -111,10 +111,15 @@ export async function markPayoutPaidAction(formData: FormData) {
 export async function financeApproveRefundAction(formData: FormData) {
   const s = await fin();
   const id = String(formData.get("id"));
-  const r = await prisma.refund.update({
-    where: { id },
+  // Guard the transition server-side. The page only renders this button for a
+  // cm_approved refund, but server actions are directly invokable, so without a
+  // stage predicate a refund could skip the counsellor-manager approval step.
+  const moved = await prisma.refund.updateMany({
+    where: { id, stage: "cm_approved" },
     data: { stage: "finance_approved", financeApprovedBy: s.userId },
   });
+  if (moved.count !== 1) redirect("/finance/refunds?error=stale");
+  const r = await prisma.refund.findUniqueOrThrow({ where: { id } });
   await emit({
     type: "refund.finance_approved",
     stage: 7,
@@ -138,7 +143,14 @@ export async function financeApproveRefundAction(formData: FormData) {
 export async function payRefundAction(formData: FormData) {
   const s = await fin();
   const id = String(formData.get("id"));
-  const r = await prisma.refund.update({ where: { id }, data: { stage: "paid" } });
+  // Only a finance-approved refund may be paid, and only once — otherwise the
+  // same refund could be paid repeatedly, each time emitting payment.received.
+  const paid = await prisma.refund.updateMany({
+    where: { id, stage: "finance_approved" },
+    data: { stage: "paid" },
+  });
+  if (paid.count !== 1) redirect("/finance/refunds?error=stale");
+  const r = await prisma.refund.findUniqueOrThrow({ where: { id } });
   await emit({
     type: "payment.received",
     stage: 7,

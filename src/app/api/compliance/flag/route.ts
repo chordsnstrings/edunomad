@@ -15,6 +15,11 @@ export async function POST(req: NextRequest) {
     guardId?: string;
     message?: string;
   };
+  // Both are required: they flow into the hash-chained event/audit payloads, and
+  // a missing key must not reach them (the real client always sends both).
+  if (!studentId || !guardId) {
+    return Response.json({ error: "missing_fields" }, { status: 400 });
+  }
 
   // Full message content recorded for Compliance review (CLAUDE.md §G038).
   await logAudit({
