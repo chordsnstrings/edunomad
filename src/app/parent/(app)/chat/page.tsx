@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getTranslator } from "@/i18n";
+import { getUserLocale } from "@/i18n/server";
 import Link from "next/link";
 import { ArrowLeft, Send } from "lucide-react";
 import { requireParent } from "@/lib/parent";
@@ -10,6 +12,7 @@ export const metadata: Metadata = { title: "Message counsellor", robots: { index
 export const dynamic = "force-dynamic";
 
 export default async function ParentChat() {
+  const t = getTranslator(await getUserLocale());
   const { student } = await requireParent();
   const msgs = await prisma.communication.findMany({
     where: { studentId: student.id, type: "message", metadata: { path: ["kind"], equals: "parent_chat" } },
@@ -20,8 +23,8 @@ export default async function ParentChat() {
   return (
     <div className="flex min-h-[70vh] flex-col">
       <Link href="/parent" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-navy"><ArrowLeft className="h-4 w-4" /> Back</Link>
-      <h1 className="mt-3 text-xl font-semibold text-navy">Message your counsellor</h1>
-      <p className="mb-3 text-xs text-muted">Your message is auto-translated for the counsellor.</p>
+      <h1 className="mt-3 text-xl font-semibold text-navy">{t("parent.chat.title")}</h1>
+      <p className="mb-3 text-xs text-muted">{t("parent.chat.note")}</p>
 
       <div className="flex-1 space-y-2">
         {msgs.length === 0 ? (
@@ -36,7 +39,7 @@ export default async function ParentChat() {
       </div>
 
       <form action={parentChatSendAction} className="sticky bottom-0 mt-3 flex gap-2 bg-white py-2">
-        <input name="content" required placeholder="Type a message…" className="flex-1 rounded-full border border-line px-4 py-2.5 text-sm outline-none focus:border-navy" />
+        <input name="content" required placeholder={t("app.messages.placeholder")} className="flex-1 rounded-full border border-line px-4 py-2.5 text-sm outline-none focus:border-navy" />
         <button className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700"><Send className="h-4 w-4" /></button>
       </form>
     </div>

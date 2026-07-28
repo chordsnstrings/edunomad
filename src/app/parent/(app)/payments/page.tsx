@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { getTranslator } from "@/i18n";
+import { getUserLocale } from "@/i18n/server";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireParent } from "@/lib/parent";
@@ -12,14 +14,15 @@ export const dynamic = "force-dynamic";
 const STATUS: Record<string, string> = { issued: "Due", paid: "Paid", partially_paid: "Partial", void: "Void", refunded: "Refunded" };
 
 export default async function ParentPayments() {
+  const t = getTranslator(await getUserLocale());
   const { student } = await requireParent();
   const invoices = await prisma.invoice.findMany({ where: { studentId: student.id }, orderBy: { createdAt: "desc" } });
 
   return (
     <div>
       <Link href="/parent" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-navy"><ArrowLeft className="h-4 w-4" /> Back</Link>
-      <h1 className="mt-3 text-xl font-semibold text-navy">Payments</h1>
-      <p className="mb-4 text-sm text-muted">All payments go through EduNomad — never pay anyone directly.</p>
+      <h1 className="mt-3 text-xl font-semibold text-navy">{t("parent.payments.title")}</h1>
+      <p className="mb-4 text-sm text-muted">{t("parent.payments.note")}</p>
       {invoices.length === 0 ? (
         <EmptyState title="No invoices yet" body="When a payment is due, it will appear here for your approval." />
       ) : (
