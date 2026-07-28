@@ -18,6 +18,8 @@ import {
 } from "@/lib/twofactor";
 import { settingsSchema, countrySchema } from "@/lib/validation";
 import { SINGLETON_ID } from "@/lib/settings";
+import { adminLoginLimit } from "@/lib/ratelimit";
+import { logAudit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/require-admin";
 
 export type FormState = {
@@ -52,8 +54,36 @@ export async function loginAction(
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return { error: "Enter your email and password." };
 
+  // The admin console had no lockout, no throttle and no record of attempts, so
+  // the password was brute-forceable at full speed and silently.
+  const limit = adminLoginLimit(email);
+  if (!limit.ok) {
+    await logAudit({
+      action: "admin.login",
+      targetType: "AdminUser",
+      result: "denied",
+      reason: "rate limited",
+    });
+    return { error: "Too many attempts. Try again in a few minutes." };
+  }
+
   const session = await authenticate(email, password);
-  if (!session) return { error: "Invalid email or password." };
+  if (!session) {
+    await logAudit({
+      action: "admin.login",
+      targetType: "AdminUser",
+      result: "denied",
+      reason: "invalid credentials",
+    });
+    return { error: "Invalid email or password." };
+  }
+  await logAudit({
+    actorUserId: session.sub,
+    action: "admin.login",
+    targetType: "AdminUser",
+    targetId: session.sub,
+    result: "success",
+  });
 
   // 2FA gate: enrolled users verify a code; mandatory roles must enrol first.
   const enabled = await isTwoFactorEnabled(session.sub);

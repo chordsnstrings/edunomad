@@ -22,7 +22,7 @@ function constantTimeEqual(a: string, b: string) {
   return x.length === y.length && timingSafeEqual(x, y);
 }
 
-export type OtpSendResult = { ok: boolean; error?: "rate_limited"; code?: string };
+export type OtpSendResult = { ok: boolean; error?: "rate_limited" | "delivery_failed"; code?: string };
 
 /** Generate + store an OTP and "send" it (mock SMS in dev). Rate-limited. */
 export async function sendOtp(phone: string): Promise<OtpSendResult> {
@@ -52,7 +52,14 @@ export async function sendOtp(phone: string): Promise<OtpSendResult> {
     },
   });
 
-  await sendSms(phone, `Your EduNomad verification code is ${code}. It expires in 5 minutes.`);
+  // Surface delivery failure instead of discarding it: reporting "code sent"
+  // when Twilio rejected the message leaves the user waiting for an SMS that is
+  // never coming, with no way to tell that retrying is the right move.
+  const delivery = await sendSms(
+    phone,
+    `Your EduNomad verification code is ${code}. It expires in 5 minutes.`,
+  );
+  if (!delivery.ok) return { ok: false as const, error: "delivery_failed" as const };
   // Expose the code only outside production (dev UX + tests). Never in prod —
   // except the explicit E2E hook on disposable staging DBs (E2E_OTP_BYPASS),
   // which is never set in production environments.

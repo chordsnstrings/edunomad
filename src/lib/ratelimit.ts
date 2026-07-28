@@ -51,6 +51,8 @@ export const LIMITS = {
   otpSend: { limit: 3, windowMs: HOUR },
   otpVerify: { limit: 5, windowMs: HOUR },
   api: { limit: 100, windowMs: MIN },
+  // Admin password + TOTP entry: unlimited attempts made the console brute-forceable.
+  adminLogin: { limit: 10, windowMs: 15 * MIN },
 } as const;
 
 export const otpSendLimit = (phone: string) =>
@@ -58,6 +60,9 @@ export const otpSendLimit = (phone: string) =>
 
 export const otpVerifyLimit = (phone: string) =>
   rateLimit(`otp:verify:${phone}`, LIMITS.otpVerify.limit, LIMITS.otpVerify.windowMs);
+
+export const adminLoginLimit = (email: string) =>
+  rateLimit(`admin:login:${email.toLowerCase()}`, LIMITS.adminLogin.limit, LIMITS.adminLogin.windowMs);
 
 export const apiLimit = (sessionKey: string) =>
   rateLimit(`api:${sessionKey}`, LIMITS.api.limit, LIMITS.api.windowMs);

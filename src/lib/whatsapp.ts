@@ -1,4 +1,5 @@
 import { WHATSAPP_TEMPLATES } from "./whatsapp-templates";
+import { fetchWithTimeout } from "./http";
 import { sendSms, maskPhone } from "./sms";
 import { type Locale } from "../i18n/config";
 
@@ -52,7 +53,7 @@ export async function whatsappSend(
 
   if (optedIn && token && phoneId) {
     try {
-      const res = await fetch(`https://graph.facebook.com/v21.0/${phoneId}/messages`, {
+      const res = await fetchWithTimeout(`https://graph.facebook.com/v21.0/${phoneId}/messages`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
         body: JSON.stringify({

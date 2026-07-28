@@ -1,6 +1,8 @@
 // SMS via Twilio (fallback channel). Mocked in dev. PII (phone) is masked in
 // logs and message bodies are never logged (CLAUDE.md §11).
 
+import { fetchWithTimeout } from "./http";
+
 export function maskPhone(phone: string): string {
   return phone.replace(/\d(?=\d{2})/g, "•");
 }
@@ -14,7 +16,7 @@ export async function sendSms(phone: string, message: string): Promise<SmsResult
 
   if (sid && token && from) {
     try {
-      const res = await fetch(
+      const res = await fetchWithTimeout(
         `https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`,
         {
           method: "POST",

@@ -12,6 +12,7 @@
 // Stack decision: docs/00-stack-decisions.md (Analytics).
 
 import { scrub } from "./log";
+import { fetchWithTimeout } from "./http";
 
 export type Provider = "plausible" | "posthog" | "ga4" | "none";
 
@@ -81,7 +82,7 @@ async function send(name: string, props: Record<string, unknown>): Promise<void>
       const domain = process.env.PLAUSIBLE_DOMAIN;
       const host = process.env.PLAUSIBLE_HOST || "https://plausible.io";
       if (!domain) return;
-      await fetch(`${host}/api/event`, {
+      await fetchWithTimeout(`${host}/api/event`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "User-Agent": "edunomad-server" },
         body: JSON.stringify({ name, domain, url: `app://${name}`, props }),
@@ -90,7 +91,7 @@ async function send(name: string, props: Record<string, unknown>): Promise<void>
       const key = process.env.POSTHOG_KEY;
       const host = process.env.POSTHOG_HOST || "https://app.posthog.com";
       if (!key) return;
-      await fetch(`${host}/capture/`, {
+      await fetchWithTimeout(`${host}/capture/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ api_key: key, event: name, properties: props }),

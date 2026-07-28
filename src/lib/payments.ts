@@ -15,12 +15,26 @@ export async function payInvoice(invoiceId: string, method: string, actorUserId:
   const invoice = await prisma.invoice.findUnique({ where: { id: invoiceId } });
   if (!invoice || invoice.status === "paid") return { ok: false as const, error: "unavailable" };
 
+  // Claim the invoice BEFORE charging. The old read-then-write left a window in
+  // which two concurrent submissions both saw an unpaid invoice, both charged the
+  // gateway and both recorded a succeeded Payment — a genuine double-charge on a
+  // double-tap. The conditional update is atomic in Postgres, so exactly one
+  // caller can win; the loser stops here without touching the gateway.
+  const claimed = await prisma.invoice.updateMany({
+    where: { id: invoiceId, status: { not: "paid" } },
+    data: { status: "paid" },
+  });
+  if (claimed.count !== 1) return { ok: false as const, error: "unavailable" };
+
   const gw = await processGateway(method, invoice.amountLocal);
   await prisma.payment.create({
     data: { invoiceId, amountLocal: invoice.amountLocal, currency: invoice.currency, method: method as PaymentMethod, externalRef: gw.ref, status: gw.ok ? "succeeded" : "failed", approvedByUserId: actorUserId, processedAt: new Date() },
   });
+  if (!gw.ok) {
+    // Release the claim so the student can retry with another method.
+    await prisma.invoice.update({ where: { id: invoiceId }, data: { status: invoice.status } });
+  }
   if (gw.ok) {
-    await prisma.invoice.update({ where: { id: invoiceId }, data: { status: "paid" } });
     await emit({
       type: "payment.received",
       stage: 7,

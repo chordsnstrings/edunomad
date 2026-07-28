@@ -11,6 +11,7 @@
 // the managed alerting/grouping; the abstraction keeps it swappable.
 
 import { log, scrub } from "./log";
+import { fetchWithTimeout } from "./http";
 
 export type Severity = "fatal" | "error" | "warning" | "info";
 
@@ -59,7 +60,7 @@ async function forwardToSentry(payload: Record<string, unknown>): Promise<void> 
     if (!m) return;
     const [, key, host, projectId] = m;
     const url = `https://${host}/api/${projectId}/store/`;
-    await fetch(url, {
+    await fetchWithTimeout(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
