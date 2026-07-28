@@ -63,9 +63,17 @@ export function buildMetadata(settings: SiteSettings): Metadata {
         "max-video-preview": -1,
       },
     },
-    icons: settings.faviconUrl
-      ? { icon: settings.faviconUrl }
-      : undefined,
+    // apple-touch-icon is what iOS uses for "Add to Home Screen"; without it the
+    // install shows a screenshot of the page instead of the app icon.
+    icons: {
+      icon: settings.faviconUrl || "/icon.svg",
+      apple: "/apple-touch-icon.png",
+    },
+    appleWebApp: {
+      capable: true,
+      title: settings.logoText || settings.companyName,
+      statusBarStyle: "default",
+    },
     category: "education",
   };
 }

@@ -61,6 +61,15 @@ async function withS3() {
   return { aws, presigner, client, bucket: process.env.STORAGE_BUCKET! };
 }
 
+/**
+ * Cheap reachability + credentials probe for the health check. Touches no object
+ * data — a HeadBucket call only asks whether the bucket exists and is readable.
+ */
+export async function headBucket(): Promise<void> {
+  const { aws, client, bucket } = await withS3();
+  await client.send(new aws.HeadBucketCommand({ Bucket: bucket }));
+}
+
 /** Upload bytes; returns the storage key. */
 export async function uploadObject(
   buffer: Buffer,
