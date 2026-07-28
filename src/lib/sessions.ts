@@ -5,6 +5,8 @@ import { prisma } from "./db";
 
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12h
 const IDLE_TTL_MS = 30 * 60 * 1000; // 30 min (internal roles)
+// Only refresh the idle clock at most once a minute (see validateUserSession).
+const LAST_ACTIVE_WRITE_MS = 60 * 1000;
 
 export const SESSION_COOKIE = "en_session";
 
@@ -58,7 +60,13 @@ export async function validateUserSession(token: string): Promise<SessionInfo | 
   if (s.expiresAt.getTime() < now) return null;
   if (s.isInternal && s.lastActiveAt.getTime() + IDLE_TTL_MS < now) return null;
 
-  await prisma.session.update({ where: { id: s.id }, data: { lastActiveAt: new Date() } });
+  // Throttle the idle-clock write. Refreshing lastActiveAt on literally every
+  // request meant a Postgres UPDATE per page view (and per API call) purely for
+  // bookkeeping. A minute of granularity is immaterial against a 30-minute idle
+  // timeout and removes almost all of that write load.
+  if (now - s.lastActiveAt.getTime() > LAST_ACTIVE_WRITE_MS) {
+    await prisma.session.update({ where: { id: s.id }, data: { lastActiveAt: new Date() } });
+  }
   return { id: s.id, userId: s.userId, tenant: s.tenant, role: s.role, isInternal: s.isInternal };
 }
 
