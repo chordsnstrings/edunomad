@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail, MessageCircle } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { VisitorWhatsAppLink } from "./VisitorContact";
 import { Logo } from "@/components/ui/Logo";
 import {
   FacebookIcon,
@@ -9,7 +10,6 @@ import {
   YoutubeIcon,
   XIcon,
 } from "./SocialIcons";
-import { whatsappHref } from "@/lib/utils";
 import type { ResolvedContact, SiteSettings } from "@/lib/settings";
 
 type IconType = (props: { className?: string }) => React.ReactElement;
@@ -100,15 +100,12 @@ export function Footer({
                 </a>
               </li>
               <li>
-                <a
-                  href={whatsappHref(contact.whatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <VisitorWhatsAppLink
+                  defaultWhatsapp={contact.whatsapp}
                   className="inline-flex items-center gap-2 text-ink/80 hover:text-navy"
                 >
                   <MessageCircle className="h-4 w-4 text-gold-600" />{" "}
-                  {contact.whatsapp}
-                </a>
+                </VisitorWhatsAppLink>
               </li>
               <li className="pt-1">
                 <Link

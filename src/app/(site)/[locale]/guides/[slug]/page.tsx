@@ -4,12 +4,19 @@ import { NativeArticleView } from "@/components/site/NativeArticleView";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { getSettings } from "@/lib/settings";
 import { siteUrlFrom, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { nativeArticle, NATIVE_LOCALES, nativeLocalesForSlug, type NativeLocale } from "@/content/seo/i18n";
+import { nativeArticle, NATIVE_LOCALES, NATIVE_BY_LOCALE, nativeLocalesForSlug, type NativeLocale } from "@/content/seo/i18n";
 
 function hreflang(slug: string, base: string) {
   const langs: Record<string, string> = { en: `${base}/guides/${slug}`, "x-default": `${base}/guides/${slug}` };
   for (const l of nativeLocalesForSlug(slug)) langs[l] = `${base}/${l}/guides/${slug}`;
   return langs;
+}
+
+/** Prerender every native-language guide at build time. */
+export function generateStaticParams() {
+  return NATIVE_LOCALES.flatMap((locale) =>
+    NATIVE_BY_LOCALE[locale].map((a) => ({ locale, slug: a.slug })),
+  );
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {

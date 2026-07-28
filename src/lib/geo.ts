@@ -1,6 +1,7 @@
 import { cookies, headers } from "next/headers";
 
-export const COUNTRY_COOKIE = "en_country";
+export { COUNTRY_COOKIE } from "./cookie-names";
+import { COUNTRY_COOKIE } from "./cookie-names";
 
 /**
  * Resolve the visitor's country (ISO-3166 alpha-2).

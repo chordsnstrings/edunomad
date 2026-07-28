@@ -5,8 +5,7 @@ import { Logo } from "@/components/ui/Logo";
 import { CountrySwitcher } from "./CountrySwitcher";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
-import { getSiteContext } from "@/lib/context";
-import { detectLocale } from "@/i18n/locale";
+import type { SiteSettings } from "@/lib/settings";
 
 const NAV = [
   { label: "Guides", href: "/guides" },
@@ -16,11 +15,12 @@ const NAV = [
   { label: "FAQ", href: "/#faq" },
 ];
 
-export async function Header() {
-  const { settings, contact, countries, isOverride } = await getSiteContext();
-  const locale = await detectLocale();
-  const options = countries.map((c) => ({ code: c.countryCode, name: c.countryName }));
-
+/**
+ * Static header. Country and locale are per-visitor state, so the switchers and
+ * the WhatsApp link resolve them on the client — keeping this subtree free of
+ * cookies()/headers() so the public site stays statically renderable.
+ */
+export function Header({ settings }: { settings: SiteSettings }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/85 backdrop-blur supports-[backdrop-filter]:bg-white/70">
       <Container className="flex h-16 items-center justify-between gap-3">
@@ -45,23 +45,15 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LanguageSwitcher current={locale} />
-          <CountrySwitcher
-            countries={options}
-            currentCode={contact.countryCode}
-            isOverride={isOverride}
-          />
+          <LanguageSwitcher />
+          <CountrySwitcher />
           <Link
             href="/#contact"
             className={buttonClasses("primary", "sm", "hidden lg:inline-flex")}
           >
             Get started
           </Link>
-          <MobileNav
-            items={NAV}
-            whatsapp={contact.whatsapp}
-            companyName={settings.companyName}
-          />
+          <MobileNav items={NAV} companyName={settings.companyName} />
         </div>
       </Container>
     </header>

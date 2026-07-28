@@ -1,26 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Check, Globe } from "lucide-react";
-import { setCountry } from "@/app/actions";
 import { flagEmoji, cn } from "@/lib/utils";
+import { useVisitorContact } from "./VisitorContact";
 
-type Option = { code: string; name: string };
-
-export function CountrySwitcher({
-  countries,
-  currentCode,
-  isOverride,
-}: {
-  countries: Option[];
-  currentCode: string;
-  isOverride: boolean;
-}) {
+/**
+ * Country picker for the per-country contact numbers. Reads and writes the
+ * visitor's country entirely on the client (see VisitorContactProvider) so the
+ * public site can stay statically rendered.
+ */
+export function CountrySwitcher() {
+  const visitor = useVisitorContact();
   const [open, setOpen] = useState(false);
-  const [pending, startTransition] = useTransition();
-  const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
+  const countries = (visitor?.countries ?? []).map((c) => ({
+    code: c.countryCode,
+    name: c.countryName,
+  }));
+  const currentCode = visitor?.isOverride ? visitor.code : "";
+  const isOverride = visitor?.isOverride ?? false;
 
   useEffect(() => {
     if (!open) return;
@@ -34,10 +33,7 @@ export function CountrySwitcher({
 
   function choose(code: string) {
     setOpen(false);
-    startTransition(async () => {
-      await setCountry(code);
-      router.refresh();
-    });
+    visitor?.choose(code);
   }
 
   return (
@@ -48,10 +44,8 @@ export function CountrySwitcher({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label="Choose your country"
-        disabled={pending}
         className={cn(
           "inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-line bg-white px-2.5 text-sm font-medium text-navy transition-colors hover:bg-subtle",
-          pending && "opacity-60",
         )}
       >
         <span aria-hidden className="text-base leading-none">

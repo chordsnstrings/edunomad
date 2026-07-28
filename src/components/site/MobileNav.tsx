@@ -5,19 +5,20 @@ import Link from "next/link";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { buttonClasses } from "@/components/ui/Button";
 import { whatsappHref } from "@/lib/utils";
+import { useVisitorContact } from "./VisitorContact";
 
 type NavItem = { label: string; href: string };
 
 export function MobileNav({
   items,
-  whatsapp,
   companyName,
 }: {
   items: NavItem[];
-  whatsapp: string;
   companyName: string;
 }) {
   const [open, setOpen] = useState(false);
+  // Country-specific number, resolved on the client (the shell is static).
+  const whatsapp = useVisitorContact()?.contact.whatsapp ?? "";
 
   return (
     <div className="lg:hidden">

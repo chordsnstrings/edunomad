@@ -18,6 +18,11 @@ const DESC: Record<NativeLocale, string> = {
   ne: "खर्च, proof of funds र GIC, IELTS, NOC, study permit, scholarship र PR — नेपालीमा निःशुल्क गाइड।",
 };
 
+/** Prerender the per-language guide hubs. */
+export function generateStaticParams() {
+  return NATIVE_LOCALES.map((locale) => ({ locale }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   if (!NATIVE_LOCALES.includes(locale as NativeLocale)) return { title: "Not found", robots: { index: false } };

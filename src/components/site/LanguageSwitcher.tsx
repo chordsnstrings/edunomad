@@ -7,7 +7,14 @@ import { setLocale } from "@/app/actions";
 import { LOCALES, LOCALE_LABELS, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils";
 
-export function LanguageSwitcher({ current }: { current: Locale }) {
+export function LanguageSwitcher({ current: initial }: { current?: Locale }) {
+  // The public shell is static, so the active locale is read from the cookie
+  // on the client rather than during server render.
+  const [current, setCurrent] = useState<Locale>(initial ?? "en");
+  useEffect(() => {
+    const c = document.cookie.match(/(?:^|; )en_locale=([^;]*)/)?.[1];
+    if (c && (LOCALES as readonly string[]).includes(c)) setCurrent(c as Locale);
+  }, []);
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
   const router = useRouter();
@@ -24,6 +31,7 @@ export function LanguageSwitcher({ current }: { current: Locale }) {
 
   function choose(locale: Locale) {
     setOpen(false);
+    setCurrent(locale);
     startTransition(async () => {
       await setLocale(locale);
       router.refresh();

@@ -1,18 +1,23 @@
+"use client";
+
 import { Phone, MessageCircle } from "lucide-react";
 import { telHref, whatsappHref } from "@/lib/utils";
 import type { ResolvedContact, SiteSettings } from "@/lib/settings";
+import { useVisitorContact } from "./VisitorContact";
 
 /**
- * Sticky WhatsApp + Call buttons using the visitor's resolved per-country
- * numbers. Sits above the iOS home indicator and stays out of the way.
+ * Sticky WhatsApp + Call buttons. Renders the default numbers on the server
+ * (correct for crawlers and no-JS) and swaps in the visitor's per-country
+ * numbers after hydration. Sits above the iOS home indicator.
  */
 export function FloatingActions({
   settings,
-  contact,
+  contact: defaultContact,
 }: {
   settings: SiteSettings;
   contact: ResolvedContact;
 }) {
+  const contact = useVisitorContact(defaultContact)?.contact ?? defaultContact;
   if (!settings.showFloatingWhatsapp && !settings.showFloatingCall) return null;
 
   return (

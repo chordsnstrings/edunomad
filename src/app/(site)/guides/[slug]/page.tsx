@@ -4,8 +4,13 @@ import { ArticleView } from "@/components/site/ArticleView";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { getSettings } from "@/lib/settings";
 import { siteUrlFrom, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
-import { ARTICLE_BY_SLUG, relatedArticles } from "@/content/seo/articles";
+import { ARTICLES, ARTICLE_BY_SLUG, relatedArticles } from "@/content/seo/articles";
 import { nativeLocalesForSlug, LOCALE_LABEL } from "@/content/seo/i18n";
+
+/** Prerender every guide at build time so the SEO pages are static + CDN-cacheable. */
+export function generateStaticParams() {
+  return ARTICLES.map((a) => ({ slug: a.slug }));
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
