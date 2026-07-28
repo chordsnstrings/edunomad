@@ -10,7 +10,7 @@ export default async function SignupPage() {
   const locale = await getUserLocale();
   return (
     <LocaleProvider locale={locale}>
-      <div className="grid min-h-screen place-items-center bg-subtle px-4 py-10">
+      <div lang={locale} className="grid min-h-screen place-items-center bg-subtle px-4 py-10">
         <SignupFlow />
       </div>
     </LocaleProvider>

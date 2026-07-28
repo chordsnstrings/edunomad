@@ -9,7 +9,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const locale = await getUserLocale();
   return (
     <LocaleProvider locale={locale}>
-      <div id="main" className="pb-nav min-h-screen bg-white">
+      {/* lang here (not on <html>) so assistive tech announces Bangla/Hindi/Nepali
+          correctly without forcing the static marketing pages to render dynamically. */}
+      <div id="main" lang={locale} className="pb-nav min-h-screen bg-white">
         <PullToRefresh />
         {children}
         <StudentNav />

@@ -36,7 +36,7 @@ export default async function EligibilityPage() {
 
   return (
     <LocaleProvider locale={locale}>
-    <div className="mx-auto min-h-screen max-w-md px-4 py-6">
+    <div lang={locale} className="mx-auto min-h-screen max-w-md px-4 py-6">
       <h1 className="text-xl font-semibold text-navy">{t("eligibility.result.title")}</h1>
       {result.total > 0 ? (
         <>

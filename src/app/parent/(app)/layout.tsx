@@ -13,7 +13,7 @@ export default async function ParentLayout({ children }: { children: React.React
   const locale = await getUserLocale();
   return (
     <LocaleProvider locale={locale}>
-    <div className="min-h-screen bg-white">
+    <div lang={locale} className="min-h-screen bg-white">
       <AppLock />
       <header className="sticky top-0 z-40 border-b border-line bg-white">
         <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
