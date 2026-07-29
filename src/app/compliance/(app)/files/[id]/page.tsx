@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, X, AlertTriangle, Stamp } from "lucide-react";
@@ -82,7 +83,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
               <input aria-label="Regulator" name="regulator" defaultValue="RCIC" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
               <input name="subject" placeholder="Subject" aria-label="Subject" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
               <textarea name="body" rows={3} placeholder="Details" aria-label="Details" className="w-full rounded-lg border border-line px-3 py-2 text-sm" />
-              <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Send notification</button>
+              <SubmitButton className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700" pendingLabel="Working…">Send notification</SubmitButton>
             </form>
           </details>
         </section>
@@ -93,12 +94,12 @@ export default async function FileView({ params, searchParams }: { params: Promi
             {!rcic && <p className="mb-2 text-sm text-red-600">No registration on your profile.</p>}
             <form action={sendReauthCodeAction} className="mb-2">
               <input type="hidden" name="fileId" value={id} />
-              <button className="rounded-lg border border-navy px-3 py-1.5 text-sm font-semibold text-navy hover:bg-subtle">Send verification code</button>
+              <SubmitButton className="rounded-lg border border-navy px-3 py-1.5 text-sm font-semibold text-navy hover:bg-subtle" pendingLabel="Working…">Send verification code</SubmitButton>
             </form>
             <form action={signOffAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
               <input name="code" inputMode="numeric" maxLength={6} placeholder="6-digit code" aria-label="6-digit code" className="w-32 rounded-lg border border-line px-3 py-2 text-sm" />
-              <button disabled={!rcic} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50">Sign off &amp; stamp{rcic ? ` (${rcic.registrationNumber})` : ""}</button>
+              <SubmitButton disabled={!rcic} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:opacity-50" pendingLabel="Working…">Sign off &amp; stamp{rcic ? ` (${rcic.registrationNumber})` : ""}</SubmitButton>
             </form>
           </section>
 
@@ -107,7 +108,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
             <form action={returnForChangesAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
               <input name="reason" placeholder="What needs fixing" aria-label="What needs fixing" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
-              <button className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Return</button>
+              <SubmitButton className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700" pendingLabel="Working…">Return</SubmitButton>
             </form>
           </section>
 
@@ -117,7 +118,7 @@ export default async function FileView({ params, searchParams }: { params: Promi
             <form action={refuseToSignAction} className="flex gap-2">
               <input type="hidden" name="fileId" value={id} />
               <input name="reason" placeholder="Reason for refusal" aria-label="Reason for refusal" className="flex-1 rounded-lg border border-line px-3 py-2 text-sm" />
-              <button className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">Refuse</button>
+              <SubmitButton className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700" pendingLabel="Working…">Refuse</SubmitButton>
             </form>
           </section>
         </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
@@ -44,7 +45,7 @@ export default async function ApprovalsPage() {
               </div>
               <form action={approveAction}>
                 <input type="hidden" name="appId" value={app.id} />
-                <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Approve</button>
+                <SubmitButton className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700" pendingLabel="Working…">Approve</SubmitButton>
               </form>
             </li>
           ))}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { fmtMoney } from "@/lib/currency";
@@ -31,12 +32,12 @@ export default async function PayoutsPage() {
           </p>
         </div>
         <form action={createPayoutAction}>
-          <button
+          <SubmitButton
             disabled={readyCount === 0}
             className="shrink-0 rounded-lg border border-navy px-3 py-2 text-sm font-semibold text-navy hover:bg-subtle disabled:opacity-40"
-          >
+           pendingLabel="Working…">
             Create payout
-          </button>
+          </SubmitButton>
         </form>
       </div>
       {payouts.length === 0 ? (
@@ -57,9 +58,9 @@ export default async function PayoutsPage() {
                 {p.status !== "paid" && (
                   <form action={markPayoutPaidAction}>
                     <input type="hidden" name="id" value={p.id} />
-                    <button className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700">
+                    <SubmitButton className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700" pendingLabel="Working…">
                       Mark paid
-                    </button>
+                    </SubmitButton>
                   </form>
                 )}
               </div>

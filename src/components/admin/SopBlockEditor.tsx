@@ -32,9 +32,9 @@ export function SopBlockEditor({ id, title: initialTitle, blocks: initialBlocks,
             <span className="rounded-full bg-subtle px-2 py-0.5 text-xs font-medium text-muted">{b.type}</span>
             {!disabled && (
               <div className="flex gap-1 text-muted">
-                <button type="button" onClick={() => move(i, -1)}><ArrowUp className="h-4 w-4" /></button>
-                <button type="button" onClick={() => move(i, 1)}><ArrowDown className="h-4 w-4" /></button>
-                <button type="button" onClick={() => del(i)} className="hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
+                <button type="button" aria-label="Move block up" onClick={() => move(i, -1)}><ArrowUp className="h-4 w-4" /></button>
+                <button type="button" aria-label="Move block down" onClick={() => move(i, 1)}><ArrowDown className="h-4 w-4" /></button>
+                <button type="button" aria-label="Delete block" onClick={() => del(i)} className="hover:text-red-600"><Trash2 className="h-4 w-4" /></button>
               </div>
             )}
           </div>

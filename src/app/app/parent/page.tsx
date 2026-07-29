@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { requireStudent } from "@/lib/require-student";
@@ -25,7 +26,7 @@ export default async function ParentInvitePage({ searchParams }: { searchParams:
       <form action={inviteParentAction} className="space-y-2 rounded-xl border border-line bg-white p-4">
         <input name="phone" type="tel" placeholder="Parent's phone (+8801…)" aria-label="Parent's phone (+8801…)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
         <input name="pin" inputMode="numeric" placeholder="Create a PIN (4–6 digits)" aria-label="Create a PIN (4–6 digits)" className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-navy" />
-        <button className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700">Send invite</button>
+        <SubmitButton className="w-full rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy-700" pendingLabel="Working…">Send invite</SubmitButton>
       </form>
 
       {invites.length > 0 && (

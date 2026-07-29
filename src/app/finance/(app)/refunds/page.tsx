@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { fmtMoney } from "@/lib/currency";
@@ -43,13 +44,13 @@ export default async function FinanceRefundsPage() {
                   {r.stage === "cm_approved" && (
                     <form action={financeApproveRefundAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <button className="rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-700">Approve</button>
+                      <SubmitButton className="rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-700" pendingLabel="Working…">Approve</SubmitButton>
                     </form>
                   )}
                   {r.stage === "finance_approved" && (
                     <form action={payRefundAction}>
                       <input type="hidden" name="id" value={r.id} />
-                      <button className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700">Mark paid</button>
+                      <SubmitButton className="rounded-lg bg-green-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-700" pendingLabel="Working…">Mark paid</SubmitButton>
                     </form>
                   )}
                 </div>

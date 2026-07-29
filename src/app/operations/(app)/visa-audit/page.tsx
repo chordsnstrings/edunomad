@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { redirect } from "next/navigation";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
@@ -33,7 +34,7 @@ export default async function VisaAuditPage() {
               </div>
               <form action={auditPassAction}>
                 <input type="hidden" name="fileId" value={f.id} />
-                <button className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Audit passed</button>
+                <SubmitButton className="rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700" pendingLabel="Working…">Audit passed</SubmitButton>
               </form>
             </li>
           ))}

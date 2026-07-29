@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SubmitButton } from "@/components/ui/SubmitButton";
 import { requireStaff } from "@/lib/require-staff";
 import { prisma } from "@/lib/db";
 import { fmtMoney } from "@/lib/currency";
@@ -38,9 +39,9 @@ export default async function CommissionsPage() {
           <p className="text-sm text-muted">University commission earned per application.</p>
         </div>
         <form action={generateCommissionsAction}>
-          <button className="shrink-0 rounded-lg border border-navy px-3 py-2 text-sm font-semibold text-navy hover:bg-subtle">
+          <SubmitButton className="shrink-0 rounded-lg border border-navy px-3 py-2 text-sm font-semibold text-navy hover:bg-subtle" pendingLabel="Working…">
             Accrue expected
-          </button>
+          </SubmitButton>
         </form>
       </div>
       {commissions.length === 0 ? (
@@ -68,9 +69,9 @@ export default async function CommissionsPage() {
                     <form action={setCommissionStatusAction}>
                       <input type="hidden" name="id" value={c.id} />
                       <input type="hidden" name="status" value={next.to} />
-                      <button className="rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-700">
+                      <SubmitButton className="rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-700" pendingLabel="Working…">
                         {next.label}
-                      </button>
+                      </SubmitButton>
                     </form>
                   )}
                 </div>
