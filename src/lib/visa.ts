@@ -33,7 +33,10 @@ export async function createVisaFile(applicationId: string) {
 /** Completeness from the student's uploaded documents matching required forms. */
 export function visaCompleteness(destination: string, latest: Map<string, Document>) {
   const required = visaForms(destination).filter((f) => f.required);
-  const done = required.filter((f) => latest.has(f.id)).length;
+  // Only an APPROVED document counts. Presence alone meant a rejected or
+  // still-unreviewed upload pushed the file to 100%, and completeness is what
+  // Compliance sees (and what the sign-off hash records) before signing.
+  const done = required.filter((f) => latest.get(f.id)?.status === "approved").length;
   return required.length ? Math.round((done / required.length) * 100) : 0;
 }
 

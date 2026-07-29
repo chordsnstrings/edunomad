@@ -45,6 +45,7 @@ export default async function NativeGuidePage({ params }: { params: Promise<{ lo
   const url = `${base}/${locale}/guides/${slug}`;
 
   return (
+    <div lang={locale}>
     <>
       <JsonLd
         data={[
@@ -55,5 +56,7 @@ export default async function NativeGuidePage({ params }: { params: Promise<{ lo
       />
       <NativeArticleView article={a} />
     </>
+
+    </div>
   );
 }

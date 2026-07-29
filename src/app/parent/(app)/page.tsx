@@ -14,8 +14,11 @@ export default async function ParentDashboard() {
   const t = getTranslator(await getUserLocale());
   const STAGES = Array.from({ length: 9 }, (_, i) => t("tracker.stage_" + (i + 1)));
   const counsellor = student.assignedCounsellorId ? await prisma.counsellorProfile.findUnique({ where: { userId: student.assignedCounsellorId } }) : null;
-  const events = await prisma.event.findMany({ where: { studentId: student.id }, select: { stage: true }, orderBy: { seq: "desc" }, take: 1 });
-  const stage = events[0]?.stage ?? 1;
+  // Furthest stage reached, not the latest event's stage: events are not ordered
+  // by stage, so an ordinary stage-2 message after a stage-8 visa update made the
+  // parent's journey appear to run backwards.
+  const furthest = await prisma.event.aggregate({ where: { studentId: student.id }, _max: { stage: true } });
+  const stage = furthest._max.stage ?? 1;
 
   return (
     <div>

@@ -41,7 +41,10 @@ export async function POST(req: NextRequest) {
       direction: "outbound",
       content: body,
       language: student.language,
-      metadata: { templateId, channel: result.channel },
+      // Record the ACTUAL delivery outcome. Storing only the channel meant a
+      // failed send was indistinguishable from a delivered one, in both the
+      // communication log and the immutable event that follows it.
+      metadata: { templateId, channel: result.channel, delivered: result.ok },
     },
   });
   await emit({
@@ -54,5 +57,5 @@ export async function POST(req: NextRequest) {
     channels: { in_app: true, whatsapp: true },
     payload: { templateId, preview: body.slice(0, 80) },
   });
-  return Response.json({ ok: true, channel: result.channel });
+  return Response.json({ ok: result.ok, delivered: result.ok, channel: result.channel });
 }
