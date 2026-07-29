@@ -2,7 +2,14 @@
 // Safe to import from middleware.
 import { SignJWT, jwtVerify } from "jose";
 
-export const SESSION_COOKIE = "en_admin";
+/**
+ * ADMIN session cookie. Deliberately distinct from lib/sessions.ts's
+ * SESSION_COOKIE ("en_session", the staff/customer cookie) — two different
+ * constants sharing one exported name is an import-the-wrong-one waiting to
+ * happen, so this one is also exported under an unambiguous alias.
+ */
+export const ADMIN_SESSION_COOKIE = "en_admin";
+export const SESSION_COOKIE = ADMIN_SESSION_COOKIE;
 export const SESSION_MAX_AGE = 60 * 60 * 12; // 12h, matches CLAUDE.md §11
 
 export type SessionPayload = {

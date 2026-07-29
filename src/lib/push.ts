@@ -95,8 +95,13 @@ export async function dispatchPushForEvent(
           );
           result.delivered++;
           pushedAny = true;
-        } catch {
-          // dead/expired subscription — fall through to fallback
+        } catch (err) {
+          // 404/410 mean the browser dropped the subscription: delete it rather
+          // than retrying it forever on every future dispatch.
+          const status = (err as { statusCode?: number })?.statusCode;
+          if (status === 404 || status === 410) {
+            await prisma.pushSubscription.deleteMany({ where: { endpoint: s.endpoint } }).catch(() => {});
+          }
         }
       }
     }

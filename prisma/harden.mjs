@@ -30,6 +30,15 @@ const statements = [
   `CREATE OR REPLACE FUNCTION en_prevent_mutation() RETURNS trigger AS $$
    BEGIN RAISE EXCEPTION 'Table % is append-only (insert-only)', TG_TABLE_NAME USING ERRCODE = 'check_violation'; END;
    $$ LANGUAGE plpgsql;`,
+  // BEFORE UPDATE OR DELETE never fires for TRUNCATE, so the append-only
+  // guarantee had a hole big enough to erase the whole log in one statement.
+  // TRUNCATE triggers are statement-level and must be declared separately.
+  `DROP TRIGGER IF EXISTS event_no_truncate ON "Event";`,
+  `CREATE TRIGGER event_no_truncate BEFORE TRUNCATE ON "Event"
+     FOR EACH STATEMENT EXECUTE FUNCTION en_prevent_mutation();`,
+  `DROP TRIGGER IF EXISTS auditlog_no_truncate ON "AuditLog";`,
+  `CREATE TRIGGER auditlog_no_truncate BEFORE TRUNCATE ON "AuditLog"
+     FOR EACH STATEMENT EXECUTE FUNCTION en_prevent_mutation();`,
   `DROP TRIGGER IF EXISTS event_append_only ON "Event";`,
   `CREATE TRIGGER event_append_only BEFORE UPDATE OR DELETE ON "Event"
      FOR EACH ROW EXECUTE FUNCTION en_prevent_mutation();`,
