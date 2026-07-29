@@ -111,7 +111,7 @@ async function makeStudent({ phone, name, email, counsellorId, completeness, lea
   });
   const student = await prisma.student.create({
     data: {
-      userId: user.id, tenantId: "student", phone, fullName: name, email, language,
+      userId: user.id, tenantId: "edunomad", phone, fullName: name, email, language,
       sourceCountry: "BD", dateOfBirth: new Date("2002-05-14"),
       academic: { level: "bachelor", percentage: 78, board: "National University", gradYear: 2024 },
       englishProficiency: { status: "have", test: "IELTS", overall: 7.0, listening: 7.5, reading: 7.0, writing: 6.5, speaking: 7.0 },

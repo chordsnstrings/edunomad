@@ -1,6 +1,7 @@
 import { createHash, randomInt, randomUUID, timingSafeEqual } from "node:crypto";
 import { authSecret } from "./auth-secret";
 import { prisma } from "./db";
+import { TENANT_ID } from "./tenant";
 import { sendSms } from "./sms";
 import { createUserSession } from "./sessions";
 
@@ -112,12 +113,12 @@ export async function verifyOtpForReauth(phone: string, code: string): Promise<b
   return true;
 }
 
-/** First OTP login self-provisions a student-tenant user (tenant_id == self). */
+/** First OTP login self-provisions a user in the student tenant. */
 async function findOrCreateUser(phone: string) {
   const existing = await prisma.user.findUnique({ where: { phone } });
   if (existing) return existing;
   const id = randomUUID();
   return prisma.user.create({
-    data: { id, phone, tenant: "student", tenantId: id, role: "student" },
+    data: { id, phone, tenant: "student", tenantId: TENANT_ID.student, role: "student" },
   });
 }

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/db";
+import { TENANT_ID } from "@/lib/tenant";
 import { pinHash } from "@/lib/parent";
 import { sendOtp, verifyOtpForReauth } from "@/lib/otp";
 import { createUserSession, SESSION_COOKIE } from "@/lib/sessions";
@@ -28,7 +29,7 @@ export async function acceptInviteAction(formData: FormData) {
   let user = await prisma.user.findUnique({ where: { phone: invite.parentPhone } });
   if (!user) {
     const uid = randomUUID();
-    user = await prisma.user.create({ data: { id: uid, phone: invite.parentPhone, tenant: "student", tenantId: invite.studentId, role: "parent" } });
+    user = await prisma.user.create({ data: { id: uid, phone: invite.parentPhone, tenant: "student", tenantId: TENANT_ID.student, role: "parent" } });
   }
   await prisma.parentInvite.update({ where: { id }, data: { status: "accepted", parentUserId: user.id, acceptedAt: new Date() } });
   const { token } = await createUserSession({ id: user.id, tenant: user.tenant, role: user.role });

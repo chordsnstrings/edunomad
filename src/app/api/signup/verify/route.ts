@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/db";
+import { OPERATING_TENANT_ID } from "@/lib/tenant";
 import { verifyOtp } from "@/lib/otp";
 import { otpVerifyLimit, tooManyResponse } from "@/lib/ratelimit";
 import { SESSION_COOKIE } from "@/lib/sessions";
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
     create: {
       phone,
       userId: result.userId,
-      tenantId: result.userId!,
+      tenantId: OPERATING_TENANT_ID,
       language: locale,
       sourceCountry: LOCALE_COUNTRY[locale] ?? "BD",
       sourceAttribution: attribution,

@@ -194,14 +194,14 @@ enum SourceCountry {
 
 /// W1 — the student/customer. Profile fields are JSON, filled by the builder.
 model Student {
-  id                   String        @id @default(uuid())
-  userId               String?       @unique
-  tenantId             String
+  id                   String           @id @default(uuid())
+  userId               String?          @unique
+  tenantId             String           @default("edunomad")
   fullName             String?
-  phone                String        @unique
+  phone                String           @unique
   email                String?
-  language             Language      @default(en)
-  sourceCountry        SourceCountry @default(BD)
+  language             Language         @default(en)
+  sourceCountry        SourceCountry    @default(BD)
   sourceAttribution    Json?
   dateOfBirth          DateTime?
   academic             Json?
@@ -213,15 +213,16 @@ model Student {
   budgetMaxUsd         Int?
   fundingSource        String?
   intakeTarget         Json?
-  completenessPct      Int           @default(0)
+  completenessPct      Int              @default(0)
   assignedCounsellorId String?
-  leadScore            Int           @default(0)
-  createdAt            DateTime      @default(now())
-  updatedAt            DateTime      @updatedAt
+  leadScore            Int              @default(0)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
   applications         Application[]
   documents            Document[]
   visaFiles            VisaFile[]
   invoices             Invoice[]
+  serviceBookings      ServiceBooking[]
 
   @@index([tenantId])
   @@index([assignedCounsellorId])
@@ -271,6 +272,9 @@ model Institution {
   applications         Application[]
   commissions          Commission[]
 
+  // Without a natural key the catalogue seed re-inserted the whole list on
+  // every deploy instead of upserting it.
+  @@unique([name, country])
   @@index([country])
 }
 
@@ -292,6 +296,7 @@ model Programme {
   notes                      String?
   applications               Application[]
 
+  @@unique([institutionId, name, degreeLevel])
   @@index([institutionId])
   @@index([fieldCategory])
 }
@@ -300,6 +305,7 @@ model Programme {
 model Note {
   id           String   @id @default(uuid())
   studentId    String
+  tenantId     String   @default("edunomad")
   authorUserId String
   body         String
   createdAt    DateTime @default(now())
@@ -320,6 +326,7 @@ enum BookingStatus {
 model Booking {
   id               String        @id @default(uuid())
   studentId        String
+  tenantId         String        @default("edunomad")
   counsellorUserId String
   startsAt         DateTime
   durationMin      Int           @default(45)
@@ -344,6 +351,7 @@ enum DocStatus {
 model Document {
   id           String    @id @default(uuid())
   studentId    String
+  tenantId     String    @default("edunomad")
   documentType String
   version      Int       @default(1)
   storageKey   String
@@ -521,6 +529,7 @@ model VisaFile {
   id                 String             @id @default(uuid())
   applicationId      String             @unique
   studentId          String
+  tenantId           String             @default("edunomad")
   destinationCountry DestinationCountry
   checklistState     Json?
   completenessPct    Int                @default(0)
@@ -589,6 +598,7 @@ enum SubmissionStatus {
 model Application {
   id                      String           @id @default(uuid())
   studentId               String
+  tenantId                String           @default("edunomad")
   programmeId             String
   institutionId           String
   shortlistStatus         ShortlistStatus  @default(draft)
@@ -766,6 +776,7 @@ enum PaymentStatus {
 model Invoice {
   id          String        @id @default(uuid())
   studentId   String
+  tenantId    String        @default("edunomad")
   amountLocal Int
   currency    String        @default("BDT")
   amountUsd   Int
@@ -784,6 +795,7 @@ model Invoice {
 model Payment {
   id               String        @id @default(uuid())
   invoiceId        String
+  tenantId         String        @default("edunomad")
   amountLocal      Int
   currency         String        @default("BDT")
   method           PaymentMethod
@@ -808,11 +820,13 @@ enum ParentInviteStatus {
 model ParentInvite {
   id           String             @id @default(uuid())
   studentId    String
+  tenantId     String             @default("edunomad")
   parentPhone  String
   pinHash      String
   status       ParentInviteStatus @default(sent)
   parentUserId String?
   sentAt       DateTime           @default(now())
+  expiresAt    DateTime?
   acceptedAt   DateTime?
 
   @@index([studentId])
@@ -835,6 +849,7 @@ enum CommDirection {
 model Communication {
   id         String        @id @default(uuid())
   studentId  String
+  tenantId   String        @default("edunomad")
   userId     String?
   type       CommType
   direction  CommDirection
@@ -1044,4 +1059,68 @@ model Payout {
   updatedAt        DateTime     @updatedAt
 
   @@index([status])
+}
+
+enum ServiceType {
+  housing
+  bank
+  sim
+  insurance
+  transport
+  test_prep
+}
+
+enum ServiceBookingStatus {
+  requested
+  matched
+  confirmed
+  cancelled
+}
+
+/// W7 — a service partner (housing, bank, SIM, insurance, transport, test prep).
+/// Partner-facing UIs are Phase 2 (CLAUDE.md §12); the data model carries them
+/// from day one so Stage 9 bookings have something real to point at.
+model ServicePartner {
+  id           String             @id @default(uuid())
+  tenant       Tenant             @default(service_partner)
+  tenantId     String             @default("service_partner")
+  name         String
+  serviceType  ServiceType
+  country      DestinationCountry @default(CA)
+  city         String?
+  contactEmail String?
+  contactPhone String?
+  leadTimeDays Int                @default(7)
+  active       Boolean            @default(true)
+  createdAt    DateTime           @default(now())
+  bookings     ServiceBooking[]
+
+  @@unique([name, serviceType])
+  @@index([serviceType, active])
+}
+
+/// §4 core entity — a student's request for a partner service (Stage 9).
+/// Stage 9 previously rendered a static checklist and persisted nothing, so a
+/// student who asked for housing left no record anyone could act on.
+model ServiceBooking {
+  id          String               @id @default(uuid())
+  tenantId    String               @default("edunomad")
+  studentId   String
+  serviceType ServiceType
+  partnerId   String?
+  status      ServiceBookingStatus @default(requested)
+  notes       String?
+  details     Json?
+  requestedAt DateTime             @default(now())
+  confirmedAt DateTime?
+  cancelledAt DateTime?
+  updatedAt   DateTime             @updatedAt
+  student     Student              @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  partner     ServicePartner?      @relation(fields: [partnerId], references: [id], onDelete: SetNull)
+
+  // One open request per service per student — a double-tap on "Request housing"
+  // must not create two bookings for the coordinator to reconcile.
+  @@unique([studentId, serviceType])
+  @@index([studentId])
+  @@index([status, requestedAt])
 }

@@ -26,4 +26,6 @@ export const AUDIENCE = {
   visaInternal: { O: true, OM: true, COMP: true },
   /** Escalations and complaints. */
   escalation: { C: true, CM: true, EM: true },
+  /** Stage 9 partner services — the student, their sponsor, and whoever arranges it. */
+  predeparture: { S: true, P: true, C: true, O: true },
 } as const satisfies Record<string, Record<string, boolean>>;

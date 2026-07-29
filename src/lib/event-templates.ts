@@ -31,6 +31,48 @@ export const EVENT_TEMPLATES: Record<string, Partial<Record<Locale, string>>> = 
   "visa.appointment_booked": { en: "Your VFS appointment is booked at {location} on {datetime}." },
   "visa.submitted": { en: "Visa application submitted to {authority}." },
   "visa.approved": { en: "Your visa is approved! Pre-departure begins." },
+  "service.requested": {
+    en: "You asked us to arrange {service_type}. We'll confirm here.",
+    bn: "আপনি {service_type} ব্যবস্থা করতে বলেছেন। আমরা এখানে নিশ্চিত করব।",
+    hi: "आपने {service_type} की व्यवस्था करने को कहा है। हम यहीं पुष्टि करेंगे।",
+    ne: "तपाईंले {service_type} मिलाउन भन्नुभयो। हामी यहीँ पुष्टि गर्नेछौं।",
+  },
+  "service.confirmed": {
+    en: "Your {service_type} booking is confirmed.",
+    bn: "আপনার {service_type} বুকিং নিশ্চিত হয়েছে।",
+    hi: "आपकी {service_type} बुकिंग पुष्ट हो गई है।",
+    ne: "तपाईंको {service_type} बुकिङ पुष्टि भयो।",
+  },
+  "housing.booked": {
+    en: "Your accommodation is confirmed.",
+    bn: "আপনার থাকার ব্যবস্থা নিশ্চিত হয়েছে।",
+    hi: "आपका आवास पुष्ट हो गया है।",
+    ne: "तपाईंको बसोबासको व्यवस्था पुष्टि भयो।",
+  },
+  "bank_account.opening_initiated": {
+    en: "Your bank account opening has started.",
+    bn: "আপনার ব্যাংক অ্যাকাউন্ট খোলার কাজ শুরু হয়েছে।",
+    hi: "आपका बैंक खाता खोलने की प्रक्रिया शुरू हो गई है।",
+    ne: "तपाईंको बैंक खाता खोल्ने काम सुरु भयो।",
+  },
+  "sim.ordered": {
+    en: "Your SIM is ordered.",
+    bn: "আপনার সিম অর্ডার করা হয়েছে।",
+    hi: "आपका सिम ऑर्डर कर दिया गया है।",
+    ne: "तपाईंको सिम अर्डर गरियो।",
+  },
+  "insurance.activated": {
+    en: "Your health insurance is active.",
+    bn: "আপনার স্বাস্থ্য বিমা সক্রিয় হয়েছে।",
+    hi: "आपका स्वास्थ्य बीमा सक्रिय है।",
+    ne: "तपाईंको स्वास्थ्य बिमा सक्रिय भयो।",
+  },
+  "airport_pickup.booked": {
+    en: "Your airport pickup is booked.",
+    bn: "আপনার বিমানবন্দর পিকআপ বুক করা হয়েছে।",
+    hi: "आपका एयरपोर्ट पिकअप बुक हो गया है।",
+    ne: "तपाईंको एयरपोर्ट पिकअप बुक भयो।",
+  },
   "profile.completed": {
     en: "Your profile is complete.",
     bn: "আপনার প্রোফাইল সম্পূর্ণ হয়েছে।",
