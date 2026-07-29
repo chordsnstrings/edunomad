@@ -2,7 +2,20 @@ import { prisma } from "./db";
 import type { SopBlock } from "./sop-cms";
 
 export async function getPublishedSops() {
-  return prisma.sopArticle.findMany({ where: { status: "published", publishedVersion: { not: null } } });
+  // Only the published projection: the draft `blocks` column can be large and is
+  // never read here, and the list is bounded.
+  return prisma.sopArticle.findMany({
+    where: { status: "published", publishedVersion: { not: null } },
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      category: true,
+      publishedVersion: true,
+      publishedBlocks: true,
+    },
+    take: 200,
+  });
 }
 
 export async function getPublishedSopBySlug(slug: string) {

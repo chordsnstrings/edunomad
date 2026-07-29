@@ -18,8 +18,14 @@ export default async function QaPage() {
 
   const calls = await prisma.communication.findMany({ where: { type: "call", userId: { in: teamIds } }, orderBy: { createdAt: "desc" }, take: 80 });
   // Weighted sampling: under-reviewed counsellors weighted higher.
-  const reviewCounts = new Map<string, number>();
-  for (const id of teamIds) reviewCounts.set(id, await prisma.qaReview.count({ where: { counsellorUserId: id } }));
+  // One grouped count instead of a serial count per team member.
+  const grouped = await prisma.qaReview.groupBy({
+    by: ["counsellorUserId"],
+    where: { counsellorUserId: { in: teamIds } },
+    _count: { _all: true },
+  });
+  const reviewCounts = new Map<string, number>(teamIds.map((id) => [id, 0]));
+  for (const g of grouped) reviewCounts.set(g.counsellorUserId, g._count._all);
   const sampled = calls
     .map((c) => ({ c, w: (1 / (1 + (reviewCounts.get(c.userId ?? "") ?? 0))) * Math.random() }))
     .sort((a, b) => b.w - a.w)
