@@ -90,6 +90,8 @@ export async function verifyOtp(phone: string, code: string): Promise<OtpVerifyR
   }
 
   const user = await findOrCreateUser(phone);
+  // Deactivated/archived users cannot sign back in.
+  if (user.status !== "active") return { ok: false, error: "invalid" };
   const { token } = await createUserSession(user);
   await prisma.otpChallenge.delete({ where: { phone } });
   return { ok: true, token, userId: user.id };

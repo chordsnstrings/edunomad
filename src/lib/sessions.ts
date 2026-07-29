@@ -53,8 +53,15 @@ export async function createUserSession(user: {
  */
 export async function validateUserSession(token: string): Promise<SessionInfo | null> {
   if (!token) return null;
-  const s = await prisma.session.findUnique({ where: { tokenHash: hashToken(token) } });
+  const s = await prisma.session.findUnique({
+    where: { tokenHash: hashToken(token) },
+    include: { user: { select: { status: true } } },
+  });
   if (!s || s.revokedAt) return null;
+  // A deactivated or archived user must not keep an active session. The status
+  // column existed but nothing ever checked it, so soft-deleting someone left
+  // their sessions working until natural expiry.
+  if (s.user.status !== "active") return null;
 
   const now = Date.now();
   if (s.expiresAt.getTime() < now) return null;
