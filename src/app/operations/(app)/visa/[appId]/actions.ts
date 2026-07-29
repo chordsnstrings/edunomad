@@ -71,10 +71,15 @@ export async function decisionAction(formData: FormData) {
   const reason = String(formData.get("reason") ?? "");
   if (!["approved", "refused", "info_requested"].includes(decision)) redirect(`/operations/visa/${appId}`);
   const vf = await file(appId);
-  await prisma.visaFile.update({
-    where: { id: vf.id },
+  // Record the decision once. visa.* decisions are Critical-tier notifications
+  // (push + WhatsApp + email, non-disableable), so re-posting this action used to
+  // tell the student their visa was decided all over again — and append another
+  // immutable event each time.
+  const recorded = await prisma.visaFile.updateMany({
+    where: { id: vf.id, decisionStatus: { not: decision as "approved" | "refused" | "info_requested" } },
     data: { decisionStatus: decision as "approved" | "refused" | "info_requested", decisionAt: new Date(), refusalReasons: decision === "refused" ? ([reason] as unknown as Prisma.InputJsonValue) : undefined },
   });
+  if (recorded.count !== 1) redirect(`/operations/visa/${appId}?already=1`);
   const type = decision === "approved" ? "visa.approved" : decision === "refused" ? "visa.refused" : "visa.info_requested";
   await notify(appId, type, s.userId, { reason }, { in_app: true, push: true, whatsapp: true, email: true });
   redirect(`/operations/visa/${appId}`);

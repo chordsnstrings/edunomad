@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import { emit, withEvents } from "./events";
+import { AUDIENCE } from "./event-visibility";
 
 export const PAYMENT_METHODS = ["bkash", "nagad", "ssl", "card", "bank_transfer"] as const;
 export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
@@ -55,7 +56,7 @@ export async function payInvoice(invoiceId: string, method: string, actorUserId:
       studentId: invoice.studentId,
       actorType: "parent",
       actorId: actorUserId,
-      visibility: { S: true, P: true, C: true, F: true },
+      visibility: AUDIENCE.money,
       channels: { in_app: true, push: true, whatsapp: true, email: true },
       payload: { amount: invoice.amountLocal, currency: invoice.currency, method, purpose: invoice.purpose },
     }, tx);

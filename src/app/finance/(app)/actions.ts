@@ -7,6 +7,7 @@ import { getCurrentSession } from "@/lib/current-user";
 import { prisma } from "@/lib/db";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+import { AUDIENCE } from "@/lib/event-visibility";
 import {
   ensureCommission,
   setCommissionStatus,
@@ -166,7 +167,7 @@ export async function payRefundAction(formData: FormData) {
     studentId: r.studentId,
     actorType: "finance",
     actorId: s.userId,
-    visibility: { S: true, P: true, F: true },
+    visibility: AUDIENCE.money,
     channels: { in_app: true, push: true },
     payload: { amount: r.amountLocal, currency: r.currency, purpose: "refund" },
   });
