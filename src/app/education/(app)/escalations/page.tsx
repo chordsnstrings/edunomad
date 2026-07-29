@@ -15,9 +15,13 @@ export default async function EmEscalations() {
       orderBy: { seq: "desc" },
       take: 100,
     }),
+    // Acknowledgements are looked up for the listed students only; this used to
+    // read every acknowledgement ever recorded.
     prisma.event.findMany({
       where: { type: "escalation.acknowledged" },
       select: { studentId: true },
+      orderBy: { seq: "desc" },
+      take: 500,
     }),
   ]);
   const acked = new Set(acks.map((a) => a.studentId));

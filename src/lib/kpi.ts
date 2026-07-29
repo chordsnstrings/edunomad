@@ -16,20 +16,25 @@ const FUNNEL: { label: string; type: string | null }[] = [
 ];
 
 export async function journeyFunnel() {
-  const totalStudents = await prisma.student.count();
-  const rows: { label: string; count: number }[] = [];
-  for (const step of FUNNEL) {
-    if (!step.type) {
-      rows.push({ label: step.label, count: totalStudents });
-      continue;
-    }
-    const distinctStudents = await prisma.event.findMany({
-      where: { type: step.type, studentId: { not: null } },
-      select: { studentId: true },
-      distinct: ["studentId"],
-    });
-    rows.push({ label: step.label, count: distinctStudents.length });
-  }
+  // One distinct scan for the whole funnel instead of a sequential unbounded scan
+  // per step (six round-trips over the largest table, counted in JavaScript).
+  const types = FUNNEL.map((s) => s.type).filter((t): t is string => !!t);
+  const [totalStudents, pairs] = await Promise.all([
+    prisma.student.count(),
+    prisma.event.findMany({
+      where: { type: { in: types }, studentId: { not: null } },
+      select: { type: true, studentId: true },
+      distinct: ["type", "studentId"],
+    }),
+  ]);
+
+  const reachedByType = new Map<string, number>();
+  for (const p of pairs) reachedByType.set(p.type, (reachedByType.get(p.type) ?? 0) + 1);
+
+  const rows = FUNNEL.map((step) => ({
+    label: step.label,
+    count: step.type ? (reachedByType.get(step.type) ?? 0) : totalStudents,
+  }));
   return rows;
 }
 

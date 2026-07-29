@@ -4,7 +4,9 @@ import { getSettings } from "@/lib/settings";
 export const alt = "EduNomad — Study abroad, simplified.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const dynamic = "force-dynamic";
+// Re-render hourly rather than on every crawler hit: this rasterises a
+// 1200x630 PNG and its only input is the (rarely changed) site settings.
+export const revalidate = 3600;
 
 export default async function OpengraphImage() {
   const settings = await getSettings();

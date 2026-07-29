@@ -101,26 +101,47 @@ export async function markPayoutPaid(id: string) {
   });
 }
 
-/** Top-line finance KPIs, all normalised to USD. */
+/**
+ * Top-line finance KPIs, all normalised to USD.
+ *
+ * Aggregated in Postgres. This used to load the entire Payment, Invoice, Refund,
+ * Commission and Payout tables into Node to compute nine scalars — cost grew with
+ * every transaction the business ever processed, on a dashboard.
+ */
 export async function financeSummary() {
-  const [payments, invoices, refunds, commissions, payouts] = await Promise.all([
-    prisma.payment.findMany({ where: { status: "succeeded" } }),
-    prisma.invoice.findMany(),
-    prisma.refund.findMany(),
-    prisma.commission.findMany(),
-    prisma.payout.findMany(),
+  const [byCurrency, invoiceCounts, refundsPending, commissionSums, payoutSums] = await Promise.all([
+    // Payments are stored in their local currency, so sum per currency and
+    // convert the (few) group totals rather than every row.
+    prisma.payment.groupBy({
+      by: ["currency"],
+      where: { status: "succeeded" },
+      _sum: { amountLocal: true },
+      _count: { _all: true },
+    }),
+    prisma.invoice.groupBy({ by: ["status"], _count: { _all: true } }),
+    prisma.refund.count({ where: { stage: "cm_approved" } }),
+    prisma.commission.groupBy({ by: ["status"], _sum: { amountUsd: true } }),
+    prisma.payout.groupBy({ by: ["status"], _sum: { amountUsd: true } }),
   ]);
-  const inboundUsd = payments.reduce((s, p) => s + toUsd(p.amountLocal, p.currency), 0);
-  const sum = (list: { amountUsd: number }[]) => list.reduce((s, c) => s + c.amountUsd, 0);
+
+  const inboundUsd = byCurrency.reduce((s, g) => s + toUsd(g._sum.amountLocal ?? 0, g.currency), 0);
+  const paymentsCount = byCurrency.reduce((s, g) => s + g._count._all, 0);
+  const invoiceCount = (status: string) =>
+    invoiceCounts.find((i) => i.status === status)?._count._all ?? 0;
+  const commissionUsd = (statuses: string[]) =>
+    commissionSums.filter((c) => statuses.includes(c.status)).reduce((s, c) => s + (c._sum.amountUsd ?? 0), 0);
+  const payoutUsd = (match: (status: string) => boolean) =>
+    payoutSums.filter((p) => match(p.status)).reduce((s, p) => s + (p._sum.amountUsd ?? 0), 0);
+
   return {
     inboundUsd,
-    paymentsCount: payments.length,
-    invoicesIssued: invoices.filter((i) => i.status === "issued").length,
-    invoicesPaid: invoices.filter((i) => i.status === "paid").length,
-    refundsPending: refunds.filter((r) => r.stage === "cm_approved").length,
-    commissionExpectedUsd: sum(commissions.filter((c) => c.status === "expected" || c.status === "invoiced")),
-    commissionReceivedUsd: sum(commissions.filter((c) => c.status === "received" || c.status === "reconciled")),
-    payoutsScheduledUsd: payouts.filter((p) => p.status !== "paid").reduce((s, p) => s + p.amountUsd, 0),
-    payoutsPaidUsd: payouts.filter((p) => p.status === "paid").reduce((s, p) => s + p.amountUsd, 0),
+    paymentsCount,
+    invoicesIssued: invoiceCount("issued"),
+    invoicesPaid: invoiceCount("paid"),
+    refundsPending,
+    commissionExpectedUsd: commissionUsd(["expected", "invoiced"]),
+    commissionReceivedUsd: commissionUsd(["received", "reconciled"]),
+    payoutsScheduledUsd: payoutUsd((s) => s !== "paid"),
+    payoutsPaidUsd: payoutUsd((s) => s === "paid"),
   };
 }

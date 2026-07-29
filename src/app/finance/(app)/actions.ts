@@ -31,13 +31,22 @@ export async function financeLogoutAction() {
 /** Accrue expected commissions for every offered application missing one. */
 export async function generateCommissionsAction() {
   await fin();
+  // Only applications that do not already have a commission, so a second click
+  // is cheap instead of re-scanning and re-checking every offer ever made.
+  const existing = await prisma.commission.findMany({ select: { applicationId: true } });
+  const done = new Set(existing.map((c) => c.applicationId));
   const apps = await prisma.application.findMany({
     where: {
       submissionStatus: { in: ["offer_unconditional", "offer_conditional"] },
+      id: { notIn: [...done] },
     },
     select: { id: true },
+    take: 500,
   });
-  for (const a of apps) await ensureCommission(a.id);
+  // Bounded concurrency: sequential awaits made this O(offers) round-trips.
+  for (let i = 0; i < apps.length; i += 10) {
+    await Promise.all(apps.slice(i, i + 10).map((a) => ensureCommission(a.id)));
+  }
   redirect("/finance/commissions");
 }
 
