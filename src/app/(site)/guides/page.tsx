@@ -4,6 +4,7 @@ import { Section } from "@/components/site/Section";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { getSettings } from "@/lib/settings";
 import { siteUrlFrom, breadcrumbJsonLd } from "@/lib/seo";
+import { NATIVE_LOCALES } from "@/content/seo/i18n";
 import { ARTICLES, CATEGORIES } from "@/content/seo/articles";
 
 const TITLE = "Study in Canada Guides for Bangladesh, India & Nepal (2026)";
@@ -15,7 +16,16 @@ export async function generateMetadata(): Promise<Metadata> {
     title: TITLE,
     description: DESC,
     keywords: ["study in canada guides", "canada student visa bangladesh india nepal", "canada study permit 2026", "gic proof of funds canada", "pgwp pr canada"],
-    alternates: { canonical: "/guides" },
+    // hreflang must be reciprocal: each variant lists every variant including
+    // itself, otherwise search engines drop the cluster entirely.
+    alternates: {
+      canonical: "/guides",
+      languages: {
+        en: "/guides",
+        "x-default": "/guides",
+        ...Object.fromEntries(NATIVE_LOCALES.map((l) => [l, `/${l}/guides`])),
+      },
+    },
     openGraph: { type: "website", title: TITLE, description: DESC, url: "/guides" },
   };
 }

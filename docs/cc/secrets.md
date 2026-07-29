@@ -28,6 +28,7 @@
 | `SENTRY_DSN` | Error monitoring |
 | `ANALYTICS_PROVIDER`, `PLAUSIBLE_DOMAIN`, `POSTHOG_KEY` | Analytics |
 | `CRON_SECRET` | Authenticates cron endpoints |
+| `INBOUND_WEBHOOK_SECRET` | Authenticates the inbound-email webhook. Both fail CLOSED (503) when unset. |
 
 Application secrets (document-vault credentials, etc.) are additionally
 encrypted at rest with AES-256-GCM via `src/lib/crypto-vault.ts`.
