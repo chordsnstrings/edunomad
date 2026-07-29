@@ -146,3 +146,74 @@ storage. The Dockerfile keeps us portable (the same image runs on a Droplet/DOCR
 the `node:22-slim` runtime; `next.config.ts` uses `output: "standalone"`; the
 pre-deploy job is production-safe (demo fixtures gated behind `SEED_DEMO`). See
 docs/cc/digitalocean.md.
+
+## 2026-07-29 — Tenant identity: one convention, in constants
+
+**Choice:** `tenantId` is a stable per-tenant-instance constant
+(`src/lib/tenant.ts`), not a per-record uuid. Business data belongs to the
+*operating* tenant — the organisation doing the work, `edunomad` in Phase 1 —
+while `User.tenant`/`User.tenantId` describe where a person signs in. Every §4
+core entity carries the column; the university catalogue (Institution,
+Programme) is deliberately global.
+**Alternatives considered:** a uuid per tenant row provisioned at signup; Postgres
+row-level security; a `tenant` schema-per-org.
+**Rationale:** Four writers had each invented their own value for a student's
+`tenantId` — their own uuid, the inviting student's id, the literal `"student"` —
+so the cross-tenant check in `can()` fired or not depending on which code path
+had written the row. RLS is the stronger answer but needs a per-request session
+variable through Prisma's pool; it stays open for Phase 2 when agency tenants
+make it load-bearing.
+**Consequences:** `TENANT_ID` / `OPERATING_TENANT_ID` constants; a schema-walking
+test (`tests/services.test.ts`) forces every new model to be classified as
+tenant-scoped or global rather than defaulting to unscoped.
+
+## 2026-07-29 — Server-action input handling: helpers, not a schema per action
+
+**Choice:** typed, bounded FormData readers (`src/lib/form.ts`) — `text`, `id`,
+`pick`, `int`, `bool`, `date`, `secret`, `json` — used by every server action.
+Zod stays for request bodies with real shape (`src/lib/validation.ts`).
+**Alternatives considered:** a Zod schema per action; `next-safe-action`.
+**Rationale:** 114 reads were `String(formData.get(x))`, which yields `"null"` for
+a missing field, has no length ceiling, and never checks type. A schema per
+action is more precise but 26 files of boilerplate for inputs that are almost all
+one of eight shapes. The helpers are total by design — a server action has no
+error channel back to a user who has already navigated — so callers check the
+returned value instead of catching.
+**Consequences:** `secret()` never trims (rewriting a passphrase before hashing
+makes a correct password fail); `json()` carries a much larger ceiling so editor
+payloads are not truncated into unparseable JSON.
+
+## 2026-07-29 — Accessibility gating: axe in jsdom, blocking
+
+**Choice:** `scripts/a11y-scan.mjs` runs axe-core inside jsdom against the real
+server output and blocks the build on any serious/critical WCAG 2.1 A/AA
+violation. Covers every public surface plus the authenticated consoles for six
+roles (52 routes). `@axe-core/playwright` stays as advisory browser coverage.
+**Alternatives considered:** making the existing Playwright a11y job blocking;
+pa11y-ci.
+**Rationale:** the Playwright job needs a browser download and sat behind
+`continue-on-error` over four public routes — a gate that cannot fail. jsdom
+needs no browser, so it can live in the main build job, and signing in through
+the E2E bypass reaches the surfaces where the icon-only buttons and dialogs
+actually are. Widening it immediately found a real defect (an `aria-label` on a
+bare div in the route-level loading skeleton) that four public routes could not
+have surfaced.
+**Consequences:** `jsdom` as a devDependency; `npm run a11y`; Lighthouse stays
+advisory and says why — its scores move with runner load, and a flaky gate
+teaches people to ignore red — but now measures the 380px mobile viewport.
+
+## 2026-07-29 — Client i18n: catalogue as a prop, not an import
+
+**Choice:** `LocaleProvider` receives the active locale's catalogue from the
+server; it no longer imports the message barrel. Server components keep using
+`getTranslator`.
+**Alternatives considered:** per-locale dynamic `import()` in the provider;
+prefix-scoped catalogue subsets per surface.
+**Rationale:** importing the barrel pulled all four catalogues into a client chunk
+every page referenced — marketing pages and the 404 included — so a student in
+Dhaka downloaded 107KB of Hindi and Nepali before seeing the homepage, on a
+surface with a 3s TTI budget. A dynamic import splits per locale but flashes raw
+keys on first paint. Prefix subsets are smaller still but silently break when
+someone uses a key outside the declared prefixes.
+**Consequences:** the root fallback provider ships no catalogue at all; a missing
+client key warns loudly in development instead of rendering a raw key.
