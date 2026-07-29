@@ -12,7 +12,10 @@ export function Skeleton({ className }: { className?: string }) {
 /** Generic content skeleton for route-level loading (§9: skeletons, not spinners). */
 export function PageSkeleton() {
   return (
-    <div className="space-y-4" aria-busy="true" aria-label="Loading">
+    // `role="status"` is what makes the label legal and audible. A bare div
+    // cannot carry aria-label — assistive tech drops it — so the loading state
+    // announced nothing at all on every authenticated route in the app.
+    <div className="space-y-4" role="status" aria-busy="true" aria-label="Loading">
       <Skeleton className="h-7 w-40" />
       <div className="space-y-3">
         {[0, 1, 2].map((i) => (

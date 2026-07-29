@@ -52,6 +52,21 @@ jobs:
         run: npm test
       - name: Build
         run: NODE_ENV=production npm run build
+      - name: Accessibility (WCAG 2.1 A/AA, blocking)
+        # Blocking on purpose. The axe coverage below runs under Playwright in a
+        # continue-on-error job over four public routes; a gate that cannot fail
+        # is not a gate. This runs axe-core in jsdom against the real server
+        # output — no browser download — across every public surface and the
+        # authenticated consoles for six roles, and fails the build on any
+        # serious or critical violation. Verified green on 52 routes before
+        # being made blocking.
+        run: |
+          E2E_OTP_BYPASS=1 npm run start -- --port 3000 &
+          for i in $(seq 30); do
+            curl -sf http://localhost:3000/api/health >/dev/null && break
+            sleep 2
+          done
+          node scripts/a11y-scan.mjs
 
   lighthouse:
     name: Lighthouse PWA + budgets
@@ -78,9 +93,12 @@ jobs:
       - run: npx prisma db push --skip-generate && node prisma/harden.mjs && npm run db:seed
       - run: NODE_ENV=production npm run build
       - name: Run Lighthouse CI (PWA ≥ 90, budgets)
-        # Advisory until baselined on deployed staging (headless browser + perf
-        # baseline). Server-side perf budgets are hard-enforced by perf.test.ts
-        # in the blocking build-test job. Reports scores without gating the PR.
+        # Advisory, and honestly so: Lighthouse scores on a shared CI runner move
+        # with runner load, and a flaky gate teaches people to ignore red. What
+        # this job protects is tracked elsewhere and blocking: server-side perf
+        # budgets in perf.test.ts, and WCAG A/AA in the a11y step of build-test,
+        # both in jobs that fail the build. This reports the deployed-staging
+        # baseline that Lighthouse is actually good at.
         continue-on-error: true
         run: npm run lighthouse
 
@@ -118,10 +136,13 @@ jobs:
           node prisma/seed-sop.mjs
       - run: NODE_ENV=production npm run build
       - name: Run E2E suite
-        # Advisory: the suite runs the real browser flows and surfaces results in
-        # the logs, but a brand-new account routes through onboarding and some
-        # selectors need a deployed-staging baseline (G186 AC2). RBAC + journey
-        # logic are hard-gated by the unit/integration suite in build-test.
+        # Advisory: a brand-new account routes through onboarding and some
+        # selectors need a deployed-staging baseline (G186 AC2), so this reports
+        # rather than gates. What it used to be the only check for is now covered
+        # by blocking jobs: RBAC and journey logic by the unit/integration suite,
+        # and WCAG A/AA by the a11y step in build-test, which scans 52 routes
+        # including the authenticated consoles rather than the four public pages
+        # e2e/a11y.spec.ts covers.
         continue-on-error: true
         run: npm run test:e2e
 

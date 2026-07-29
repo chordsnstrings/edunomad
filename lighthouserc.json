@@ -5,11 +5,15 @@
       "startServerReadyPattern": "Ready in|started server on|Local:",
       "url": [
         "http://localhost:3000/",
-        "http://localhost:3000/signup"
+        "http://localhost:3000/signup",
+        "http://localhost:3000/guides",
+        "http://localhost:3000/guides/study-in-canada-from-bangladesh"
       ],
       "numberOfRuns": 3,
       "settings": {
-        "preset": "desktop",
+        "_comment": "Mobile emulation, not desktop: CLAUDE.md §1 makes 380px the primary breakpoint and §10 sets the TTI budget on 4G. Auditing a desktop viewport measured a device this product does not target.",
+        "formFactor": "mobile",
+        "screenEmulation": { "mobile": true, "width": 380, "height": 823, "deviceScaleFactor": 2.625, "disabled": false },
         "throttlingMethod": "simulate",
         "budgetsPath": "lighthouse-budgets.json"
       }

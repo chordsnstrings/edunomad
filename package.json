@@ -20,7 +20,8 @@
     "test:e2e": "playwright test",
     "lighthouse": "npx --yes @lhci/cli@0.14.x autorun",
     "axe": "npx --yes @axe-core/cli@4.x",
-    "seo:indexnow": "node scripts/indexnow.mjs"
+    "seo:indexnow": "node scripts/indexnow.mjs",
+    "a11y": "node scripts/a11y-scan.mjs"
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"
@@ -48,6 +49,7 @@
     "@playwright/test": "^1.49.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcryptjs": "^2.4.6",
+    "@types/jsdom": "^28.0.3",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
@@ -55,6 +57,7 @@
     "@types/web-push": "^3.6.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.7",
+    "jsdom": "^30.0.0",
     "prisma": "^6.19.3",
     "tailwindcss": "^4",
     "typescript": "^5"
