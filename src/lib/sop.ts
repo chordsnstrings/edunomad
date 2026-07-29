@@ -20,9 +20,17 @@ export async function saveSop(studentId: string, content: string) {
   return { ok: true as const, score, version: updated.version };
 }
 
+/** A statement of purpose shorter than this is not a submission. */
+const MIN_SOP_CHARS = 200;
+
 /** Lock the SOP — gated on plagiarism < threshold; audited; emits sop.locked. */
 export async function lockSop(studentId: string, actorUserId: string) {
   const sop = await getOrCreateSop(studentId);
+  // An empty or near-empty SOP scores 0 on the plagiarism check, so the gate
+  // passed it straight through and locked a blank statement of purpose.
+  if (sop.content.trim().length < MIN_SOP_CHARS) {
+    return { ok: false as const, error: "too_short" as const, score: 0 };
+  }
   const score = checkPlagiarism(sop.content);
   if (score > PLAGIARISM_THRESHOLD) return { ok: false as const, error: "plagiarism", score };
   const updated = await prisma.sop.update({ where: { id: sop.id }, data: { status: "locked" } });

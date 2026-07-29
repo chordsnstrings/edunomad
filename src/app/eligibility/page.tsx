@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { requireStudent } from "@/lib/require-student";
+import { prisma } from "@/lib/db";
 import { runEligibility, type StudentProfile } from "@/lib/eligibility";
 import { emit } from "@/lib/events";
 import { EligibilityResults } from "@/components/eligibility/EligibilityResults";
@@ -23,7 +24,18 @@ export default async function EligibilityPage() {
     fieldCategory: student.fieldCategory,
   };
   const result = await runEligibility(profile);
-  await emit({
+  // Emit at most once per hour per student. This is a GET render, and every
+  // refresh previously took the global chain advisory lock to append a duplicate
+  // eligibility.checked event.
+  const recent = await prisma.event.findFirst({
+    where: {
+      studentId: student.id,
+      type: "eligibility.checked",
+      createdAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+    },
+    select: { id: true },
+  });
+  if (!recent) await emit({
     type: "eligibility.checked",
     stage: 1,
     studentId: student.id,

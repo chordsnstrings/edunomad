@@ -12,7 +12,12 @@ export async function packageApplication(applicationId: string, documentIds: str
     const doc = await prisma.document.findUnique({ where: { id: documentId }, select: { documentType: true } });
     await prisma.applicationDocument.create({ data: { applicationId, documentId, roleInApp: doc?.documentType ?? "document" } });
   }
-  await prisma.application.update({ where: { id: applicationId }, data: { submissionStatus: "packaged" } });
+  // Only move forward. Re-packaging a submitted or decided application used to
+  // rewind submissionStatus to "packaged", erasing a recorded offer.
+  await prisma.application.updateMany({
+    where: { id: applicationId, submissionStatus: { in: ["not_submitted", "packaged"] } },
+    data: { submissionStatus: "packaged" },
+  });
   return { ok: true as const };
 }
 

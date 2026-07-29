@@ -27,6 +27,12 @@ const eslintConfig = defineConfig([
       // Advisory + build-manifest-sensitive (flaky across builds); one legitimate
       // use is an <a> download link to an API route. Keep visible, don't gate CI.
       "@next/next/no-html-link-for-pages": "warn",
+      // Leading underscore is this codebase's convention for a deliberately
+      // unused parameter (interface stubs awaiting a provider integration).
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
+      ],
     },
   },
 ]);
