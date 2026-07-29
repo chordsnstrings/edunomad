@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent } from "@/lib/student";
-import { pinHash } from "@/lib/parent";
+import { INVITE_TTL_MS, pinHash } from "@/lib/parent";
 import { sendSms } from "@/lib/sms";
 import { emit } from "@/lib/events";
 import { rateLimit } from "@/lib/ratelimit";
@@ -25,7 +25,11 @@ export async function inviteParentAction(formData: FormData) {
   const limit = rateLimit(`parent:invite:${student.id}`, 3, 60 * 60 * 1000);
   if (!limit.ok) redirect("/app/parent?error=rate_limited");
 
-  const invite = await prisma.parentInvite.create({ data: { studentId: student.id, parentPhone: phone, pinHash: pinHash(pin) } });
+  // An invite carries a 4-6 digit PIN to a phone number the student typed. Left
+  // open forever, a mistyped digit means a stranger's phone holds a permanent
+  // key to a student's file; a real expiry bounds that to a week.
+  const expiresAt = new Date(Date.now() + INVITE_TTL_MS);
+  const invite = await prisma.parentInvite.create({ data: { studentId: student.id, parentPhone: phone, pinHash: pinHash(pin), expiresAt } });
   await sendSms(phone, `You're invited to follow ${student.fullName ?? "your child"}'s EduNomad journey. Open /parent/accept/${invite.id} and enter the PIN they shared.`);
   await emit({ type: "parent.invited", stage: 2, studentId: student.id, actorType: "student", actorId: s.userId, visibility: { S: true, P: true, C: true }, channels: { in_app: true, whatsapp: true }, payload: {} });
   redirect("/app/parent?sent=1");

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/db";
 import { TENANT_ID } from "@/lib/tenant";
-import { pinHash } from "@/lib/parent";
+import { isInviteExpired, pinHash } from "@/lib/parent";
 import { sendOtp, verifyOtpForReauth } from "@/lib/otp";
 import { createUserSession, SESSION_COOKIE } from "@/lib/sessions";
 import { emit } from "@/lib/events";
@@ -24,6 +24,10 @@ export async function acceptInviteAction(formData: FormData) {
   const code = text(formData, "code");
   const invite = await prisma.parentInvite.findUnique({ where: { id } });
   if (!invite || invite.status !== "sent") redirect(`/parent/accept/${id}`);
+  if (isInviteExpired(invite)) {
+    await prisma.parentInvite.updateMany({ where: { id, status: "sent" }, data: { status: "expired" } });
+    redirect(`/parent/accept/${id}?expired=1`);
+  }
   if (invite.pinHash !== pinHash(pin)) redirect(`/parent/accept/${id}?pin=bad`);
   if (!(await verifyOtpForReauth(invite.parentPhone, code))) redirect(`/parent/accept/${id}?code=bad`);
 

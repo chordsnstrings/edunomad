@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
+import { isInviteExpired } from "@/lib/parent";
 import { sendParentCodeAction, acceptInviteAction } from "./actions";
 
 export const metadata: Metadata = { title: "Accept invite", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
-export default async function AcceptPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ codesent?: string; pin?: string; code?: string }> }) {
+export default async function AcceptPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ codesent?: string; pin?: string; code?: string; expired?: string }> }) {
   const { id } = await params;
   const sp = await searchParams;
   const invite = await prisma.parentInvite.findUnique({ where: { id } });
@@ -16,6 +17,11 @@ export default async function AcceptPage({ params, searchParams }: { params: Pro
         <h1 className="text-lg font-semibold text-navy">Follow your child&apos;s journey</h1>
         {!invite ? (
           <p className="mt-2 text-sm text-red-600">This invite link is invalid.</p>
+        ) : invite.status === "expired" || sp.expired || isInviteExpired(invite) ? (
+          <p className="mt-2 text-sm text-muted">
+            This invite has expired. Ask your child to send a new one from their EduNomad app —
+            nothing on their file has changed.
+          </p>
         ) : invite.status !== "sent" ? (
           <p className="mt-2 text-sm text-muted">This invite was already accepted. <a href="/parent/login" className="text-navy underline">Sign in</a>.</p>
         ) : (

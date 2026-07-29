@@ -2,6 +2,7 @@ import { describe, it, after } from "node:test";
 import assert from "node:assert/strict";
 import { prisma } from "../src/lib/db";
 import { authorize, can, type AuthUser } from "../src/lib/rbac";
+import { INVITE_TTL_MS, isInviteExpired } from "../src/lib/parent";
 
 const compliance: AuthUser = { id: "comp-1", role: "compliance", tenant: "edunomad", tenantId: "edu" };
 const counsellor: AuthUser = { id: "couns-1", role: "counsellor", tenant: "edunomad", tenantId: "edu" };
@@ -54,5 +55,31 @@ describe("G006 — RBAC server-side enforcement", () => {
     const row = await prisma.auditLog.findFirst({ where: { targetId: "rbac-test-allow1" } });
     assert.equal(row?.result, "success");
     assert.equal(row?.reason, "privileged action");
+  });
+});
+
+describe("L14 — parent invites expire", () => {
+  const day = 24 * 60 * 60 * 1000;
+
+  it("accepts an invite inside its window", () => {
+    const sent = new Date();
+    assert.equal(
+      isInviteExpired({ expiresAt: new Date(Date.now() + INVITE_TTL_MS), sentAt: sent }),
+      false,
+    );
+  });
+
+  it("refuses one past its expiry", () => {
+    assert.equal(
+      isInviteExpired({ expiresAt: new Date(Date.now() - 1000), sentAt: new Date(Date.now() - 8 * day) }),
+      true,
+    );
+  });
+
+  it("does not leave pre-column invites open forever", () => {
+    // Rows issued before expiresAt existed have null; they fall back to sentAt,
+    // so an old invite cannot outlive the policy just by predating it.
+    assert.equal(isInviteExpired({ expiresAt: null, sentAt: new Date(Date.now() - 8 * day) }), true);
+    assert.equal(isInviteExpired({ expiresAt: null, sentAt: new Date(Date.now() - 1 * day) }), false);
   });
 });
