@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAutosave, SaveBadge } from "./useAutosave";
+import { useT } from "@/i18n/LocaleProvider";
 
 const QUALIFICATIONS = ["SSC / O-Level", "HSC / A-Level", "Diploma", "Bachelor's", "Master's"];
 const CURRENT_YEAR = new Date().getFullYear();
@@ -17,6 +18,7 @@ type Academic = {
 };
 
 export function AcademicStep({ initial }: { initial?: Academic | null }) {
+  const t = useT();
   const a = initial ?? {};
   const [qualification, setQualification] = useState(String(a.qualification ?? ""));
   const [institution, setInstitution] = useState(String(a.institution ?? ""));
@@ -53,7 +55,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
   return (
     <div className="space-y-4">
       <div>
-        <label className={label}>Highest qualification</label>
+        <label className={label}>{t("profile.step.academic.qualification_label")}</label>
         <select
           className={field}
           value={qualification}
@@ -62,7 +64,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
             persist({ qualification: e.target.value });
           }}
         >
-          <option value="">Select…</option>
+          <option value="">{t("profile.step.academic.select")}</option>
           {QUALIFICATIONS.map((q) => (
             <option key={q} value={q}>{q}</option>
           ))}
@@ -70,7 +72,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
       </div>
 
       <div>
-        <label className={label}>Board / institution</label>
+        <label className={label}>{t("profile.step.academic.board_label")}</label>
         <input
           className={field}
           value={institution}
@@ -81,7 +83,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
       </div>
 
       <div>
-        <label className={label}>Result</label>
+        <label className={label}>{t("profile.step.academic.result_label")}</label>
         <div className="flex gap-2">
           <select
             className={`${field} w-32`}
@@ -106,7 +108,7 @@ export function AcademicStep({ initial }: { initial?: Academic | null }) {
       </div>
 
       <div>
-        <label className={label}>Year of completion</label>
+        <label className={label}>{t("profile.step.academic.year_label")}</label>
         <input
           className={field}
           inputMode="numeric"

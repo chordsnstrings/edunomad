@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/i18n/LocaleProvider";
 import { useCallback, useState } from "react";
 
 export type SaveStatus = "idle" | "saving" | "saved" | "error";
@@ -25,7 +26,8 @@ export function useAutosave() {
 
 export function SaveBadge({ status }: { status: SaveStatus }) {
   if (status === "idle") return null;
-  const text = status === "saving" ? "Saving…" : status === "saved" ? "Saved" : "Couldn't save";
+  const t = useT();
+  const text = status === "saving" ? t("common.saving") : status === "saved" ? t("common.saved") : t("common.save_failed");
   const color = status === "error" ? "text-red-600" : "text-muted";
   return <span className={`text-xs ${color}`}>{text}</span>;
 }
