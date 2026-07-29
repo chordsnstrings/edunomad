@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Lock, Trash2, X, AlertTriangle, Sparkles } from "lucide-react";
 import { lockShortlistAction } from "@/app/app/shortlist/actions";
 import { useT } from "@/i18n/LocaleProvider";
+import { ConfirmButton } from "@/components/ui/ConfirmButton";
 
 type Item = {
   id: string;
@@ -36,7 +37,6 @@ export function ShortlistManager({
   const [showBlockers, setShowBlockers] = useState(!!blocked);
 
   async function remove(id: string) {
-    if (!confirm("Remove this programme from your shortlist?")) return;
     await fetch(`/api/shortlist?id=${id}`, { method: "DELETE" });
     router.refresh();
   }
@@ -78,9 +78,15 @@ export function ShortlistManager({
                   )}
                 </div>
                 {!locked && (
-                  <button type="button" onClick={() => remove(it.id)} aria-label="Remove" className="p-1 text-muted hover:text-red-600">
+                  <ConfirmButton
+                    onConfirm={() => remove(it.id)}
+                    confirmLabel={t("common.delete")}
+                    cancelLabel={t("common.cancel")}
+                    aria-label={t("common.delete")}
+                    className="grid h-11 w-11 place-items-center text-muted hover:text-red-600"
+                  >
                     <Trash2 className="h-4 w-4" />
-                  </button>
+                  </ConfirmButton>
                 )}
               </div>
               <textarea

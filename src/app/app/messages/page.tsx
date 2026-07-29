@@ -31,12 +31,18 @@ export default async function MessagesPage() {
           msgs.map((m) => (
             <div
               key={m.id}
+              // Who sent it is otherwise conveyed by alignment and colour alone
+              // (CLAUDE.md §9: colour is never the only signal). The visually
+              // hidden label gives assistive tech the sender explicitly.
               className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-sm ${
                 m.direction === "inbound"
                   ? "ml-auto bg-navy text-white"
                   : "mr-auto border border-line bg-white text-ink"
               }`}
             >
+              <span className="sr-only">
+                {m.direction === "inbound" ? "You wrote: " : "Your counsellor wrote: "}
+              </span>
               {m.content}
             </div>
           ))
