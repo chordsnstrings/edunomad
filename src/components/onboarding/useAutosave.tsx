@@ -25,8 +25,9 @@ export function useAutosave() {
 }
 
 export function SaveBadge({ status }: { status: SaveStatus }) {
-  if (status === "idle") return null;
+  // Hook before any early return — hooks must run in the same order every render.
   const t = useT();
+  if (status === "idle") return null;
   const text = status === "saving" ? t("common.saving") : status === "saved" ? t("common.saved") : t("common.save_failed");
   const color = status === "error" ? "text-red-600" : "text-muted";
   return <span className={`text-xs ${color}`}>{text}</span>;
