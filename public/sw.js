@@ -7,8 +7,13 @@
 // written to the shared origin cache and replayed on any network failure — to
 // whoever was using the device next. Bumping the cache name also purges any v1
 // entries that already contain personal data, via the activate handler below.
-const CACHE = "edunomad-shell-v2";
-const SHELL = ["/", "/privacy", "/terms", "/manifest.webmanifest", "/icon.svg"];
+// v3: adds the offline fallback document. Without it a failed navigation on a
+// signed-in page fell through to the browser's own error page — the screen a
+// student on patchy 4G sees most often, and the one place we never said "your
+// work is safe" (CLAUDE.md §9).
+const CACHE = "edunomad-shell-v3";
+const OFFLINE_URL = "/offline";
+const SHELL = ["/", "/offline", "/privacy", "/terms", "/manifest.webmanifest", "/icon.svg"];
 
 // Only these may be cached for offline navigation. Everything else is per-user.
 const PUBLIC_NAVIGATION =
@@ -51,8 +56,17 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     // Per-user pages are never cached and never served from cache: a stale
-    // authenticated page could otherwise be shown to a different user.
-    if (!isPublicNavigation(url.pathname)) return;
+    // authenticated page could otherwise be shown to a different user. They do
+    // get the offline document on failure, which is static and personal-data
+    // free, so nothing about one user can reach the next.
+    if (!isPublicNavigation(url.pathname)) {
+      event.respondWith(
+        fetch(request).catch(() =>
+          caches.match(OFFLINE_URL).then((m) => m || Response.error()),
+        ),
+      );
+      return;
+    }
 
     event.respondWith(
       fetch(request)
@@ -64,7 +78,11 @@ self.addEventListener("fetch", (event) => {
           }
           return res;
         })
-        .catch(() => caches.match(request).then((m) => m || caches.match("/"))),
+        .catch(() =>
+          caches
+            .match(request)
+            .then((m) => m || caches.match("/") || caches.match(OFFLINE_URL)),
+        ),
     );
   }
 });

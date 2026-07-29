@@ -5,6 +5,7 @@ import type { SubmissionStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { emit } from "@/lib/events";
+import { text } from "@/lib/form";
 
 const MAP: Record<string, { status: SubmissionStatus; event: string }> = {
   acknowledged: { status: "acknowledged", event: "application.acknowledged" },
@@ -18,8 +19,8 @@ const MAP: Record<string, { status: SubmissionStatus; event: string }> = {
 export async function classifyAction(formData: FormData) {
   const s = await getCurrentSession();
   if (!s || !["operations_team", "operations_manager"].includes(s.role)) redirect("/operations/login");
-  const emailId = String(formData.get("emailId"));
-  const classification = String(formData.get("classification"));
+  const emailId = text(formData, "emailId");
+  const classification = text(formData, "classification");
   const m = MAP[classification];
   if (!m) redirect("/operations/replies");
 

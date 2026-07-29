@@ -4,11 +4,12 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { emit } from "@/lib/events";
+import { text } from "@/lib/form";
 
 export async function auditPassAction(formData: FormData) {
   const s = await getCurrentSession();
   if (!s || s.role !== "operations_manager") redirect("/operations");
-  const fileId = String(formData.get("fileId"));
+  const fileId = text(formData, "fileId");
   const vf = await prisma.visaFile.findUnique({ where: { id: fileId } });
   if (!vf) redirect("/operations/visa-audit");
   await emit({

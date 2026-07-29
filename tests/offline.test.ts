@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { prisma } from "../src/lib/db";
 import { resolveLww, applyLwwWithAudit } from "../src/lib/offline/conflict";
 import { MemoryQueueStore, enqueueRequest, flushQueue } from "../src/lib/offline/syncQueue";
+import { readFileSync } from "node:fs";
 
 describe("G016 — offline sync queue + LWW conflict resolution", () => {
   after(async () => {
@@ -67,5 +68,31 @@ describe("G016 — offline sync queue + LWW conflict resolution", () => {
       where: { targetId: "lww-test-2", action: "sync.conflict" },
     });
     assert.notEqual(audit, null);
+  });
+});
+
+describe("L30 — offline fallback document", () => {
+  const sw = readFileSync("public/sw.js", "utf8");
+
+  it("precaches an offline document", () => {
+    assert.match(sw, /const OFFLINE_URL = "\/offline"/);
+    assert.ok(sw.includes('"/offline"'), "the offline page must be in the precached shell");
+  });
+
+  it("serves it for authenticated navigations instead of the browser error page", () => {
+    // The fallback must be reachable from the branch that refuses to *cache*
+    // per-user pages — that branch used to return without responding at all.
+    const navBranch = sw.slice(sw.indexOf('request.mode === "navigate"'));
+    assert.match(navBranch, /isPublicNavigation\(url\.pathname\)\)\s*\{[\s\S]*?caches\.match\(OFFLINE_URL\)/);
+  });
+
+  it("still never caches per-user HTML", () => {
+    const navBranch = sw.slice(sw.indexOf('request.mode === "navigate"'));
+    const privateBranch = navBranch.slice(0, navBranch.indexOf("event.respondWith(\n      fetch(request)\n        .then"));
+    assert.ok(!privateBranch.includes("c.put("), "private navigations must not be written to the cache");
+  });
+
+  it("bumps the cache name so older caches are purged", () => {
+    assert.match(sw, /edunomad-shell-v[3-9]/);
   });
 });

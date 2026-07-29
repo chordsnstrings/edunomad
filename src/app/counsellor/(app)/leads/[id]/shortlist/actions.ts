@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { addToShortlist } from "@/lib/shortlist";
 import { emit } from "@/lib/events";
+import { text, LIMITS } from "@/lib/form";
 
 async function guard(studentId: string) {
   const session = await getCurrentSession();
@@ -16,9 +17,9 @@ async function guard(studentId: string) {
 }
 
 export async function recommendProgrammeAction(formData: FormData) {
-  const studentId = String(formData.get("studentId") ?? "");
-  const programmeId = String(formData.get("programmeId") ?? "");
-  const rationale = String(formData.get("rationale") ?? "");
+  const studentId = text(formData, "studentId");
+  const programmeId = text(formData, "programmeId");
+  const rationale = text(formData, "rationale", LIMITS.longText);
   const session = await guard(studentId);
   const res = await addToShortlist(studentId, programmeId, { recommendedByCounsellor: true, actorType: "counsellor", actorId: session.userId });
   if (res.ok && res.application && rationale) {
@@ -28,8 +29,8 @@ export async function recommendProgrammeAction(formData: FormData) {
 }
 
 export async function suggestRemovalAction(formData: FormData) {
-  const studentId = String(formData.get("studentId") ?? "");
-  const applicationId = String(formData.get("applicationId") ?? "");
+  const studentId = text(formData, "studentId");
+  const applicationId = text(formData, "applicationId");
   const session = await guard(studentId);
   await emit({
     type: "shortlist.removal_suggested",

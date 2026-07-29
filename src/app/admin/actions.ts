@@ -21,6 +21,7 @@ import { SINGLETON_ID } from "@/lib/settings";
 import { adminLoginLimit } from "@/lib/ratelimit";
 import { logAudit } from "@/lib/audit";
 import { requireAdmin } from "@/lib/require-admin";
+import { text, secret } from "@/lib/form";
 
 export type FormState = {
   ok?: boolean;
@@ -50,8 +51,8 @@ export async function loginAction(
   _prev: FormState,
   formData: FormData,
 ): Promise<FormState> {
-  const email = String(formData.get("email") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
+  const email = text(formData, "email");
+  const password = secret(formData, "password");
   if (!email || !password) return { error: "Enter your email and password." };
 
   // The admin console had no lockout, no throttle and no record of attempts, so
@@ -110,7 +111,7 @@ export async function confirmEnrollmentAction(
 ): Promise<FormState> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
-  const code = String(formData.get("code") ?? "").trim();
+  const code = text(formData, "code");
   if (!(await confirmEnrollment(session.sub, code))) {
     return { error: "That code didn't match. Enter the current 6-digit code." };
   }
@@ -124,7 +125,7 @@ export async function verifyTwoFactorAction(
 ): Promise<FormState> {
   const session = await getSession();
   if (!session) redirect("/admin/login");
-  const code = String(formData.get("code") ?? "").trim();
+  const code = text(formData, "code");
   if (!(await verifyTwoFactor(session.sub, code))) {
     return { error: "Invalid code. Use your authenticator app or a recovery code." };
   }
@@ -216,7 +217,7 @@ export async function upsertCountryAction(
 
 export async function deleteCountryAction(formData: FormData) {
   await ensureAdmin();
-  const id = String(formData.get("id") ?? "");
+  const id = text(formData, "id");
   if (id) {
     await prisma.countryContact.delete({ where: { id } });
     revalidatePath("/", "layout");

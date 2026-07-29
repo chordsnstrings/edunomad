@@ -14,6 +14,7 @@ import {
   createPayout,
   markPayoutPaid,
 } from "@/lib/finance";
+import { text } from "@/lib/form";
 
 async function fin() {
   const s = await getCurrentSession();
@@ -61,9 +62,9 @@ const COMMISSION_STATUSES = [
 
 export async function setCommissionStatusAction(formData: FormData) {
   const s = await fin();
-  const id = String(formData.get("id"));
-  const status = String(formData.get("status"));
-  const reference = String(formData.get("reference") ?? "") || undefined;
+  const id = text(formData, "id");
+  const status = text(formData, "status");
+  const reference = text(formData, "reference") || undefined;
   if ((COMMISSION_STATUSES as readonly string[]).includes(status)) {
     await setCommissionStatus(
       id,
@@ -105,7 +106,7 @@ export async function createPayoutAction() {
 
 export async function markPayoutPaidAction(formData: FormData) {
   const s = await fin();
-  const id = String(formData.get("id"));
+  const id = text(formData, "id");
   await markPayoutPaid(id);
   await logAudit({
     actorUserId: s.userId,
@@ -120,7 +121,7 @@ export async function markPayoutPaidAction(formData: FormData) {
 /** Finance leg of the refund chain: cm_approved → finance_approved → paid. */
 export async function financeApproveRefundAction(formData: FormData) {
   const s = await fin();
-  const id = String(formData.get("id"));
+  const id = text(formData, "id");
   // Guard the transition server-side. The page only renders this button for a
   // cm_approved refund, but server actions are directly invokable, so without a
   // stage predicate a refund could skip the counsellor-manager approval step.
@@ -152,7 +153,7 @@ export async function financeApproveRefundAction(formData: FormData) {
 
 export async function payRefundAction(formData: FormData) {
   const s = await fin();
-  const id = String(formData.get("id"));
+  const id = text(formData, "id");
   // Only a finance-approved refund may be paid, and only once — otherwise the
   // same refund could be paid repeatedly, each time emitting payment.received.
   const paid = await prisma.refund.updateMany({

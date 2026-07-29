@@ -5,13 +5,14 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { getMyStudent } from "@/lib/student";
 import { emit } from "@/lib/events";
+import { text, LIMITS } from "@/lib/form";
 
 export async function sendStudentMessageAction(formData: FormData) {
   const session = await getCurrentSession();
   if (!session) redirect("/signup");
   const student = await getMyStudent(session.userId);
   if (!student) redirect("/welcome");
-  const content = String(formData.get("content") ?? "").trim();
+  const content = text(formData, "content", LIMITS.longText);
   if (!content) return;
 
   await prisma.communication.create({

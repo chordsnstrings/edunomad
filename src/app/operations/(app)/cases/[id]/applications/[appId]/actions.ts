@@ -6,6 +6,7 @@ import { getCurrentSession } from "@/lib/current-user";
 import { packageApplication, submitApplication } from "@/lib/submission";
 import { encryptSecret } from "@/lib/crypto-vault";
 import { Prisma } from "@prisma/client";
+import { text, secret } from "@/lib/form";
 
 async function ops() {
   const s = await getCurrentSession();
@@ -15,31 +16,31 @@ async function ops() {
 
 export async function packageAction(formData: FormData) {
   await ops();
-  const appId = String(formData.get("appId"));
-  const caseId = String(formData.get("caseId"));
+  const appId = text(formData, "appId");
+  const caseId = text(formData, "caseId");
   await packageApplication(appId, formData.getAll("docIds").map(String));
   redirect(`/operations/cases/${caseId}/applications/${appId}`);
 }
 
 export async function storeCredentialAction(formData: FormData) {
   await ops();
-  const institutionId = String(formData.get("institutionId"));
-  const caseId = String(formData.get("caseId"));
-  const appId = String(formData.get("appId"));
+  const institutionId = text(formData, "institutionId");
+  const caseId = text(formData, "caseId");
+  const appId = text(formData, "appId");
   await prisma.institutionCredential.upsert({
     where: { institutionId },
-    create: { institutionId, portalUrl: String(formData.get("portalUrl") ?? ""), username: String(formData.get("username") ?? ""), passwordEnc: encryptSecret(String(formData.get("password") ?? "")) },
-    update: { portalUrl: String(formData.get("portalUrl") ?? ""), username: String(formData.get("username") ?? ""), passwordEnc: encryptSecret(String(formData.get("password") ?? "")) },
+    create: { institutionId, portalUrl: text(formData, "portalUrl"), username: text(formData, "username"), passwordEnc: encryptSecret(secret(formData, "password")) },
+    update: { portalUrl: text(formData, "portalUrl"), username: text(formData, "username"), passwordEnc: encryptSecret(secret(formData, "password")) },
   });
   redirect(`/operations/cases/${caseId}/applications/${appId}`);
 }
 
 export async function saveOfferAction(formData: FormData) {
   await ops();
-  const appId = String(formData.get("appId"));
-  const caseId = String(formData.get("caseId"));
-  const offerUrl = String(formData.get("offerUrl") ?? "").trim() || null;
-  const conditions = String(formData.get("conditions") ?? "").split("\n").map((s) => s.trim()).filter(Boolean);
+  const appId = text(formData, "appId");
+  const caseId = text(formData, "caseId");
+  const offerUrl = text(formData, "offerUrl") || null;
+  const conditions = text(formData, "conditions").split("\n").map((s) => s.trim()).filter(Boolean);
   await prisma.application.update({
     where: { id: appId },
     data: { offerUrl, conditions: conditions as unknown as Prisma.InputJsonValue },
@@ -49,10 +50,10 @@ export async function saveOfferAction(formData: FormData) {
 
 export async function submitAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
-  const caseId = String(formData.get("caseId"));
-  const method = String(formData.get("method") ?? "email");
-  const note = String(formData.get("proof") ?? "");
+  const appId = text(formData, "appId");
+  const caseId = text(formData, "caseId");
+  const method = text(formData, "method");
+  const note = text(formData, "proof");
   const proof =
     method === "email" ? { channel: "email" } : method === "api" ? { channel: "api", stub: true } : note ? { channel: "portal", note } : null;
   const res = await submitApplication(appId, method, proof, s.userId);

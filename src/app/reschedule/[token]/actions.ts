@@ -3,10 +3,11 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { emit } from "@/lib/events";
+import { text } from "@/lib/form";
 
 export async function rescheduleAction(formData: FormData) {
-  const token = String(formData.get("token") ?? "");
-  const startsAt = String(formData.get("startsAt") ?? "");
+  const token = text(formData, "token");
+  const startsAt = text(formData, "startsAt");
   if (!token || !startsAt) return;
 
   const booking = await prisma.booking.findUnique({ where: { rescheduleToken: token } });

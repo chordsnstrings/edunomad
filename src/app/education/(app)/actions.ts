@@ -7,6 +7,7 @@ import { getCurrentSession } from "@/lib/current-user";
 import { prisma } from "@/lib/db";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+import { text } from "@/lib/form";
 
 async function em() {
   const s = await getCurrentSession();
@@ -25,7 +26,7 @@ export async function educationLogoutAction() {
 /** Acknowledge an escalation/exception as reviewed (oversight, §6 escalation approve). */
 export async function acknowledgeEscalationAction(formData: FormData) {
   const s = await em();
-  const studentId = String(formData.get("studentId"));
+  const studentId = text(formData, "studentId");
   await emit({
     type: "escalation.acknowledged",
     stage: 2,
@@ -49,8 +50,8 @@ export async function acknowledgeEscalationAction(formData: FormData) {
 /** Approve (activate) or pause a partner university (§6 partner_university approve). */
 export async function toggleInstitutionAction(formData: FormData) {
   const s = await em();
-  const id = String(formData.get("id"));
-  const active = String(formData.get("active")) === "true";
+  const id = text(formData, "id");
+  const active = text(formData, "active") === "true";
   await prisma.institution.update({ where: { id }, data: { active } });
   await logAudit({
     actorUserId: s.userId,

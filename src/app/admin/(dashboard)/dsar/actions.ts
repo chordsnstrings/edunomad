@@ -5,10 +5,11 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/require-admin";
 import { logAudit } from "@/lib/audit";
+import { text } from "@/lib/form";
 
 export async function eraseStudentAction(formData: FormData) {
   const s = await requireAdmin();
-  const studentId = String(formData.get("studentId"));
+  const studentId = text(formData, "studentId");
   // Never erase while a visa file is in flight (regulatory retention).
   // "In flight" is anything without a final decision — info_requested is still an
   // open regulatory matter, and only approved/refused close the file.

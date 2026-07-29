@@ -4,10 +4,11 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { requireParent } from "@/lib/parent";
 import { emit } from "@/lib/events";
+import { text, LIMITS } from "@/lib/form";
 
 export async function fileComplaintAction(formData: FormData) {
   const { session, student } = await requireParent();
-  const body = String(formData.get("body") ?? "").trim();
+  const body = text(formData, "body", LIMITS.longText);
   if (!body) redirect("/parent/complaint");
   await prisma.communication.create({ data: { studentId: student.id, userId: session.userId, type: "message", direction: "inbound", content: body, language: student.language, metadata: { kind: "complaint" } } });
   await emit({ type: "complaint.filed", stage: 2, studentId: student.id, actorType: "parent", actorId: session.userId, visibility: { P: true, C: true, CM: true, EM: true }, channels: { in_app: true, push: true }, payload: { preview: body.slice(0, 80) } });

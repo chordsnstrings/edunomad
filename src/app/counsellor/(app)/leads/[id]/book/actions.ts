@@ -7,15 +7,18 @@ import { createBooking } from "@/lib/booking";
 import { emit } from "@/lib/events";
 import { whatsappSend } from "@/lib/whatsapp";
 import { sendEmail } from "@/lib/email";
+import { text, int } from "@/lib/form";
 
 export async function createBookingAction(formData: FormData) {
   // Authorisation, not just authentication: this action books a call, writes to
   // the event chain and sends the student a WhatsApp + email. Previously any
   // signed-in user could invoke it for any studentId.
   const session = await requireStaff(["counsellor", "counsellor_manager"]);
-  const studentId = String(formData.get("studentId") ?? "");
-  const startsAt = String(formData.get("startsAt") ?? "");
-  const durationMin = Number(formData.get("durationMin") ?? 45);
+  const studentId = text(formData, "studentId");
+  const startsAt = text(formData, "startsAt");
+  // A slot length is 15-180 minutes; anything else is a typo or an attempt to
+  // wedge a booking across a whole day of the counsellor's calendar.
+  const durationMin = int(formData, "durationMin", { min: 15, max: 180, fallback: 45 });
   if (!studentId || !startsAt) redirect("/counsellor");
 
   const student = await prisma.student.findUnique({ where: { id: studentId } });

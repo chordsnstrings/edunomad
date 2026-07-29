@@ -8,14 +8,15 @@ import { pinHash } from "@/lib/parent";
 import { sendSms } from "@/lib/sms";
 import { emit } from "@/lib/events";
 import { rateLimit } from "@/lib/ratelimit";
+import { text } from "@/lib/form";
 
 export async function inviteParentAction(formData: FormData) {
   const s = await getCurrentSession();
   if (!s || s.role !== "student") redirect("/signup");
   const student = await getMyStudent(s.userId);
   if (!student) redirect("/welcome");
-  const phone = String(formData.get("phone") ?? "").trim();
-  const pin = String(formData.get("pin") ?? "").trim();
+  const phone = text(formData, "phone");
+  const pin = text(formData, "pin");
   if (!/^\+?[1-9]\d{9,14}$/.test(phone.replace(/[\s-]/g, "")) || !/^\d{4,6}$/.test(pin)) {
     redirect("/app/parent?error=1");
   }

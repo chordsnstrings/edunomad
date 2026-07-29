@@ -6,11 +6,12 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { QA_CALL_RUBRIC } from "@/lib/reference/qa-call-rubric";
 import { emit } from "@/lib/events";
+import { text, LIMITS } from "@/lib/form";
 
 export async function saveQaReviewAction(formData: FormData) {
   const s = await getCurrentSession();
   if (!s || s.role !== "counsellor_manager") redirect("/counsellor");
-  const commId = String(formData.get("commId"));
+  const commId = text(formData, "commId");
   const comm = await prisma.communication.findUnique({ where: { id: commId } });
   if (!comm) redirect("/counsellor/qa");
 
@@ -23,7 +24,7 @@ export async function saveQaReviewAction(formData: FormData) {
   });
 
   await prisma.qaReview.create({
-    data: { counsellorUserId: comm.userId ?? "", reviewerUserId: s.userId, studentId: comm.studentId, communicationId: commId, scores: scores as Prisma.InputJsonValue, totalScore: total, notes: String(formData.get("notes") ?? "") },
+    data: { counsellorUserId: comm.userId ?? "", reviewerUserId: s.userId, studentId: comm.studentId, communicationId: commId, scores: scores as Prisma.InputJsonValue, totalScore: total, notes: text(formData, "notes", LIMITS.longText) },
   });
   await emit({ type: "qa.reviewed", stage: 2, studentId: comm.studentId, actorType: "counsellor_manager", actorId: s.userId, visibility: { CM: true, C: true }, channels: { in_app: true }, payload: { totalScore: total } });
   redirect("/counsellor/qa");

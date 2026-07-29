@@ -6,10 +6,11 @@ import { prisma } from "@/lib/db";
 import { requireParent } from "@/lib/parent";
 import { translateText } from "@/lib/translate";
 import { emit } from "@/lib/events";
+import { text, LIMITS } from "@/lib/form";
 
 export async function parentChatSendAction(formData: FormData) {
   const { session, student } = await requireParent();
-  const content = String(formData.get("content") ?? "").trim();
+  const content = text(formData, "content", LIMITS.longText);
   if (!content) redirect("/parent/chat");
   // Auto-translate the parent's message to English for the counsellor.
   const en = await translateText(content, "en");

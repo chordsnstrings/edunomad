@@ -11,6 +11,7 @@ import { visaVersionHash } from "@/lib/visa";
 import { getLatestDocuments } from "@/lib/documents";
 import { emit, withEvents } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+import { text, LIMITS } from "@/lib/form";
 
 /** Sentinel: the file was already signed, so the transaction rolls back. */
 class AlreadySignedError extends Error {}
@@ -34,13 +35,13 @@ export async function sendReauthCodeAction(formData: FormData) {
   const s = await compliance();
   const user = await prisma.user.findUnique({ where: { id: s.userId } });
   if (user) await sendOtp(user.phone);
-  redirect(`/compliance/files/${String(formData.get("fileId"))}?codesent=1`);
+  redirect(`/compliance/files/${text(formData, "fileId")}?codesent=1`);
 }
 
 export async function signOffAction(formData: FormData) {
   const s = await compliance();
-  const fileId = String(formData.get("fileId"));
-  const code = String(formData.get("code") ?? "");
+  const fileId = text(formData, "fileId");
+  const code = text(formData, "code");
   const user = await prisma.user.findUnique({ where: { id: s.userId } });
   if (!user) redirect("/compliance/login");
 
@@ -103,8 +104,8 @@ export async function signOffAction(formData: FormData) {
 
 export async function returnForChangesAction(formData: FormData) {
   const s = await compliance();
-  const fileId = String(formData.get("fileId"));
-  const reason = String(formData.get("reason") ?? "");
+  const fileId = text(formData, "fileId");
+  const reason = text(formData, "reason", LIMITS.longText);
   const vf = await prisma.visaFile.findUnique({ where: { id: fileId } });
   if (!vf) redirect("/compliance");
   await prisma.visaFile.update({ where: { id: fileId }, data: { returnedForChanges: true, returnReason: reason, readyForSignoffAt: null } });
@@ -114,8 +115,8 @@ export async function returnForChangesAction(formData: FormData) {
 
 export async function refuseToSignAction(formData: FormData) {
   const s = await compliance();
-  const fileId = String(formData.get("fileId"));
-  const reason = String(formData.get("reason") ?? "");
+  const fileId = text(formData, "fileId");
+  const reason = text(formData, "reason", LIMITS.longText);
   const vf = await prisma.visaFile.findUnique({ where: { id: fileId } });
   if (!vf) redirect("/compliance");
   await prisma.visaFile.update({ where: { id: fileId }, data: { refusalReasons: [reason] as unknown as Prisma.InputJsonValue, readyForSignoffAt: null } });
@@ -126,22 +127,22 @@ export async function refuseToSignAction(formData: FormData) {
 
 export async function createBulletinAction(formData: FormData) {
   const s = await compliance();
-  await prisma.bulletin.create({ data: { authorUserId: s.userId, title: String(formData.get("title") ?? ""), body: String(formData.get("body") ?? ""), destination: String(formData.get("destination") ?? "") || null } });
+  await prisma.bulletin.create({ data: { authorUserId: s.userId, title: text(formData, "title"), body: text(formData, "body", LIMITS.longText), destination: text(formData, "destination") || null } });
   await logAudit({ actorUserId: s.userId, action: "regulatory_bulletin.create", targetType: "Bulletin", result: "success" });
   redirect("/compliance/bulletins");
 }
 
 export async function createRegUpdateAction(formData: FormData) {
   const s = await compliance();
-  const eff = String(formData.get("effectiveDate") ?? "");
-  await prisma.regulatoryUpdate.create({ data: { authorUserId: s.userId, destination: String(formData.get("destination") ?? "CA"), summary: String(formData.get("summary") ?? ""), effectiveDate: eff ? new Date(eff) : null } });
+  const eff = text(formData, "effectiveDate");
+  await prisma.regulatoryUpdate.create({ data: { authorUserId: s.userId, destination: text(formData, "destination"), summary: text(formData, "summary", LIMITS.longText), effectiveDate: eff ? new Date(eff) : null } });
   redirect("/compliance/bulletins");
 }
 
 export async function notifyRegulatorAction(formData: FormData) {
   const s = await compliance();
-  const fileId = String(formData.get("fileId") ?? "");
-  await prisma.regulatorNotification.create({ data: { authorUserId: s.userId, visaFileId: fileId || null, regulator: String(formData.get("regulator") ?? "RCIC"), subject: String(formData.get("subject") ?? ""), body: String(formData.get("body") ?? "") } });
+  const fileId = text(formData, "fileId");
+  await prisma.regulatorNotification.create({ data: { authorUserId: s.userId, visaFileId: fileId || null, regulator: text(formData, "regulator"), subject: text(formData, "subject"), body: text(formData, "body", LIMITS.longText) } });
   await logAudit({ actorUserId: s.userId, action: "regulator_notification.create", targetType: "VisaFile", targetId: fileId || null, result: "success", reason: "regulator notified" });
   const vf = fileId ? await prisma.visaFile.findUnique({ where: { id: fileId } }) : null;
   if (vf) await emit({ type: "compliance.regulator_notified", stage: 8, studentId: vf.studentId, applicationId: vf.applicationId, actorType: "compliance", actorId: s.userId, visibility: { COMP: true, EM: true, ADMIN: true }, channels: { in_app: true }, payload: {} });

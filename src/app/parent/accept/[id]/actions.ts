@@ -9,18 +9,19 @@ import { pinHash } from "@/lib/parent";
 import { sendOtp, verifyOtpForReauth } from "@/lib/otp";
 import { createUserSession, SESSION_COOKIE } from "@/lib/sessions";
 import { emit } from "@/lib/events";
+import { text } from "@/lib/form";
 
 export async function sendParentCodeAction(formData: FormData) {
-  const id = String(formData.get("id"));
+  const id = text(formData, "id");
   const invite = await prisma.parentInvite.findUnique({ where: { id } });
   if (invite && invite.status === "sent") await sendOtp(invite.parentPhone);
   redirect(`/parent/accept/${id}?codesent=1`);
 }
 
 export async function acceptInviteAction(formData: FormData) {
-  const id = String(formData.get("id"));
-  const pin = String(formData.get("pin") ?? "");
-  const code = String(formData.get("code") ?? "");
+  const id = text(formData, "id");
+  const pin = text(formData, "pin");
+  const code = text(formData, "code");
   const invite = await prisma.parentInvite.findUnique({ where: { id } });
   if (!invite || invite.status !== "sent") redirect(`/parent/accept/${id}`);
   if (invite.pinHash !== pinHash(pin)) redirect(`/parent/accept/${id}?pin=bad`);

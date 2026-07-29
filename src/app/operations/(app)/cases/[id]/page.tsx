@@ -15,10 +15,19 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
   const student = await prisma.student.findUnique({ where: { id } });
   if (!student) notFound();
 
-  const apps = await prisma.application.findMany({ where: { studentId: id, shortlistStatus: "locked" } });
-  const progs = await prisma.programme.findMany({ where: { id: { in: apps.map((a) => a.programmeId) } }, include: { institution: true } });
-  const checklist = await getChecklistForStudent(student);
-  const latest = await getLatestDocuments(id);
+  // Four sequential round trips became two: the checklist and document reads
+  // never depended on the applications, but each one waited for it anyway.
+  const [apps, checklist, latest] = await Promise.all([
+    prisma.application.findMany({ where: { studentId: id, shortlistStatus: "locked" } }),
+    getChecklistForStudent(student),
+    getLatestDocuments(id),
+  ]);
+  const progs = apps.length
+    ? await prisma.programme.findMany({
+        where: { id: { in: apps.map((a) => a.programmeId) } },
+        include: { institution: true },
+      })
+    : [];
   const requiredMissing = checklist.filter((d) => d.required && !latest.has(d.documentType));
 
   return (

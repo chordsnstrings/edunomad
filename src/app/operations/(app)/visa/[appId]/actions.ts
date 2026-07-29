@@ -8,6 +8,7 @@ import { visaCompleteness, visaForms } from "@/lib/visa";
 import { getLatestDocuments } from "@/lib/documents";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+import { text, LIMITS } from "@/lib/form";
 
 async function ops() {
   const s = await getCurrentSession();
@@ -26,7 +27,7 @@ async function notify(appId: string, type: string, actorId: string, payload: Rec
 
 export async function readyForSignoffAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
+  const appId = text(formData, "appId");
   const vf = await file(appId);
   const latest = await getLatestDocuments(vf.studentId);
   const completeness = visaCompleteness(vf.destinationCountry, latest);
@@ -61,8 +62,8 @@ export async function readyForSignoffAction(formData: FormData) {
 
 export async function bookVfsAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
-  const at = String(formData.get("datetime"));
+  const appId = text(formData, "appId");
+  const at = text(formData, "datetime");
   const vf = await file(appId);
   await prisma.visaFile.update({ where: { id: vf.id }, data: { vfsAppointmentAt: at ? new Date(at) : null } });
   await notify(appId, "visa.appointment_booked", s.userId, { at }, { in_app: true, push: true, whatsapp: true });
@@ -71,7 +72,7 @@ export async function bookVfsAction(formData: FormData) {
 
 export async function biometricsAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
+  const appId = text(formData, "appId");
   const vf = await file(appId);
   await prisma.visaFile.update({ where: { id: vf.id }, data: { biometricsDoneAt: new Date() } });
   await notify(appId, "visa.biometrics_done", s.userId, {});
@@ -80,8 +81,8 @@ export async function biometricsAction(formData: FormData) {
 
 export async function submitVisaAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
-  const ref = String(formData.get("ref") ?? "");
+  const appId = text(formData, "appId");
+  const ref = text(formData, "ref");
   const vf = await file(appId);
   if (!vf.signedOffAt || !ref) redirect(`/operations/visa/${appId}?error=1`);
   await prisma.visaFile.update({ where: { id: vf.id }, data: { submittedAt: new Date(), submissionProof: { ref } } });
@@ -91,9 +92,9 @@ export async function submitVisaAction(formData: FormData) {
 
 export async function decisionAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
-  const decision = String(formData.get("decision"));
-  const reason = String(formData.get("reason") ?? "");
+  const appId = text(formData, "appId");
+  const decision = text(formData, "decision");
+  const reason = text(formData, "reason", LIMITS.longText);
   if (!["approved", "refused", "info_requested"].includes(decision)) redirect(`/operations/visa/${appId}`);
   const vf = await file(appId);
   // Record the decision once. visa.* decisions are Critical-tier notifications
@@ -112,7 +113,7 @@ export async function decisionAction(formData: FormData) {
 
 export async function passportReturnedAction(formData: FormData) {
   const s = await ops();
-  const appId = String(formData.get("appId"));
+  const appId = text(formData, "appId");
   const vf = await file(appId);
   await prisma.visaFile.update({ where: { id: vf.id }, data: { passportReturnedAt: new Date() } });
   await notify(appId, "visa.passport_returned", s.userId, {});

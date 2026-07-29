@@ -5,11 +5,12 @@ import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
 import { emit } from "@/lib/events";
 import { logAudit } from "@/lib/audit";
+import { text } from "@/lib/form";
 
 export async function approveAction(formData: FormData) {
   const s = await getCurrentSession();
   if (!s || s.role !== "operations_manager") redirect("/operations");
-  const appId = String(formData.get("appId"));
+  const appId = text(formData, "appId");
   const app = await prisma.application.update({ where: { id: appId }, data: { opsApproved: true } });
   await emit({
     type: "application.approved",
