@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_Bengali, Noto_Sans_Devanagari } from "next/font/google";
 import "./globals.css";
 import { getSettings } from "@/lib/settings";
 import { buildMetadata } from "@/lib/seo";
@@ -12,6 +12,21 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+});
+
+// Bangla and Hindi/Nepali need their own scripts — Inter has neither, so those
+// languages rendered in whatever the device happened to have.
+const notoBengali = Noto_Sans_Bengali({
+  variable: "--font-bengali",
+  subsets: ["bengali"],
+  display: "swap",
+  weight: ["400", "600"],
+});
+const notoDevanagari = Noto_Sans_Devanagari({
+  variable: "--font-devanagari",
+  subsets: ["devanagari"],
+  display: "swap",
+  weight: ["400", "600"],
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,7 +48,7 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${notoBengali.variable} ${notoDevanagari.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white">
         <script
           dangerouslySetInnerHTML={{

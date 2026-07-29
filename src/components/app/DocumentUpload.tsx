@@ -5,6 +5,39 @@ import { useRouter } from "next/navigation";
 import { Camera, Upload, FileText, X } from "lucide-react";
 
 const MAX = 10 * 1024 * 1024;
+/** Longest edge kept when downscaling a camera capture before upload. */
+const MAX_EDGE = 2000;
+const JPEG_QUALITY = 0.85;
+
+/**
+ * Shrink a photo in the browser before uploading.
+ *
+ * A phone camera produces multi-megabyte JPEGs; sending them untouched over a
+ * mobile connection is slow and costs the student data. Documents only need to be
+ * legible, so cap the longest edge and re-encode. PDFs and small files pass
+ * through untouched.
+ */
+async function downscaleImage(file: File): Promise<File> {
+  if (!file.type.startsWith("image/") || file.size < 512 * 1024) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+    if (scale === 1 && file.size < 2 * 1024 * 1024) return file;
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((res) =>
+      canvas.toBlob(res, "image/jpeg", JPEG_QUALITY),
+    );
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
+  } catch {
+    return file; // any failure: upload the original rather than blocking the student
+  }
+}
 
 export function DocumentUpload({ documentType }: { documentType: string }) {
   const router = useRouter();
@@ -16,12 +49,13 @@ export function DocumentUpload({ documentType }: { documentType: string }) {
   const [amount, setAmount] = useState("");
   const isGic = documentType === "gic_certificate";
 
-  function pick(f: File | undefined) {
+  async function pick(f?: File) {
     if (!f) return;
     if (f.size > MAX) return setError("File is larger than 10MB.");
     setError("");
-    setFile(f);
-    setPreview(f.type.startsWith("image/") ? URL.createObjectURL(f) : null);
+    const prepared = await downscaleImage(f);
+    setFile(prepared);
+    setPreview(prepared.type.startsWith("image/") ? URL.createObjectURL(prepared) : null);
   }
 
   async function upload() {

@@ -25,8 +25,9 @@
   --color-line: #e6e8ec;
   --color-subtle: #f6f7f9;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-inter), var(--font-bengali), var(--font-devanagari),
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
 
   --radius-card: 14px;
 
@@ -70,6 +71,13 @@
   h4 {
     text-wrap: balance;
     letter-spacing: -0.02em;
+  }
+  /* Negative tracking is tuned for Latin; on Bengali and Devanagari it collides
+     conjuncts and matras, so headings in those scripts keep normal spacing. */
+  :lang(bn) h1, :lang(bn) h2, :lang(bn) h3, :lang(bn) h4,
+  :lang(hi) h1, :lang(hi) h2, :lang(hi) h3, :lang(hi) h4,
+  :lang(ne) h1, :lang(ne) h2, :lang(ne) h3, :lang(ne) h4 {
+    letter-spacing: normal;
   }
   p {
     text-wrap: pretty;

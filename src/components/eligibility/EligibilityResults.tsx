@@ -5,15 +5,19 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { EligibilityResult } from "@/lib/eligibility";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { useT } from "@/i18n/LocaleProvider";
+import { useT, useLocale } from "@/i18n/LocaleProvider";
 
 type TabId = "match" | "safe" | "reach";
 const TABS: TabId[] = ["match", "safe", "reach"];
 const COUNTRY: Record<string, string> = { CA: "Canada", UK: "UK", AU: "Australia", MY: "Malaysia" };
-const money = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
 
 export function EligibilityResults({ result }: { result: EligibilityResult }) {
   const t = useT();
+  const locale = useLocale();
+  // Format in the reader's locale rather than a hardcoded en-US.
+  const money = (n: number) =>
+    new Intl.NumberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
   const [tab, setTab] = useState<TabId>("match");
   const cards = result[tab];
 
