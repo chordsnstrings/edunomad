@@ -7,6 +7,7 @@ import { Lock, Trash2, X, AlertTriangle, Sparkles } from "lucide-react";
 import { lockShortlistAction } from "@/app/app/shortlist/actions";
 import { useT } from "@/i18n/LocaleProvider";
 import { ConfirmButton } from "@/components/ui/ConfirmButton";
+import { Modal } from "@/components/ui/Modal";
 
 type Item = {
   id: string;
@@ -120,13 +121,12 @@ export function ShortlistManager({
         )}
       </div>
 
-      {showBlockers && (
-        <div className="fixed inset-0 z-[90] grid place-items-center bg-black/40 px-4" onClick={() => setShowBlockers(false)}>
-          <div className="w-full max-w-sm rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
+      <Modal open={showBlockers} onClose={() => setShowBlockers(false)} title="Before you can lock">
+          <div>
             <div className="mb-3 flex items-center gap-2 text-navy">
               <AlertTriangle className="h-5 w-5 text-gold-600" />
               <h2 className="text-base font-semibold">Before you can lock</h2>
-              <button onClick={() => setShowBlockers(false)} className="ml-auto text-muted"><X className="h-4 w-4" /></button>
+              <button onClick={() => setShowBlockers(false)} aria-label={t("common.close")} className="ml-auto grid h-11 w-11 place-items-center text-muted"><X className="h-4 w-4" /></button>
             </div>
             <ul className="space-y-2">
               {lockBlockers.map((b) => (
@@ -138,8 +138,7 @@ export function ShortlistManager({
               ))}
             </ul>
           </div>
-        </div>
-      )}
+      </Modal>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Modal } from "@/components/ui/Modal";
 
 const METHODS: { id: string; label: string }[] = [
   { id: "bkash", label: "bKash" },
@@ -33,7 +34,7 @@ export function PayInvoice({ invoiceId, amount, currency, purpose }: { invoiceId
     <>
       <button onClick={() => setOpen(true)} className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Approve &amp; pay</button>
       {open && (
-        <div className="fixed inset-0 z-[90] grid place-items-center bg-black/40 px-4" onClick={() => setOpen(false)}>
+        <Modal open={open} onClose={() => setOpen(false)} title="Payment">
           <div className="w-full max-w-sm rounded-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-base font-semibold text-navy">Approve payment</h2>
             <p className="mt-1 text-sm text-muted">{purpose} — {amount.toLocaleString()} {currency}</p>
@@ -44,7 +45,7 @@ export function PayInvoice({ invoiceId, amount, currency, purpose }: { invoiceId
               ))}
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </>
   );
