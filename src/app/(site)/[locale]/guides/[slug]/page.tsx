@@ -5,6 +5,13 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { getSettings } from "@/lib/settings";
 import { siteUrlFrom, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { nativeArticle, NATIVE_LOCALES, NATIVE_BY_LOCALE, nativeLocalesForSlug, type NativeLocale } from "@/content/seo/i18n";
+import { ARTICLE_BY_SLUG } from "@/content/seo/articles";
+import { shouldIndex } from "@/content/seo/quality";
+
+function englishIsIndexable(slug: string): boolean {
+  const en = ARTICLE_BY_SLUG.get(slug);
+  return !en || shouldIndex(en);
+}
 
 function hreflang(slug: string, base: string) {
   const langs: Record<string, string> = { en: `${base}/guides/${slug}`, "x-default": `${base}/guides/${slug}` };
@@ -29,6 +36,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: a.title,
     description: a.description,
+    // Indexability follows the English source: a translation of a stub is still
+    // a stub. `follow` keeps its outbound links working for the pages that are.
+    ...(englishIsIndexable(slug) ? {} : { robots: { index: false, follow: true } }),
     alternates: { canonical: url, languages: hreflang(slug, base) },
     openGraph: { type: "article", title: a.title, description: a.description, url, locale },
   };

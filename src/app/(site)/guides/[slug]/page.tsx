@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/ui/JsonLd";
 import { getSettings } from "@/lib/settings";
 import { siteUrlFrom, articleJsonLd, faqJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { ARTICLES, ARTICLE_BY_SLUG, relatedArticles } from "@/content/seo/articles";
+import { shouldIndex } from "@/content/seo/quality";
 import { nativeLocalesForSlug, LOCALE_LABEL } from "@/content/seo/i18n";
 
 /** Prerender every guide at build time so the SEO pages are static + CDN-cacheable. */
@@ -24,6 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: a.title,
     description: a.description,
     keywords: a.keywords,
+    // A stub is reachable but not offered for indexing (see content/seo/quality).
+    // `follow` keeps its outbound links working for the pages that are.
+    ...(shouldIndex(a) ? {} : { robots: { index: false, follow: true } }),
     alternates: { canonical: url, ...(natives.length ? { languages } : {}) },
     openGraph: { type: "article", title: a.title, description: a.description, url },
     twitter: { card: "summary_large_image", title: a.title, description: a.description },
