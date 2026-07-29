@@ -83,8 +83,27 @@ export type LoggerOptions = {
   bindings?: LogFields;
 };
 
+/**
+ * Default sink. The proxy (Edge runtime) imports this module transitively via
+ * monitoring, and `process.stdout` does not exist there — the build warned and
+ * any Edge log line would have thrown at runtime. Resolve the writer once,
+ * preferring stdout where it exists so structured lines stay unbuffered.
+ */
+function defaultSink(): (line: string) => void {
+  // Reached through globalThis rather than the bare `process.stdout` identifier:
+  // the bundler flags that pattern as an unsupported Node API for every Edge
+  // entry point that transitively imports this module, even behind a guard.
+  const stdout = (
+    globalThis as { process?: { stdout?: { write?: (s: string) => unknown } } }
+  ).process?.stdout;
+  if (typeof stdout?.write === "function") {
+    return (line: string) => stdout.write!(line + "\n");
+  }
+  return (line: string) => console.log(line);
+}
+
 export function createLogger(opts: LoggerOptions = {}): Logger {
-  const sink = opts.sink ?? ((line: string) => process.stdout.write(line + "\n"));
+  const sink = opts.sink ?? defaultSink();
   const bindings = opts.bindings ?? {};
 
   function emit(level: LogLevel, msg: string, fields?: LogFields) {

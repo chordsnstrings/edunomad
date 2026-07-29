@@ -35,7 +35,7 @@ export default async function AdminLayout({
             <Link
               href="/"
               target="_blank"
-              className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:bg-subtle hover:text-navy sm:inline-flex"
+              className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:bg-subtle hover:text-navy sm:inline-flex tap"
             >
               View site <ExternalLink className="h-4 w-4" />
             </Link>

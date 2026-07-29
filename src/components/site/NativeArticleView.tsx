@@ -86,7 +86,7 @@ export function NativeArticleView({ article }: { article: NativeArticle }) {
         <section className="mt-10 rounded-2xl bg-navy px-5 py-6 text-white">
           <h2 className="text-lg font-semibold">{t.cta}</h2>
           <p className="mt-2 text-sm text-white/80">{t.ctaBody}</p>
-          <Link href="/signup" className="mt-4 inline-flex rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy hover:opacity-90">{t.start}</Link>
+          <Link href="/signup" className="mt-4 inline-flex rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy hover:opacity-90 tap">{t.start}</Link>
         </section>
 
         <section className="mt-10 border-t border-line pt-5">

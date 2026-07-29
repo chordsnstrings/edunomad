@@ -51,9 +51,9 @@ export default async function NativeHub({ params }: { params: Promise<{ locale: 
           <h1 className="text-3xl font-semibold leading-tight text-navy sm:text-4xl">{TITLE[l]}</h1>
           <p className="mt-4 text-base leading-relaxed text-ink/80">{DESC[l]}</p>
           <div className="mt-3 flex flex-wrap gap-2 text-sm">
-            <Link href="/guides" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">English ({"600+"})</Link>
+            <Link href="/guides" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">English ({"600+"})</Link>
             {NATIVE_LOCALES.filter((x) => x !== l).map((x) => (
-              <Link key={x} href={`/${x}/guides`} className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">{LOCALE_LABEL[x]}</Link>
+              <Link key={x} href={`/${x}/guides`} className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">{LOCALE_LABEL[x]}</Link>
             ))}
           </div>
 

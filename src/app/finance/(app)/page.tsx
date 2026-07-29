@@ -32,9 +32,9 @@ export default async function FinanceOverview() {
         ))}
       </div>
       <div className="mt-6 flex flex-wrap gap-2">
-        <Link href="/finance/commissions" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">Manage commissions</Link>
-        <Link href="/finance/payouts" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">Process payouts</Link>
-        <Link href="/finance/refunds" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">Approve refunds</Link>
+        <Link href="/finance/commissions" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle tap">Manage commissions</Link>
+        <Link href="/finance/payouts" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle tap">Process payouts</Link>
+        <Link href="/finance/refunds" className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-navy hover:bg-subtle tap">Approve refunds</Link>
       </div>
     </div>
   );

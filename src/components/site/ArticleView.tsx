@@ -80,7 +80,7 @@ export function ArticleView({ article, related, natives = [] }: { article: Artic
           <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
             <span className="text-muted">Read in:</span>
             {natives.map((n) => (
-              <Link key={n.locale} href={n.href} className="rounded-full bg-subtle px-3 py-1 font-semibold text-navy hover:text-gold-600">{n.label}</Link>
+              <Link key={n.locale} href={n.href} className="rounded-full bg-subtle px-3 py-1 font-semibold text-navy hover:text-gold-600 tap">{n.label}</Link>
             ))}
           </div>
         )}
@@ -118,7 +118,7 @@ export function ArticleView({ article, related, natives = [] }: { article: Artic
             estimates and a counsellor who owns your file. We never promise an outcome — we make the
             path clear and honest.
           </p>
-          <Link href="/signup" className="mt-4 inline-flex rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy hover:opacity-90">
+          <Link href="/signup" className="mt-4 inline-flex rounded-lg bg-gold px-4 py-2 text-sm font-semibold text-navy hover:opacity-90 tap">
             Start free
           </Link>
         </section>

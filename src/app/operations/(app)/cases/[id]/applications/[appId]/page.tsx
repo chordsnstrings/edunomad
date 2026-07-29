@@ -36,7 +36,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
       <h1 className="mt-3 text-xl font-semibold text-navy">{inst.name}</h1>
       <p className="text-sm text-muted">{programme.name} · {inst.country} · Tier {inst.submissionTier}</p>
       {app.decisionStatus === "accepted" && (
-        <Link href={`/operations/visa/${appId}`} className="mt-2 inline-block rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">
+        <Link href={`/operations/visa/${appId}`} className="tap mt-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">
           Open visa file →
         </Link>
       )}

@@ -49,7 +49,7 @@ export function StaffHeader({
               <Link
                 key={n.href}
                 href={n.href}
-                className="shrink-0 rounded-lg px-2.5 py-1.5 text-ink/70 hover:bg-subtle"
+                className="shrink-0 rounded-lg px-2.5 py-1.5 text-ink/70 hover:bg-subtle tap"
               >
                 {n.label}
               </Link>

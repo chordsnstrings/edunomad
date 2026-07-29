@@ -52,6 +52,24 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
+  /* 44px minimum tap target (CLAUDE.md §9).
+     Enforced here rather than per component: ~99 controls shipped at 32–36px
+     (py-1.5/py-2 on text-sm), and a floor that lives in one place cannot drift
+     the way a convention re-typed at every call site does. `min-height` only
+     raises short controls, so anything already sized (h-11, py-3) is unchanged.
+     Native buttons centre their content, and flex/grid buttons keep their own
+     alignment, so the extra height distributes rather than pushing text up.
+     `data-compact` is the deliberate opt-out for controls inside dense tabular
+     UI where the row itself provides the target. */
+  button:not([data-compact]),
+  [type="button"]:not([data-compact]),
+  [type="submit"]:not([data-compact]),
+  [type="reset"]:not([data-compact]) {
+    min-height: 44px;
+  }
+  /* Links styled as buttons carry `.tap` (the utility below); bare inline links
+     in prose must NOT get a 44px box, so this is opt-in for anchors. */
+
   /* Visible, accessible focus ring everywhere (WCAG AA, CLAUDE.md §9).
      Brand gold (#C9A84C) is only 2.29:1 on white — below the 3:1 floor WCAG
      1.4.11 sets for focus indicators — so the ring uses the darker gold-700
@@ -85,6 +103,12 @@
 }
 
 @layer utilities {
+  /* Opt-in 44px target for anchors that look and behave like buttons. */
+  .tap {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
   /* Consistent horizontal gutters — the single source of "perfect padding". */
   .container-px {
     padding-inline: 1.25rem; /* 20px mobile */

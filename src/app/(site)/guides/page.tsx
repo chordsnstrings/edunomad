@@ -70,7 +70,7 @@ export default async function GuidesHub() {
                   <ul className="mt-3 grid gap-1.5 sm:grid-cols-2">
                     {items.map((a) => (
                       <li key={a.slug}>
-                        <Link href={`/guides/${a.slug}`} className="block rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-subtle hover:text-navy">
+                        <Link href={`/guides/${a.slug}`} className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-subtle hover:text-navy">
                           {a.title}
                         </Link>
                       </li>

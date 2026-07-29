@@ -48,16 +48,16 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
               <span>Destinations: {dests.join(", ") || "—"}</span>
             </div>
             <div className="mt-4 flex gap-3">
-              <Link href={`/counsellor/leads/${id}/whatsapp`} className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">
+              <Link href={`/counsellor/leads/${id}/whatsapp`} className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700 tap">
                 <MessageCircle className="h-4 w-4" /> WhatsApp
               </Link>
-              <Link href={`/counsellor/leads/${id}/call`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">
+              <Link href={`/counsellor/leads/${id}/call`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle tap">
                 <Phone className="h-4 w-4" /> Call now
               </Link>
-              <Link href={`/counsellor/leads/${id}/book`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle">
+              <Link href={`/counsellor/leads/${id}/book`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle tap">
                 Book call
               </Link>
-              <Link href={`/counsellor/leads/${id}/shortlist`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle">
+              <Link href={`/counsellor/leads/${id}/shortlist`} className="inline-flex items-center gap-2 rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink/80 hover:bg-subtle tap">
                 Shortlist
               </Link>
             </div>

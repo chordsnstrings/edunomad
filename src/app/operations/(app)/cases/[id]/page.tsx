@@ -35,7 +35,7 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
       </div>
 
       <div className="mt-3 flex gap-2">
-        <Link href={`/operations/cases/${id}/sop`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle">
+        <Link href={`/operations/cases/${id}/sop`} className="inline-flex items-center gap-2 rounded-lg border border-navy px-4 py-2 text-sm font-semibold text-navy hover:bg-subtle tap">
           Polish SOP
         </Link>
       </div>
@@ -67,7 +67,7 @@ export default async function CasePage({ params }: { params: Promise<{ id: strin
             return (
               <li key={d.documentType} className="rounded-lg border border-line bg-white text-sm">
                 {doc ? (
-                  <Link href={`/operations/cases/${id}/docs/${doc.id}`} className="flex items-center justify-between px-3 py-2 hover:bg-subtle">
+                  <Link href={`/operations/cases/${id}/docs/${doc.id}`} className="flex min-h-11 items-center justify-between px-3 py-2 hover:bg-subtle">
                     <span className="text-ink">{d.label}</span>
                     <span className="text-navy underline">{doc.status} · review</span>
                   </Link>

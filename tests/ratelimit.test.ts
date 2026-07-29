@@ -1,6 +1,7 @@
 import { describe, it, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { rateLimit, otpVerifyLimit, tooManyResponse, LIMITS, _resetRateLimits } from "../src/lib/ratelimit";
+import { clientIpFrom } from "../src/lib/client-ip";
 
 describe("rate limiting (G182)", () => {
   beforeEach(() => _resetRateLimits());
@@ -37,5 +38,37 @@ describe("rate limiting (G182)", () => {
     assert.equal(res.status, 429);
     assert.equal(res.headers.get("Retry-After"), "30");
     assert.equal(res.headers.get("X-RateLimit-Limit"), "5");
+  });
+});
+
+describe("L9 — client IP resolution behind a proxy", () => {
+  const h = (v: Record<string, string>) => ({ get: (k: string) => v[k.toLowerCase()] ?? null });
+
+  it("ignores a client-supplied prefix and uses the hop the LB appended", () => {
+    // Attacker sends `X-Forwarded-For: 9.9.9.9`; the LB appends the real IP.
+    assert.equal(clientIpFrom(h({ "x-forwarded-for": "9.9.9.9, 203.0.113.7" }), 1), "203.0.113.7");
+  });
+
+  it("varying the spoofed prefix cannot mint new buckets", () => {
+    const a = clientIpFrom(h({ "x-forwarded-for": "1.1.1.1, 203.0.113.7" }), 1);
+    const b = clientIpFrom(h({ "x-forwarded-for": "2.2.2.2, 203.0.113.7" }), 1);
+    assert.equal(a, b);
+  });
+
+  it("honours a deeper trusted-hop count", () => {
+    assert.equal(
+      clientIpFrom(h({ "x-forwarded-for": "9.9.9.9, 203.0.113.7, 10.0.0.1" }), 2),
+      "203.0.113.7",
+    );
+  });
+
+  it("falls back rather than returning nothing on a short chain", () => {
+    assert.equal(clientIpFrom(h({ "x-forwarded-for": "203.0.113.7" }), 2), "203.0.113.7");
+    assert.equal(clientIpFrom(h({ "x-real-ip": "203.0.113.9" }), 1), "203.0.113.9");
+    assert.equal(clientIpFrom(h({}), 1), null);
+  });
+
+  it("keeps the unattributed bucket tighter than a session's", () => {
+    assert.ok(LIMITS.anon.limit < LIMITS.api.limit);
   });
 });

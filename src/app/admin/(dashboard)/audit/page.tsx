@@ -35,11 +35,11 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold text-navy">Audit log</h1>
-        <a href="/api/audit/export" className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700">Export CSV (with proof)</a>
+        <a href="/api/audit/export" className="rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-700 tap">Export CSV (with proof)</a>
       </div>
       <div className="mb-4 flex flex-wrap gap-2 text-sm">
         {[["/admin/incidents", "Incidents"], ["/admin/training-log", "Training log"], ["/admin/refusals", "Refusal analysis"], ["/admin/dsar", "DSAR"]].map(([href, label]) => (
-          <Link key={href} href={href} className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">{label}</Link>
+          <Link key={href} href={href} className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">{label}</Link>
         ))}
       </div>
 
@@ -53,16 +53,16 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         {auditChain.full && eventChain.full ? (
           <span className="text-xs text-muted">Full chains verified from genesis.</span>
         ) : (
-          <Link href="/admin/audit?verify=full" className="rounded-lg border border-line px-3 py-1.5 text-sm text-navy hover:bg-subtle">
+          <Link href="/admin/audit?verify=full" className="rounded-lg border border-line px-3 py-1.5 text-sm text-navy hover:bg-subtle tap">
             Verify full chain
           </Link>
         )}
       </div>
 
       <div className="mb-3 flex gap-2 text-sm">
-        <Link href="/admin/audit" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">All</Link>
-        <Link href="/admin/audit?result=denied" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">Denials</Link>
-        <Link href="/admin/audit?view=cross_tenant" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle">Cross-tenant</Link>
+        <Link href="/admin/audit" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">All</Link>
+        <Link href="/admin/audit?result=denied" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">Denials</Link>
+        <Link href="/admin/audit?view=cross_tenant" className="rounded-lg border border-line px-3 py-1.5 text-navy hover:bg-subtle tap">Cross-tenant</Link>
       </div>
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white">
@@ -83,9 +83,9 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
 
       {pages > 1 && (
         <div className="mt-3 flex gap-2 text-sm">
-          {page > 1 && <Link href={`/admin/audit?page=${page - 1}`} className="rounded-lg border border-line px-3 py-1.5">Previous</Link>}
+          {page > 1 && <Link href={`/admin/audit?page=${page - 1}`} className="rounded-lg border border-line px-3 py-1.5 tap">Previous</Link>}
           <span className="px-2 py-1.5 text-muted">Page {page} / {pages}</span>
-          {page < pages && <Link href={`/admin/audit?page=${page + 1}`} className="rounded-lg border border-line px-3 py-1.5">Next</Link>}
+          {page < pages && <Link href={`/admin/audit?page=${page + 1}`} className="rounded-lg border border-line px-3 py-1.5 tap">Next</Link>}
         </div>
       )}
     </div>

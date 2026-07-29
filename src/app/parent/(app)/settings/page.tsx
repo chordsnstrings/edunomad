@@ -39,8 +39,8 @@ export default async function ParentSettings() {
           <FontScaleToggle />
         </section>
         <section className="flex gap-2">
-          <Link href="/parent/escalate" className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">{t("parent.dashboard.talk_to_manager")}</Link>
-          <Link href="/parent/complaint" className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle">{t("parent.complaint.title")}</Link>
+          <Link href="/parent/escalate" className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle tap">{t("parent.dashboard.talk_to_manager")}</Link>
+          <Link href="/parent/complaint" className="rounded-lg border border-line px-4 py-2 text-sm font-medium text-navy hover:bg-subtle tap">{t("parent.complaint.title")}</Link>
         </section>
       </div>
     </div>

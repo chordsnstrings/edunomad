@@ -53,6 +53,10 @@ export const LIMITS = {
   api: { limit: 100, windowMs: MIN },
   // Admin password + TOTP entry: unlimited attempts made the console brute-forceable.
   adminLogin: { limit: 10, windowMs: 15 * MIN },
+  // Traffic we cannot attribute to a session or a trusted-hop IP shares one
+  // bucket. It must stay small: giving it the full per-session allowance meant
+  // a single unattributable caller could consume everyone else's budget.
+  anon: { limit: 30, windowMs: MIN },
 } as const;
 
 export const otpSendLimit = (phone: string) =>
@@ -66,6 +70,9 @@ export const adminLoginLimit = (email: string) =>
 
 export const apiLimit = (sessionKey: string) =>
   rateLimit(`api:${sessionKey}`, LIMITS.api.limit, LIMITS.api.windowMs);
+
+export const anonLimit = () =>
+  rateLimit("api:unattributed", LIMITS.anon.limit, LIMITS.anon.windowMs);
 
 /** Build a standard 429 with Retry-After (seconds) + rate-limit headers. */
 export function tooManyResponse(r: RateResult): Response {
