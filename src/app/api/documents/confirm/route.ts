@@ -22,6 +22,12 @@ export async function POST(req: NextRequest) {
     amountCad?: number;
   };
   if (!documentType || !storageKey) return Response.json({ error: "missing" }, { status: 400 });
+  // storageKey is client-supplied. Without this a student could attach another
+  // student's object to their own document record (the presign route always
+  // issues keys under documents/<studentId>/).
+  if (!storageKey.startsWith(`documents/${student.id}/`)) {
+    return Response.json({ error: "forbidden_key" }, { status: 403 });
+  }
 
   // Versioning: a re-upload creates a new version; old versions are retained.
   // An approved document is final and cannot be replaced (CLAUDE.md §4).

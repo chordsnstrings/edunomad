@@ -98,3 +98,28 @@ export const countrySchema = z.object({
 });
 
 export type CountryInput = z.infer<typeof countrySchema>;
+
+/**
+ * Student profile fields writable by the profile builder.
+ *
+ * /api/profile previously copied whitelisted KEYS straight from the request body
+ * into Prisma without checking their VALUES, so a caller could store a
+ * megabyte-long fieldOfStudy, a negative budget, or an arbitrarily-shaped JSON
+ * blob in the columns eligibility and lead scoring read from.
+ */
+export const profilePatchSchema = z
+  .object({
+    fullName: z.string().trim().min(1).max(120),
+    dateOfBirth: z.union([z.string().datetime({ offset: true }), z.string().date()]),
+    academic: z.record(z.string(), z.unknown()),
+    englishProficiency: z.record(z.string(), z.unknown()),
+    destinations: z.array(z.string().max(8)).max(10),
+    fieldOfStudy: z.string().trim().max(120),
+    fieldCategory: z.string().trim().max(60),
+    budgetMinUsd: z.number().int().min(0).max(1_000_000),
+    budgetMaxUsd: z.number().int().min(0).max(1_000_000),
+    fundingSource: z.string().trim().max(60),
+    intakeTarget: z.record(z.string(), z.unknown()),
+  })
+  .partial()
+  .strict();
