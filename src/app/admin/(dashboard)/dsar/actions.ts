@@ -10,7 +10,11 @@ export async function eraseStudentAction(formData: FormData) {
   const s = await requireAdmin();
   const studentId = String(formData.get("studentId"));
   // Never erase while a visa file is in flight (regulatory retention).
-  const inFlight = await prisma.visaFile.findFirst({ where: { studentId, decisionStatus: "pending" } });
+  // "In flight" is anything without a final decision — info_requested is still an
+  // open regulatory matter, and only approved/refused close the file.
+  const inFlight = await prisma.visaFile.findFirst({
+    where: { studentId, decisionStatus: { notIn: ["approved", "refused"] } },
+  });
   if (inFlight) {
     await logAudit({ actorUserId: s.sub, action: "data_export.erasure", targetType: "Student", targetId: studentId, result: "denied", reason: "visa file in flight" });
     redirect("/admin/dsar?error=in_flight");

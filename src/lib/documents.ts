@@ -26,6 +26,11 @@ export async function getChecklistForStudent(student: StudentLike): Promise<Chec
   }
   const checklist = generateChecklist({ destination, isMasters, age: ageFrom(student.dateOfBirth) });
 
+  // NOTE: this runs on a read path (page render). The check-then-emit below is a
+  // race — two concurrent renders can both miss `already` and both append. It is
+  // tolerable because a duplicate checklist event is informational only, but no
+  // new write should be added here; move emission to the shortlist-lock action if
+  // this needs to become authoritative.
   const already = await prisma.event.findFirst({ where: { studentId: student.id, type: "document_checklist.generated" } });
   if (!already) {
     await emit({
