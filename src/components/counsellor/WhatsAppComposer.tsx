@@ -40,6 +40,9 @@ export function WhatsAppComposer({
   const [guard, setGuard] = useState<ComplianceGuard | null>(null);
 
   function send() {
+    // Local check for instant feedback only. The server re-checks against the
+    // same guards plus any a manager published through the SOP CMS, and is the
+    // one that decides — this hint can be skipped, that check cannot.
     const g = checkGuards(render(tpl?.body ?? "", vars));
     if (g) {
       setGuard(g); // compliance guard tripped on send-button click
@@ -48,14 +51,20 @@ export function WhatsAppComposer({
     void doSend();
   }
 
-  async function doSend() {
+  async function doSend(acknowledgedGuardId?: string) {
     setBusy(true);
     try {
       const res = await fetch("/api/whatsapp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ studentId, templateId: id, variables: vars }),
+        body: JSON.stringify({ studentId, templateId: id, variables: vars, acknowledgedGuardId }),
       });
+      if (res.status === 409) {
+        // The server tripped a guard the browser did not know about.
+        const data = (await res.json().catch(() => ({}))) as { guard?: ComplianceGuard };
+        if (data.guard) setGuard(data.guard);
+        return;
+      }
       if (res.ok) {
         setSent(true);
         setTimeout(() => router.push(`/counsellor/leads/${studentId}`), 700);
@@ -67,13 +76,12 @@ export function WhatsAppComposer({
 
   async function override() {
     if (!guard) return;
-    await fetch("/api/compliance/flag", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ studentId, guardId: guard.id, message: render(tpl?.body ?? "", vars) }),
-    });
+    const acknowledged = guard.id;
     setGuard(null);
-    void doSend();
+    // The send route records the override itself, so this no longer posts a
+    // separate flag: the old flow logged one on the client path and none at all
+    // when the guard was only caught server-side.
+    await doSend(acknowledged);
   }
 
   return (

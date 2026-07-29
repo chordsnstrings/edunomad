@@ -27,8 +27,21 @@ export default async function LeadDetail({ params }: { params: Promise<{ id: str
   const events = await prisma.event.findMany({ where: { studentId: id }, orderBy: { seq: "desc" }, take: 20 });
   const breakdown = leadScoreBreakdown(student as Parameters<typeof leadScoreBreakdown>[0]);
   const snippets = matchSnippets(student as Parameters<typeof matchSnippets>[0]);
-  const surfaced = await surfaceSopBlocks("counsellor_opens_lead_detail");
   const dests = (student.destinations as string[] | null) ?? [];
+  // Trigger conditions are evaluated against the record on the screen, so the
+  // right rail shows what applies to *this* lead rather than every rule authored
+  // for the surface (CLAUDE.md §8).
+  const surfaced = await surfaceSopBlocks("counsellor_opens_lead_detail", {
+    student: {
+      english_proficiency: (student.englishProficiency as { status?: string } | null)?.status ?? "none",
+      profile_completeness: student.completenessPct,
+      lead_score: student.leadScore,
+      source_country: student.sourceCountry,
+      funding_source: student.fundingSource ?? "",
+      budget_max_usd: student.budgetMaxUsd ?? 0,
+      destinations: dests.join(","),
+    },
+  });
   const counsellors = session.role === "counsellor_manager" ? await prisma.counsellorProfile.findMany({ where: { active: true } }) : [];
 
   return (

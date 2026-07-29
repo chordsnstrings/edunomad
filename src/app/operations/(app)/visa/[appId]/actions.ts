@@ -4,9 +4,10 @@ import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/current-user";
-import { visaCompleteness } from "@/lib/visa";
+import { visaCompleteness, visaForms } from "@/lib/visa";
 import { getLatestDocuments } from "@/lib/documents";
 import { emit } from "@/lib/events";
+import { logAudit } from "@/lib/audit";
 
 async function ops() {
   const s = await getCurrentSession();
@@ -29,6 +30,30 @@ export async function readyForSignoffAction(formData: FormData) {
   const vf = await file(appId);
   const latest = await getLatestDocuments(vf.studentId);
   const completeness = visaCompleteness(vf.destinationCountry, latest);
+
+  // Enforced quality gate (CLAUDE.md §8: "checklist blocks gate handoffs").
+  // The completeness percentage was computed and then ignored, so a file with
+  // half its required documents missing or unapproved could be pushed into the
+  // Compliance queue — and Compliance is the one role whose time this wastes
+  // and whose sign-off carries legal weight. Record the attempt rather than
+  // failing silently, so the gate is visible in the audit trail.
+  if (completeness < 100) {
+    const missing = visaForms(vf.destinationCountry)
+      .filter((f) => f.required && latest.get(f.id)?.status !== "approved")
+      .map((f) => f.id);
+    await prisma.visaFile.update({ where: { id: vf.id }, data: { completenessPct: completeness } });
+    await logAudit({
+      actorUserId: s.userId,
+      action: "visa_file.ready_for_signoff",
+      targetType: "VisaFile",
+      targetId: vf.id,
+      result: "denied",
+      reason: `gate not satisfied: ${completeness}% complete`,
+      afterState: { missing },
+    });
+    redirect(`/operations/visa/${appId}?gate=incomplete`);
+  }
+
   await prisma.visaFile.update({ where: { id: vf.id }, data: { completenessPct: completeness, readyForSignoffAt: new Date() } });
   await emit({ type: "visa.ready_for_signoff", stage: 8, studentId: vf.studentId, applicationId: appId, actorType: "ops", actorId: s.userId, visibility: { O: true, OM: true, COMP: true }, channels: { in_app: true }, payload: { completeness } });
   redirect(`/operations/visa/${appId}`);

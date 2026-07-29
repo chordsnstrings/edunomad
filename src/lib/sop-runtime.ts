@@ -1,5 +1,6 @@
 import { prisma } from "./db";
 import type { SopBlock } from "./sop-cms";
+import { evaluateCondition, type ConditionContext } from "./sop-conditions";
 
 export async function getPublishedSops() {
   // Only the published projection: the draft `blocks` column can be large and is
@@ -31,13 +32,55 @@ export async function searchSops(q: string) {
   return all.filter((a) => a.title.toLowerCase().includes(ql) || JSON.stringify(a.publishedBlocks ?? []).toLowerCase().includes(ql));
 }
 
-/** Contextual surfacing engine (G149): published trigger_rule blocks matching a screen. */
-export async function surfaceSopBlocks(when: string): Promise<{ article: string; slug: string; block: SopBlock }[]> {
+/**
+ * Contextual surfacing engine (G149): published trigger_rule blocks matching a
+ * screen *and* whose condition holds for the record on it.
+ *
+ * The condition used to be ignored, so every rule authored for a screen showed
+ * on that screen for every record. A right rail that is always full is a right
+ * rail nobody reads. An unparseable condition surfaces nothing rather than
+ * everything — a broken rule should be invisible, not louder.
+ */
+export async function surfaceSopBlocks(
+  when: string,
+  ctx: ConditionContext = {},
+): Promise<{ article: string; slug: string; block: SopBlock }[]> {
   const all = await getPublishedSops();
   const out: { article: string; slug: string; block: SopBlock }[] = [];
   for (const a of all) {
     for (const b of (a.publishedBlocks as SopBlock[] | null) ?? []) {
-      if (b.type === "trigger_rule" && b.when === when) out.push({ article: a.title, slug: a.slug, block: b });
+      if (b.type !== "trigger_rule" || b.when !== when) continue;
+      if (evaluateCondition(b.condition as string | undefined, ctx) !== true) continue;
+      out.push({ article: a.title, slug: a.slug, block: b });
+    }
+  }
+  return out;
+}
+
+/**
+ * Every compliance_warning keyword a manager has published, as guards.
+ *
+ * The composer only ever checked the hard-coded guard list, so a keyword added
+ * through the SOP CMS — the whole point of §8 "managers, not engineers, author
+ * this" — produced no runtime effect at all.
+ */
+export async function sopComplianceGuards(): Promise<
+  { id: string; keywords: string[]; modalText: string }[]
+> {
+  const all = await getPublishedSops();
+  const out: { id: string; keywords: string[]; modalText: string }[] = [];
+  for (const a of all) {
+    for (const [i, b] of ((a.publishedBlocks as SopBlock[] | null) ?? []).entries()) {
+      if (b.type !== "compliance_warning") continue;
+      const keywords = (Array.isArray(b.keywords) ? b.keywords : []).filter(
+        (k): k is string => typeof k === "string" && k.trim().length > 0,
+      );
+      if (keywords.length === 0) continue;
+      out.push({
+        id: `sop:${a.slug}:${i}`,
+        keywords,
+        modalText: String(b.message ?? "This wording needs a compliance check before sending."),
+      });
     }
   }
   return out;

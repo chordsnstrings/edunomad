@@ -22,9 +22,16 @@ function Row({ label, done, children }: { label: string; done: boolean; children
   );
 }
 
-export default async function VisaBuilderPage({ params }: { params: Promise<{ appId: string }> }) {
+export default async function VisaBuilderPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ appId: string }>;
+  searchParams: Promise<{ gate?: string }>;
+}) {
   await requireStaff(["operations_team", "operations_manager"], "/operations/login");
   const { appId } = await params;
+  const { gate } = await searchParams;
   const vf = await prisma.visaFile.findUnique({ where: { applicationId: appId } });
   if (!vf) notFound();
   const student = await prisma.student.findUnique({ where: { id: vf.studentId }, select: { fullName: true, phone: true } });
@@ -64,6 +71,11 @@ export default async function VisaBuilderPage({ params }: { params: Promise<{ ap
           </section>
           <div className="mt-5">
             {vf.returnedForChanges && <p className="mb-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">Returned by Compliance: {vf.returnReason}</p>}
+            {gate === "incomplete" && (
+              <p role="alert" className="mb-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                Not sent: every required document must be approved before Compliance sees the file. Nothing was lost — approve the outstanding documents above and try again.
+              </p>
+            )}
             {vf.readyForSignoffAt ? (
               <p className="rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-700">Awaiting Compliance sign-off.</p>
             ) : (
