@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "./current-user";
 import { logAudit } from "./audit";
+import { twoFactorMandatory } from "./staff-2fa";
 import type { SessionInfo } from "./sessions";
 
 /**
@@ -27,6 +28,17 @@ export async function requireStaff(
       reason: `role ${session.role} not in [${roles.join(", ")}]`,
     });
     redirect(loginPath);
+  }
+
+  // §11: 2FA is mandatory for Compliance and Super Admin. Staff sign-in is an
+  // SMS OTP — a single factor — so without this the role with sole legal
+  // sign-off authority was protected by one code to one phone. An unenrolled
+  // user is sent to enrol; an enrolled one whose session has not cleared the
+  // challenge is sent to it.
+  if (twoFactorMandatory(session.role) && !session.tfa) {
+    // Land back on the console, not the login page they already cleared.
+    const console = loginPath.replace(/\/login$/, "") || "/";
+    redirect(`/staff/2fa?next=${encodeURIComponent(console)}`);
   }
   return session;
 }

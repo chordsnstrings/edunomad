@@ -181,6 +181,13 @@ model User {
   createdAt     DateTime   @default(now())
   deactivatedAt DateTime?
   archivedAt    DateTime?
+  // §11: 2FA available for all internal roles, mandatory for Compliance and
+  // Super Admin. Staff sign in with an SMS OTP, which is a single factor — the
+  // enrolment lived only on the separate AdminUser table, so the one role whose
+  // sign-off carries legal weight had none.
+  totpSecret    String?
+  totpEnabledAt DateTime?
+  recoveryCodes String[]   @default([])
   sessions      Session[]
 
   @@index([tenant, tenantId])
@@ -980,6 +987,9 @@ model Session {
   tenant       Tenant
   role         UserRole
   isInternal   Boolean   @default(false)
+  // Whether the second factor has been satisfied for THIS session. A session
+  // that has only cleared the OTP must not reach a 2FA-mandatory surface.
+  tfa          Boolean   @default(false)
   createdAt    DateTime  @default(now())
   expiresAt    DateTime
   lastActiveAt DateTime  @default(now())

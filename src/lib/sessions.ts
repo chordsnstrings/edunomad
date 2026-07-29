@@ -22,6 +22,8 @@ export type SessionInfo = {
   tenant: Tenant;
   role: UserRole;
   isInternal: boolean;
+  /** Whether this session has satisfied its second factor (CLAUDE.md §11). */
+  tfa: boolean;
 };
 
 /** Create a server-side session; returns the raw token (store only its hash). */
@@ -74,7 +76,7 @@ export async function validateUserSession(token: string): Promise<SessionInfo | 
   if (now - s.lastActiveAt.getTime() > LAST_ACTIVE_WRITE_MS) {
     await prisma.session.update({ where: { id: s.id }, data: { lastActiveAt: new Date() } });
   }
-  return { id: s.id, userId: s.userId, tenant: s.tenant, role: s.role, isInternal: s.isInternal };
+  return { id: s.id, userId: s.userId, tenant: s.tenant, role: s.role, isInternal: s.isInternal, tfa: s.tfa };
 }
 
 /** Invalidate a session server-side (logout). */

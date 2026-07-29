@@ -23,7 +23,8 @@ async function loginAs(request: APIRequestContext, phone: string) {
 async function reaches(page: import("@playwright/test").Page, path: string): Promise<boolean> {
   const res = await page.goto(path);
   const status = res?.status() ?? 0;
-  const bounced = /\/login|\/signup/.test(page.url());
+  // A 2FA interstitial is not "reaching" the surface either.
+  const bounced = /\/login|\/signup|\/staff\/2fa/.test(page.url());
   return status < 400 && !bounced;
 }
 
@@ -44,9 +45,14 @@ test("operations reaches case packaging + visa prep, not compliance sign-off", a
   expect(await reaches(page, "/compliance"), "ops blocked from compliance sign-off").toBeFalsy();
 });
 
-test("compliance reaches its files and is the only role that can", async ({ page }) => {
+test("compliance must clear a second factor before reaching sign-off", async ({ page }) => {
+  // §11 makes 2FA mandatory for Compliance. An OTP is one factor, so a session
+  // that has only cleared the OTP is sent to enrol/challenge rather than to the
+  // sign-off surface — the one place a single stolen phone must not be enough.
   await loginAs(page.request, STAFF.compliance);
-  expect(await reaches(page, "/compliance"), "compliance home").toBeTruthy();
+  await page.goto("/compliance");
+  expect(page.url(), "compliance is routed to the second factor").toContain("/staff/2fa");
+  expect(await page.getByRole("heading").first().textContent()).toMatch(/two-factor/i);
 });
 
 test("unauthenticated user is denied every internal surface", async ({ page }) => {
