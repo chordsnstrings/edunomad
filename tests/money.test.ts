@@ -1,4 +1,4 @@
-import { describe, it, after } from "node:test";
+import { describe, it, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { prisma } from "../src/lib/db";
 import { payInvoice } from "../src/lib/payments";
@@ -9,6 +9,8 @@ import { createPayout, markPayoutPaid } from "../src/lib/finance";
  * repeatable refund payment both survived. These exercise the concurrency and
  * replay paths specifically — the happy path was never the risk.
  */
+// A real Student row: Invoice.studentId is now a foreign key, so the previous
+// synthetic id would (correctly) be rejected by the database.
 const STUDENT = "money-test-student";
 const invoiceIds: string[] = [];
 const payoutIds: string[] = [];
@@ -23,11 +25,20 @@ async function newInvoice(amount = 1000) {
 }
 
 describe("W4 — money flows are idempotent under replay and concurrency", () => {
+  before(async () => {
+    await prisma.student.upsert({
+      where: { id: STUDENT },
+      create: { id: STUDENT, tenantId: "student", phone: "+880000000money", fullName: "Money Test" },
+      update: {},
+    });
+  });
+
   after(async () => {
     await prisma.payment.deleteMany({ where: { invoiceId: { in: invoiceIds } } });
     await prisma.invoice.deleteMany({ where: { id: { in: invoiceIds } } });
     await prisma.commission.deleteMany({ where: { id: { in: commissionIds } } });
     await prisma.payout.deleteMany({ where: { id: { in: payoutIds } } });
+    await prisma.student.deleteMany({ where: { id: STUDENT } });
     await prisma.$disconnect();
   });
 

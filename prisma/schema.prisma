@@ -218,6 +218,10 @@ model Student {
   leadScore            Int           @default(0)
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @updatedAt
+  applications         Application[]
+  documents            Document[]
+  visaFiles            VisaFile[]
+  invoices             Invoice[]
 
   @@index([tenantId])
   @@index([assignedCounsellorId])
@@ -264,26 +268,29 @@ model Institution {
   active               Boolean            @default(true)
   notes                String?
   programmes           Programme[]
+  applications         Application[]
+  commissions          Commission[]
 
   @@index([country])
 }
 
 /// W1 — an offered course at an institution.
 model Programme {
-  id                         String      @id @default(uuid())
+  id                         String        @id @default(uuid())
   institutionId              String
-  institution                Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institution                Institution   @relation(fields: [institutionId], references: [id], onDelete: Cascade)
   name                       String
   degreeLevel                DegreeLevel
   fieldCategory              String
-  durationMonths             Int         @default(24)
+  durationMonths             Int           @default(24)
   tuitionPerYearUsd          Int
   intakeMonthsSupported      Int[]
   englishMinSpecificIelts    Float?
   englishMinSpecificDuolingo Int?
   minAcademicPercentage      Float?
-  active                     Boolean     @default(true)
+  active                     Boolean       @default(true)
   notes                      String?
+  applications               Application[]
 
   @@index([institutionId])
   @@index([fieldCategory])
@@ -320,6 +327,7 @@ model Booking {
   rescheduleToken  String        @unique
   createdAt        DateTime      @default(now())
 
+  @@unique([counsellorUserId, startsAt])
   @@index([counsellorUserId, startsAt])
 }
 
@@ -348,7 +356,11 @@ model Document {
   reviewedBy   String?
   reviewedAt   DateTime?
   createdAt    DateTime  @default(now())
+  student      Student   @relation(fields: [studentId], references: [id], onDelete: Restrict)
 
+  // A re-upload computes version = latest + 1 with no constraint to catch a
+  // concurrent second upload landing on the same number.
+  @@unique([studentId, documentType, version])
   @@index([studentId, documentType])
 }
 
@@ -530,6 +542,8 @@ model VisaFile {
   passportReturnedAt DateTime?
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
+  application        Application        @relation(fields: [applicationId], references: [id], onDelete: Restrict)
+  student            Student            @relation(fields: [studentId], references: [id], onDelete: Restrict)
 
   @@index([studentId])
   @@index([decisionStatus])
@@ -583,7 +597,7 @@ model Application {
   bucket                  String?
   submissionStatus        SubmissionStatus @default(not_submitted)
   submissionMethod        String?
-  referenceId             String?
+  referenceId             String?          @unique
   submittedAt             DateTime?
   submissionProof         Json?
   decisionStatus          String?
@@ -595,6 +609,10 @@ model Application {
   updatedAt               DateTime         @updatedAt
 
   appDocuments ApplicationDocument[]
+  student      Student               @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  programme    Programme             @relation(fields: [programmeId], references: [id], onDelete: Restrict)
+  institution  Institution           @relation(fields: [institutionId], references: [id], onDelete: Restrict)
+  visaFile     VisaFile?
 
   @@unique([studentId, programmeId])
   @@index([studentId])
@@ -756,6 +774,7 @@ model Invoice {
   status      InvoiceStatus @default(issued)
   createdAt   DateTime      @default(now())
   payments    Payment[]
+  student     Student       @relation(fields: [studentId], references: [id], onDelete: Restrict)
 
   @@index([studentId])
   @@index([status])
@@ -994,6 +1013,7 @@ model Commission {
   notes         String?
   createdAt     DateTime         @default(now())
   updatedAt     DateTime         @updatedAt
+  institution   Institution      @relation(fields: [institutionId], references: [id], onDelete: Restrict)
 
   @@index([institutionId])
   @@index([status])
