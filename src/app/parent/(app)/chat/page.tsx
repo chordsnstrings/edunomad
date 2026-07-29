@@ -40,7 +40,7 @@ export default async function ParentChat() {
 
       <form action={parentChatSendAction} className="sticky bottom-0 mt-3 flex gap-2 bg-white py-2">
         <input name="content" required placeholder={t("app.messages.placeholder")} aria-label={t("app.messages.placeholder")} className="flex-1 rounded-full border border-line px-4 py-2.5 text-sm outline-none focus:border-navy" />
-        <button className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700"><Send className="h-4 w-4" /></button>
+        <button className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700" aria-label="Send"><Send className="h-4 w-4" /></button>
       </form>
     </div>
   );

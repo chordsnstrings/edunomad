@@ -50,7 +50,7 @@ export default async function MessagesPage() {
           placeholder="Type a message…" aria-label="Type a message…"
           className="flex-1 rounded-full border border-line px-4 py-2.5 outline-none focus:border-navy"
         />
-        <button type="submit" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700">
+        <button type="submit" className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-navy text-white hover:bg-navy-700" aria-label="Send">
           <Send className="h-4 w-4" />
         </button>
       </form>

@@ -20,6 +20,11 @@ export function JourneyTimeline({ stages, byStage, current }: { stages: string[]
             <button
               type="button"
               onClick={() => setOpen(open === stage ? null : stage)}
+              aria-expanded={open === stage}
+              // Colour alone must not convey the state (CLAUDE.md §9): the
+              // accessible name carries "current"/"done" as well.
+              aria-current={isCurrent ? "step" : undefined}
+              aria-label={`${stages[stage - 1]} — ${past ? "done" : isCurrent ? "current stage" : "not started"}`}
               className="flex w-full items-center gap-3 px-4 py-3 text-left"
             >
               <span
