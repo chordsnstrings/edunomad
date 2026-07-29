@@ -5,7 +5,7 @@ import { runEligibility, type StudentProfile } from "@/lib/eligibility";
 import { emit } from "@/lib/events";
 import { EligibilityResults } from "@/components/eligibility/EligibilityResults";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { getTranslator } from "@/i18n";
+import { getTranslator, clientMessages } from "@/i18n";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import type { Locale } from "@/i18n/config";
 
@@ -47,7 +47,7 @@ export default async function EligibilityPage() {
   });
 
   return (
-    <LocaleProvider locale={locale}>
+    <LocaleProvider locale={locale} messages={clientMessages(locale)}>
     <div lang={locale} className="mx-auto min-h-screen max-w-md px-4 py-6">
       <h1 className="text-xl font-semibold text-navy">{t("eligibility.result.title")}</h1>
       {result.total > 0 ? (

@@ -3,6 +3,7 @@ import { requireParent } from "@/lib/parent";
 import { parentLogoutAction } from "./actions";
 import { AppLock } from "@/components/app/AppLock";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
+import { clientMessages } from "@/i18n";
 import { getUserLocale } from "@/i18n/server";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +12,7 @@ export default async function ParentLayout({ children }: { children: React.React
   await requireParent();
   const locale = await getUserLocale();
   return (
-    <LocaleProvider locale={locale}>
+    <LocaleProvider locale={locale} messages={clientMessages(locale)}>
     <div lang={locale} className="min-h-screen bg-white">
       <AppLock />
       <header className="sticky top-0 z-40 border-b border-line bg-white">
